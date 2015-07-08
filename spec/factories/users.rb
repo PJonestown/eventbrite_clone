@@ -1,6 +1,9 @@
 FactoryGirl.define do
   factory :user do
-    username "MyString"
-  end
+    username "virginia_woolf"
 
+    factory :invalid_user do
+      username ''
+    end
+  end
 end
