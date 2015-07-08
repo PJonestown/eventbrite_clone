@@ -10,13 +10,22 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'with valid attributes' do
+    context 'with saved user' do
       it 'should sign the user in' do
         user = create(:user)
         attrs = attributes_for(:user)
         post :create, session: attrs
         expect(controller.current_user).to eq(user)
         expect(controller.signed_in?).to eq(true)
+      end
+    end
+
+    context 'with unsaved user' do
+      it 'should not create a session and redirect' do
+        attrs = attributes_for(:user)
+        post :create, session: attrs
+        expect(controller.signed_in?).to eq(false)
+        expect(response).to have_http_status(:redirect)
       end
     end
   end
