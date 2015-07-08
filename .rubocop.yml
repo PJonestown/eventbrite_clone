@@ -1,0 +1,13 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:  
+  RunRailsCops: true
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**/*'
+
+Metrics/LineLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false

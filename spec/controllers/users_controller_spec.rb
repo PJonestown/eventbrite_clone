@@ -30,7 +30,7 @@ RSpec.describe UsersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves new user to the database' do
-        expect{
+        expect {
           post :create, user: attributes_for(:user)
         }.to change(User, :count).by(1)
       end
@@ -43,5 +43,4 @@ RSpec.describe UsersController, type: :controller do
       end
     end
   end
-
 end
