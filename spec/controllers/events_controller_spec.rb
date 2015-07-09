@@ -10,7 +10,7 @@ RSpec.describe EventsController, type: :controller do
     end
 
     context 'signed in user' do
-      before (:each) do
+      before :each do
         @user = create(:user)
         request.session[:user_id] = @user.id
       end
