@@ -33,7 +33,7 @@ RSpec.describe SessionsController, type: :controller do
   describe 'DELETE #destroy' do
     context 'with signed in user' do
       it 'should end the user session' do
-        user = create(:user)
+        create(:user)
         attrs = attributes_for(:user)
         post :create, session: attrs
         expect(controller.signed_in?).to eq(true)

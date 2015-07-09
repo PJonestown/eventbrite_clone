@@ -13,10 +13,9 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if signed_in?
-      session.delete(:user_id)
-      @current_user = nil
-      redirect_to root_path
-    end
+    return unless signed_in?
+    session.delete(:user_id)
+    @current_user = nil
+    redirect_to root_path
   end
 end
