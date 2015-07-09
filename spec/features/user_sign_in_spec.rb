@@ -7,6 +7,8 @@ feature 'user sign in/out proccess' do
       user = create(:user)
       visit root_path
       click_link 'Sign in'
+      fill_in 'Username', with: user.username
+      click_button 'Sign in'
       expect(current_path).to eq(root_path)
       expect(page).to have_content(user.username)
 
