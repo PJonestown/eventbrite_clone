@@ -1,3 +1,5 @@
 class Event < ActiveRecord::Base
-  validates_presence_of :title, :description, :date
+  belongs_to :creator, :class_name => 'User'
+
+  validates :title, :description, :date, presence: true
 end
