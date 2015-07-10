@@ -23,7 +23,6 @@ feature 'event creation' do
       event = build(:event)
       fill_in 'Title', with: event.title
       fill_in 'Description', with: event.description
-      fill_in 'Date', with: event.date
       click_button 'Create Event'
     end
   end
