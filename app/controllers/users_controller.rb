@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render :show
+      sign_in_user @user
     else
       render :new
     end

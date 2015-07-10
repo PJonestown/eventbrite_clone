@@ -20,6 +20,11 @@ feature 'event creation' do
       visit root_path
       click_link 'Create Event'
       expect(current_path).to eq(new_event_path)
+      event = build(:event)
+      fill_in 'Title', with: event.title
+      fill_in 'Description', with: event.description
+      fill_in 'Date', with: event.date
+      click_button 'Create Event'
     end
   end
 end

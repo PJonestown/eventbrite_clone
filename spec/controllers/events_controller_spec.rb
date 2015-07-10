@@ -26,4 +26,27 @@ RSpec.describe EventsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #create' do
+    context 'with valid attributes' do
+      before :each do
+        @user = create(:user)
+        request.session[:user_id] = @user.id
+      end
+
+      it 'saves a new event to the database' do
+       expect {
+          post :create, event: attributes_for(:event)
+        }.to change(Event, :count).by(1)
+      end
+    end
+
+    context 'with invalid attrivutes' do
+      it 'should not save the event' do
+        expect{
+          post :create, event: attributes_for(:invalid_event)
+        }.to change(Event, :count).by(0)
+      end
+    end
+  end
 end
