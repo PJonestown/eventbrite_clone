@@ -5,6 +5,10 @@ FactoryGirl.define do
     date "2015-07-09"
     # association :user
 
+    factory :another_event do
+      title "Backroom 100nl poker meetup"
+    end
+
     factory :invalid_event do
       title ''
     end
