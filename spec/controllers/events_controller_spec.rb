@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
+  describe 'GET #show' do
+    it 'renders show template' do
+      event = create(:event)
+      get :show, id: event
+      expect(response).to render_template :show
+    end
+
+    it 'assigns requested event as @event' do
+      event = create(:event)
+      get :show, id: event
+      expect(assigns(:event)).to eq event
+    end
+  end
+
   describe 'GET #new' do
     context 'guest' do
       it 'should redirect' do
@@ -35,7 +49,7 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it 'saves a new event to the database' do
-       expect {
+        expect {
           post :create, event: attributes_for(:event)
         }.to change(Event, :count).by(1)
       end
@@ -43,7 +57,7 @@ RSpec.describe EventsController, type: :controller do
 
     context 'with invalid attrivutes' do
       it 'should not save the event' do
-        expect{
+        expect {
           post :create, event: attributes_for(:invalid_event)
         }.to change(Event, :count).by(0)
       end
