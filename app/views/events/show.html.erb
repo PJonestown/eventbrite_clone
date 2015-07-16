@@ -2,3 +2,21 @@
 <%= @event.description %>
 <%= @event.date %>
 <%= @event.creator.username %>
+
+
+<div class = 'container'>
+  <div class = 'row'>
+    <div class = 'col-sm-offset-2 col-sm-8'>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= @event.title %></h3>
+          </div>
+          <div class="panel-body">
+            <%= @event.description %>
+          </div>
+          <small><%= @event.date %></small>
+          <small><%= link_to @event.creator.username, @event.creator %></small>
+        </div>
+    </div>
+  </div>
+</div>
