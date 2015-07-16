@@ -5,5 +5,9 @@ FactoryGirl.define do
     factory :invalid_user do
       username ''
     end
+
+    factory :other_user do
+      username 'pig_bodine'
+    end
   end
 end

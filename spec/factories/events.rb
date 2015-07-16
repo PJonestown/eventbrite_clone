@@ -12,5 +12,9 @@ FactoryGirl.define do
     factory :invalid_event do
       title ''
     end
+
+    factory :test_event do
+      creator_id 1
+    end
   end
 end
