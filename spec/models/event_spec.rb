@@ -6,4 +6,5 @@ RSpec.describe Event, type: :model do
   it { should validate_presence_of(:date) }
 
   it { should belong_to(:creator).class_name('User') }
+  it { should have_many(:attendees).through(:event_attendees) }
 end

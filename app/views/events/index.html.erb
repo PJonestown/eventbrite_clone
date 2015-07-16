@@ -1,6 +1,19 @@
-<ul>
-  <% @events.each do |e| %>
-    <li> <%= e.title %> </li>
-  <% end %>
-</ul>
+<div class = 'container'>
+  <div class = 'row'>
+    <div class = 'col-sm-offset-2 col-sm-8'>
+      <ul>
+        <% @events.each do |e| %>
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title"><%= e.title %></h3>
+            </div>
+            <div class="panel-body">
+              <%= e.description %>
+            </div>
+          </div>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
 

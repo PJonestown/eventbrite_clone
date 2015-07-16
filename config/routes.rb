@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :users
   resources :events
 
-  root to: 'users#new' # temporary
+  root to: 'events#index'
 
   get     'sign_in'   =>  'sessions#new'
   post    'sign_in'   =>  'sessions#create'
