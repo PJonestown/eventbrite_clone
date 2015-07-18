@@ -8,7 +8,7 @@ feature 'attending an event' do
     @user = create(:other_user)
   end
 
-  # TODO: this test passes on it's own
+  # TODO: this test passes on its own
   #       but it fails when running full test suite
   #       capybara can't find button 'attend'
   #       weird...

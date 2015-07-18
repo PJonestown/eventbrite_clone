@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
 
+  root to: 'events#index'
+
   resources :users
   resources :events
   resources :attendances
-
-  root to: 'events#index'
 
   get     'sign_in'   =>  'sessions#new'
   post    'sign_in'   =>  'sessions#create'
