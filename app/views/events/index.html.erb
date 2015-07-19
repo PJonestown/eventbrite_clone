@@ -5,7 +5,7 @@
         <% @events.each do |e| %>
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title"><%= e.title %></h3>
+              <h3 class="panel-title"><%= link_to e.title, e %></h3>
             </div>
             <div class="panel-body">
               <%= e.description %>
