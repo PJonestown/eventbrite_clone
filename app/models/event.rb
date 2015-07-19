@@ -5,4 +5,7 @@ class Event < ActiveRecord::Base
   has_many :attendees, :through => :attendances
 
   validates :title, :description, :date, presence: true
+
+  scope :upcoming, -> { where("date >= ?", Time.zone.today) }
+  scope :past, -> { where("date < ?", Time.zone.today) }
 end

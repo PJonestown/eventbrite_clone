@@ -2,13 +2,6 @@ require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
   describe 'GET #index' do
-    it 'populates an array of events' do
-      ruby = create(:event)
-      poker = create(:another_event)
-      get :index
-      expect(assigns(:events)).to match_array([ruby, poker])
-    end
-
     it 'renders the index template' do
       get :index
       expect(response).to render_template :index
