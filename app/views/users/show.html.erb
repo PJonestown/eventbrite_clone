@@ -1,1 +1,8 @@
 <%= @user.username %>
+
+<h2>Events attending</h2>
+<% @user.attended_events.each do |e| %>
+  <ul>
+    <li><%= e.title %></li>
+  </ul>
+<% end %>
