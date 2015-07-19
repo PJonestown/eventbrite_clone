@@ -1,8 +1,32 @@
-<%= @user.username %>
+<div class = 'container'>
+  <div class = 'row'>
+    <div class = 'col-sm-offset-2 col-sm-8'>
+      <h1><%= @user.username %></h1>
 
-<h2>Events attending</h2>
-<% @user.attended_events.each do |e| %>
-  <ul>
-    <li><%= e.title %></li>
-  </ul>
-<% end %>
+      <h3>Upcoming events</h3>
+      <% @upcoming_events.each do |e| %>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= link_to e.title, e %></h3>
+          </div>
+        <div class="panel-body">
+          <%= e.description %>
+        </div>
+        </div>
+      <% end %>
+
+      <h3>Previously attended events</h3>
+       <% @past_events.each do |e| %>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= link_to e.title, e %></h3>
+          </div>
+        <div class="panel-body">
+          <%= e.description %>
+        </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
