@@ -1,6 +1,9 @@
 FactoryGirl.define do
   factory :group do
-    name "MyString"
-  end
+    name 'Thailand ruby group'
 
+    factory :other_group do
+      name 'Boston ruby'
+    end
+  end
 end
