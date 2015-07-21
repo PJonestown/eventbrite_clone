@@ -1,2 +1,11 @@
-<h1>Groups#new</h1>
-<p>Find me in app/views/groups/new.html.erb</p>
+<div class = 'container'>
+  <div class = 'row'>
+    <div class = 'col-sm-offset-4 col-sm-4'>
+      <%= simple_form_for @group do |f| %>
+
+        <%= f.input :name, required: false, autofocus: true %>
+        <%= f.submit 'Start Group', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>
