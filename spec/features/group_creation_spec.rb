@@ -18,6 +18,7 @@ feature 'group creation' do
       click_link 'Start Group'
       expect(current_path).to eq new_group_path
       fill_in 'Name', with: 'A brand new group'
+      fill_in 'Description', with: 'Now even newer!'
       click_button 'Start Group'
       expect(current_path).to eq group_path(user.owned_groups.last)
     end
