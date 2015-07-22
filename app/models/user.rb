@@ -7,5 +7,8 @@ class User < ActiveRecord::Base
   has_many :attendances, :foreign_key => 'attendee_id'
   has_many :attended_events, :through => :attendances
 
+  has_many :memberships, :foreign_key => 'member_id'
+  has_many :group_memberships, :through => :memberships
+
   validates :username, uniqueness: true, presence: true
 end
