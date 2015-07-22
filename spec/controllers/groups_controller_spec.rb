@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe GroupsController, type: :controller do
+  describe 'Get #show' do
+    let(:group) { create(:group) }
+
+    it 'assigns the requested group as @group' do
+      get :show, id: group
+      expect(assigns(:group)).to eq group
+    end
+
+    it 'renders the show template' do
+      get :show, id: group
+      expect(response).to render_template :show
+    end
+  end
 
   describe 'GET #new' do
     context 'guest' do

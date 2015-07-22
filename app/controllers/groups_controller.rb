@@ -1,5 +1,9 @@
 class GroupsController < ApplicationController
   before_action :user_only, :except => [:show, :index]
+
+  def show
+    @group = Group.find(params[:id])
+  end
  
   def new
     @group = Group.new
