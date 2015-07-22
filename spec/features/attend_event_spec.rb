@@ -12,6 +12,7 @@ feature 'attending an event' do
   #       but it fails when running full test suite
   #       nilclass error @event.creator.username
   #       why?
+  #       It has to be a problem with test_event factory
 
   context 'signed in user' do
     it 'should let user attend and un-attend event' do
