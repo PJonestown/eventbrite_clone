@@ -3,16 +3,10 @@ include IntegrationHelper
 
 feature 'attending an event' do
   before :each do
-    create(:user)
-    @event = create(:test_event)
+    first_user = create(:user)
+    @event = create(:event, creator_id: first_user.id)
     @user = create(:other_user)
   end
-
-  # TODO: this test passes on its own
-  #       but it fails when running full test suite
-  #       nilclass error @event.creator.username
-  #       why?
-  #       It has to be a problem with test_event factory
 
   context 'signed in user' do
     it 'should let user attend and un-attend event' do
