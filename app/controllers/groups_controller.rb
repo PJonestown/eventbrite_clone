@@ -4,7 +4,7 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
   end
- 
+
   def new
     @group = Group.new
   end
@@ -13,6 +13,8 @@ class GroupsController < ApplicationController
     @group = current_user.owned_groups.build(group_params)
     if @group.save
       redirect_to @group
+    else
+      render :new
     end
   end
 

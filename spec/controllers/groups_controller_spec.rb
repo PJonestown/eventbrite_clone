@@ -69,7 +69,7 @@ RSpec.describe GroupsController, type: :controller do
       end
     end
 
-    context 'with invalid attrivutes' do
+    context 'with invalid attributes' do
       it 'should not save the group' do
         expect {
           post :create, group: attributes_for(:invalid_group)
