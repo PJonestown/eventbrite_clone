@@ -1,2 +1,9 @@
 <%= render 'join' if current_user %>
 <%= @group.name %>
+<% @events.each do |e| %>
+  <ul>
+    <li><%= e.title %></li>
+    <li><%= e.date %></li>
+  </ul>
+<% end %>
+

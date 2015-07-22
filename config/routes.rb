@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :users
   resources :events
   resources :attendances
-  resources :groups
+  resources :groups do
+    resources :events
+  end
   resources :memberships
 
   get     'sign_in'   =>  'sessions#new'

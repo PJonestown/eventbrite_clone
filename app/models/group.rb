@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  has_many :events
+  has_many :events, inverse_of: :group
   belongs_to :owner, :class_name => 'User'
 
   has_many :memberships, :foreign_key => 'group_membership_id'

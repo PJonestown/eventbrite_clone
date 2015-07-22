@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe GroupsController, type: :controller do
   describe 'Get #show' do
     let(:group) { create(:group) }
+    let(:user) { create(:user) }
 
     it 'assigns the requested group as @group' do
       get :show, id: group
