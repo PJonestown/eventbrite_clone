@@ -15,7 +15,7 @@ feature 'attending an event' do
       visit group_path(@group)
       click_button 'Join Group'
 
-      # leave 
+      # leave
       click_button 'Leave Group'
     end
   end

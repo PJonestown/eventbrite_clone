@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :events
   resources :attendances
   resources :groups
+  resources :memberships
 
   get     'sign_in'   =>  'sessions#new'
   post    'sign_in'   =>  'sessions#create'
