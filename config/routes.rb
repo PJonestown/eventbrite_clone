@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
 
-  root to: 'events#index'
+  root to: 'groups#index'
 
   resources :users
-  resources :events
+  resources :events # Remove or only index
   resources :attendances
   resources :groups do
     resources :events

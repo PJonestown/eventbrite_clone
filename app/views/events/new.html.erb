@@ -1,14 +1,11 @@
 <div class = 'container'>
   <div class = 'row'>
     <div class = 'col-sm-offset-4 col-sm-4'>
-      <%= simple_form_for @event do |f| %>
-
-        <%= f.input :title, required: false, autofocus: true %>
-        <%= f.input :description, required: false %>
-        <%= f.input :date, as: :date, start_year: Date.today.year, 
-                    required: false %>
-
-        <%= f.submit 'Create Event', class: 'btn btn-primary'%>
+      <%= simple_form_for [@group, @event] do |e| %>
+        <%= e.input :title, required: false, autofocus: true  %>
+        <%= e.input :description, required: false %>
+        <%= e.input :date, as: :date, required: false, start_year: Date.today.year %>
+        <%= e.submit 'Create Group Event', class: 'btn btn-primary' %>
       <% end %>
     </div>
   </div>

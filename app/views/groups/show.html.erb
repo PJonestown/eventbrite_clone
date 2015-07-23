@@ -1,4 +1,7 @@
 <%= render 'join' if current_user %>
+<% if current_user and current_user.id == @group.owner_id %>
+  <%= link_to 'Create Group Event', new_group_event_path(@group) %>
+<% end %>
 <%= @group.name %>
 <% @events.each do |e| %>
   <ul>
