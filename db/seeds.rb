@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+user = User.create(username:'Admin')
+user.owned_groups.create(name:'One time events', 
+                   description: "A default group to place one time events 
+                   that don't require a group")
