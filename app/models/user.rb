@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   has_many :attendances, :foreign_key => 'attendee_id'
   has_many :attended_events, :through => :attendances
+  has_many :gathering_attendances, :foreign_key => 'attendee_id'
+  has_many :attended_gatherings, :through => :gathering_attendances
 
   has_many :memberships, :foreign_key => 'member_id'
   has_many :group_memberships, :through => :memberships
