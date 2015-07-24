@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :events # Remove or only index
+  resources :gatherings, only: [:index]
   resources :attendances
   resources :groups do
     resources :events
