@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
-    @events = @group.events
+    @gatherings = @group.gatherings
   end
 
   def new

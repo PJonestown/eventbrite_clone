@@ -1,12 +1,12 @@
 <%= render 'join' if current_user %>
 <% if current_user and current_user.id == @group.owner_id %>
-  <%= link_to 'Create Group Event', new_group_event_path(@group) %>
+  <%= link_to 'Create a Gathering', new_group_gathering_path(@group) %>
 <% end %>
 <%= @group.name %>
-<% @events.each do |e| %>
+<% @gatherings.each do |g| %>
   <ul>
-    <li><%= e.title %></li>
-    <li><%= e.date %></li>
+    <li><%= g.name %></li>
+    <li><%= g.date %></li>
   </ul>
 <% end %>
 
