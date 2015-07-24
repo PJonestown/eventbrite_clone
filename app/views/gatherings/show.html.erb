@@ -1,0 +1,23 @@
+<div class = 'container'>
+  <div class = 'row'>
+    <div class = 'col-sm-offset-2 col-sm-8'>
+      <%= render 'attend' if current_user %>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= @gathering.name %></h3>
+          </div>
+          <div class="panel-body well">
+            <%= @gathering.description %>
+          </div>
+          <small><%= @gathering.date %></small>
+          <small><%= link_to @gathering.creator.username, @gathering.creator %></small>
+        </div>
+        <h2>People attending</h2>
+        <% @gathering.attendees.each do |a| %>
+          <ul>
+            <li><%= a.username %></li>
+          </ul>
+        <% end %>
+    </div>
+  </div>
+</div>

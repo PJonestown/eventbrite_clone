@@ -1,0 +1,19 @@
+<% if @gathering.attendees.include?(current_user) %>
+    <%= simple_form_for(@current_user.gathering_attendances.find_by(attended_gathering_id: @gathering.id),
+                      method: :delete) do |f| %>
+      <%= f.submit "Un-attend", class: 'btn btn-large btn-danger' %>
+    <% end %>
+
+<% elsif current_user.group_memberships.include? @gathering.group%>
+  <%= simple_form_for(@current_user.gathering_attendances.build) do |f| %>
+    <%= f.hidden_field :attended_gathering_id, :value => @gathering.id %>
+    <%= f.submit "Attend", class: "btn btn-large btn-primary" %>
+  <% end %>
+
+<% else %>
+  <p>Want to go?</p>
+  <%= simple_form_for(current_user.memberships.build) do |f| %>
+    <%= f.hidden_field :group_membership_id, :value => @group.id %>
+    <%= f.submit "Join us!", class: "btn btn-large btn-primary" %>
+  <% end %>
+<% end %>

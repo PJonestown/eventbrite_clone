@@ -1,5 +1,5 @@
 <% if @event.attendees.include?(current_user) %>
-    <%= simple_form_for(@current_user.attendances.find_by(attended_event_id: @event.id),
+    <%= simple_form_for(current_user.attendances.find_by(attended_event_id: @event.id),
                       method: :delete) do |f| %>
       <%= f.submit "Un-attend", class: 'btn btn-large btn-danger' %>
     <% end %>

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :events # Remove or only index
   resources :gatherings, only: [:index]
   resources :attendances
+  resources :gathering_attendances
   resources :groups do
     resources :events
     resources :gatherings

@@ -1,5 +1,5 @@
 class GatheringsController < ApplicationController
-  before_action :group_owner_only, :except => [:index]
+  before_action :group_owner_only, :except => [:index, :show]
 
   def new
     @group = Group.find(params[:group_id])
@@ -15,6 +15,11 @@ class GatheringsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @group = Group.find(params[:group_id])
+    @gathering = Gathering.find(params[:id])
   end
 
   private

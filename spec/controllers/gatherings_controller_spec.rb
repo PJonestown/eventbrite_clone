@@ -5,6 +5,13 @@ RSpec.describe GatheringsController, type: :controller do
     @group = create(:group)
   end
 
+  describe 'GET #show' do
+    it 'should render the show template' do
+      get :show, group_id => @group
+      expect(response).to render_template :show
+    end
+  end
+
   describe 'GET #new' do
     context 'guest' do
       it 'should redirect' do
