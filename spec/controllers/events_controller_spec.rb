@@ -50,8 +50,6 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
-      before :each do
-        @user = create(:user)
         request.session[:user_id] = @user.id
       end
 

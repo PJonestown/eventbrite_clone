@@ -2,14 +2,26 @@ class GatheringsController < ApplicationController
   before_action :group_owner_only, :except => [:index]
 
   def new
-    group = Group.find(params[:group_id])
-    @gathering = group.gatherings.build
+    @group = Group.find(params[:group_id])
+    @gathering = @group.gatherings.build
   end
 
-  def index
+  def create
+    @group = Group.find(params[:group_id])
+    @gathering = @group.gatherings.build(gathering_params)
+    @gathering.creator_id = current_user.id
+    if @gathering.save
+      redirect_to group_path(@group)
+    else
+      render :new
+    end
   end
 
   private
+
+  def gathering_params
+    params.require(:gathering).permit(:name, :description, :date)
+  end
 
   def group_owner_only
     group = Group.find(params[:group_id])
