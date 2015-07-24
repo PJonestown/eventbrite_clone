@@ -17,7 +17,7 @@ feature 'attending a group gathering' do
 
   context 'non-group member' do
     describe 'non-member attend gathering flow' do
-      it 'should attend gathering' do
+      it 'should attend/un-attend gathering' do
         # non-member
         user = create(:other_user)
         sign_in user
@@ -29,8 +29,16 @@ feature 'attending a group gathering' do
         click_button 'Join us!'
         expect(current_path).to eq group_gathering_path(@group, @gathering)
 
-        # member
+        # member attend
         click_button 'Attend'
+        expect(current_path).to eq group_gathering_path(@group, @gathering)
+        expect(page).to have_content user.username
+        expect(page).to_not have_button 'Attend'
+        expect(page).to have_button 'Un-attend'
+
+        # member un-attend
+        click_button 'Un-attend'
+        expect(page).to have_button 'Attend'
       end
     end
   end
