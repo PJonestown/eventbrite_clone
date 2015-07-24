@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :attendances
   resources :groups do
     resources :events
+    resources :gatherings
   end
   resources :memberships
 
