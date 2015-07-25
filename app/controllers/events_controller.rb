@@ -2,24 +2,20 @@ class EventsController < ApplicationController
   before_action :user_only, :except => [:show, :index]
 
   def new
-    @group = Group.find(params[:group_id])
-    @event = @group.events.build
+    @event = Event.new
   end
 
   def create
-    @group = Group.find(params[:group_id])
-    @event = @group.events.create(event_params)
-    @event.creator_id = current_user.id
+    @event = current_user.created_events.build(event_params)
     if @event.save
-      redirect_to @group
+      redirect_to @event
     else
       render :new
     end
   end
 
   def show
-    group = Group.find(params[:group_id])
-    @event = group.events.find(params[:id])
+    @event = Event.find(params[:id])
   end
 
   def index
