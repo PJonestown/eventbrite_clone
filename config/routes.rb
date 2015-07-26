@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   root to: 'groups#index'
 
-  resources :users
+  resources :users do
+    resources :moderations
+  end
   resources :events
   resources :gatherings, only: [:index]
   resources :attendances
