@@ -3,12 +3,11 @@ Rails.application.routes.draw do
   root to: 'groups#index'
 
   resources :users
-  resources :events # Remove or only index
+  resources :events
   resources :gatherings, only: [:index]
   resources :attendances
   resources :gathering_attendances
   resources :groups do
-    resources :events
     resources :gatherings
   end
   resources :memberships

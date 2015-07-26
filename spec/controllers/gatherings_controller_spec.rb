@@ -16,7 +16,7 @@ RSpec.describe GatheringsController, type: :controller do
   describe 'GET #new' do
     context 'guest' do
       it 'should redirect' do
-        get :new, :group_id => @group
+        get :new, :group_id => @group.id
         expect(response).to have_http_status(:redirect)
       end
     end
@@ -28,7 +28,7 @@ RSpec.describe GatheringsController, type: :controller do
       end
 
       it 'should return http success' do
-        get :new, :group_id => @group
+        get :new, :group_id => @group.id
         expect(response).to have_http_status(:success)
       end
 
