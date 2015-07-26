@@ -37,4 +37,52 @@ RSpec.describe ModerationsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #create' do
+    context 'group owner' do
+
+      context 'with valid attributes' do
+        it 'should save moderation to the database' do
+          request.session[:user_id] = @owner.id
+          expect {
+            post :create, :user_id => @user,
+              :moderation => { :moderator_id => @user,
+                               :moderated_group_id => @group }
+          }.to change(Moderation, :count).by(1)
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'should not ssave the moderation to the database' do
+          request.session[:user_id] = @owner.id
+          expect {
+            post :create, :user_id => @user,
+              :moderation => { :moderator_id => @user,
+                               :moderated_group_id => nil }
+          }.to_not change(Moderation, :count)
+        end
+      end
+    end
+
+    context 'non-group owner' do
+      it 'should not save a moderation to the database' do
+        request.session[:user_id] = @user.id
+        expect {
+          post :create, :user_id => @owner,
+            :moderation => { :moderator_id => @owner,
+                             :moderated_group_id => @group }
+        }.not_to change(Moderation, :count)
+      end
+    end
+
+    context 'guest' do
+      it 'should not save moderation to database' do
+        expect {
+          post :create, :user_id => @user,
+            :moderation => { :moderator_id => @user,
+                             :moderated_group_id => @group }
+        }.not_to change(Moderation, :count)
+      end
+    end
+  end
 end

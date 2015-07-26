@@ -12,6 +12,10 @@ feature 'attending an event' do
     it 'should create a new mod' do
       sign_in @owner
       visit new_user_moderation_path(@user)
+      expect(page).to have_content "Make #{@user.username} a moderator of"
+      select(@group.name)
+      click_button 'Create new moderator'
+      expect(current_path).to eq group_path(@group)
     end
   end
 end
