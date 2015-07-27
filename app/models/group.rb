@@ -8,6 +8,8 @@ class Group < ActiveRecord::Base
   has_many :moderations, :foreign_key => 'moderated_group_id'
   has_many :moderators, :through => :moderations
 
-  validates :name, :owner_id, :description, :presence => true
+  belongs_to :categories
+
+  validates :name, :owner_id, :category_id, :description, :presence => true
   validates :name, :uniqueness => true
 end
