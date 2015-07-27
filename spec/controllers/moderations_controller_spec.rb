@@ -7,7 +7,7 @@ RSpec.describe ModerationsController, type: :controller do
     @user = create(:other_user)
   end
 
-  describe 'GET # new' do
+  describe 'GET #new' do
     context 'guest' do
       it 'should redirect' do
         get :new, user_id: @user
@@ -64,6 +64,18 @@ RSpec.describe ModerationsController, type: :controller do
       end
     end
 
+    context 'wrong group owner' do
+      it 'should not save the moderation to database' do
+        create(:other_group, owner_id: @user.id)
+        request.session[:user_id] = @user.id
+        expect {
+          post :create, :user_id => @owner,
+            :moderation => { :moderator_id => @owner,
+                             :moderated_group_id => @group }
+        }.not_to change(Moderation, :count)
+      end
+    end
+
     context 'non-group owner' do
       it 'should not save a moderation to the database' do
         request.session[:user_id] = @user.id
@@ -81,6 +93,40 @@ RSpec.describe ModerationsController, type: :controller do
           post :create, :user_id => @user,
             :moderation => { :moderator_id => @user,
                              :moderated_group_id => @group }
+        }.not_to change(Moderation, :count)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    before :each do
+      @moderation = create(:moderation, moderator_id: @user.id,
+                           moderated_group_id: @group.id)
+    end
+    context 'group owner' do
+      it 'should destroy record from database' do
+        request.session[:user_id] = @owner.id
+        expect {
+          delete :destroy, user_id: @user, id: @moderation
+        }.to change(Moderation, :count).by(-1)
+      end
+    end
+
+    context 'wrong group owner' do
+      it 'should not destroy record from database' do
+        other_owner = create(:user, username: 'other')
+        create(:other_group, owner_id: other_owner.id)
+        request.session[:user_id] = other_owner.id
+        expect {
+          delete :destroy, user_id: @user, id: @moderation
+        }.not_to change(Moderation, :count)
+      end
+    end
+
+    context 'guest' do
+      it 'should not destroy record from database' do
+        expect {
+          delete :destroy, user_id: @user, id: @moderation
         }.not_to change(Moderation, :count)
       end
     end

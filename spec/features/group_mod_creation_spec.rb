@@ -9,13 +9,20 @@ feature 'attending an event' do
   end
 
   context 'group owner' do
-    it 'should create a new mod' do
+    it 'should create/destroy a mod' do
+      # create
       sign_in @owner
       visit new_user_moderation_path(@user)
       expect(page).to have_content "Make #{@user.username} a moderator of"
       select(@group.name)
       click_button 'Create new moderator'
       expect(current_path).to eq group_path(@group)
+      expect(page).to have_content @user.username
+
+      # destroy
+      click_link 'delete'
+      expect(current_path).to eq group_path(@group)
+      expect(page).not_to have_content @user.username
     end
   end
 end

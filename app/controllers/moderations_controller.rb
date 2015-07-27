@@ -21,6 +21,16 @@ class ModerationsController < ApplicationController
     end
   end
 
+  def destroy
+    @moderation = Moderation.find(params[:id])
+    if user_owns_group?
+      @moderation.destroy
+      redirect_to group_path(@moderation.moderated_group_id)
+    else
+      redirect_to root_path
+    end
+  end
+
   private
 
   def moderation_params

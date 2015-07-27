@@ -10,3 +10,19 @@
   </ul>
 <% end %>
 
+
+<!-- TODO: Save this as a partial. 
+          Have this as a link only mod can see. 
+          Mod clicks link and ajax renders partial -->
+
+<h2>Mods</h2>
+<% @group.moderators.each do |g| %>
+  <% user_moderation = g.moderations.where(moderated_group_id: @group.id).first %>
+  <ul>
+    <li><%= g.username%></li>
+    <ul>
+      <li><%= link_to 'delete', [g, user_moderation], :method => 'delete' %></li>
+    </ul>
+  </ul>
+<% end %>
+
