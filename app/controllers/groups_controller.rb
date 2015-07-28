@@ -32,7 +32,7 @@ class GroupsController < ApplicationController
   private
 
   def group_params
-    params.require(:group).permit(:name, :owner_id, :description)
+    params.require(:group).permit(:name, :owner_id, :description, :category_id)
   end
 
   def user_only

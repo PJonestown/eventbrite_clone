@@ -63,7 +63,7 @@ RSpec.describe GroupsController, type: :controller do
     end
 
     context 'with valid attributes' do
-      it 'saves a new event to the database' do
+      it 'saves a new group to the database' do
         expect {
           post :create, group: attributes_for(:group)
         }.to change(Group, :count).by(1)
