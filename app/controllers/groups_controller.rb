@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
+    @categories = Category.all
   end
 
   def create

@@ -13,12 +13,14 @@ feature 'group creation' do
   context 'signed in user' do
     it 'should create a new group' do
       user = create(:user)
+      category = create(:category)
       sign_in user
 
       click_link 'Start Group'
       expect(current_path).to eq new_group_path
       fill_in 'Name', with: 'A brand new group'
       fill_in 'Description', with: 'Now even newer!'
+      select(category.name)
       click_button 'Start Group'
       expect(current_path).to eq group_path(user.owned_groups.last)
     end
