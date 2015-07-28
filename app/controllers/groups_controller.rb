@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
   before_action :user_only, :except => [:show, :index]
+  before_action :owner_only, :only => [:edit, :update]
 
   def show
     @group = Group.find(params[:id])
@@ -24,6 +25,10 @@ class GroupsController < ApplicationController
     @groups = Group.all.includes(:owner)
   end
 
+  def edit
+    @group = Group.find(params[:id])
+  end
+
   def update
     group = Group.find(params[:id])
     group.update!(group_params)
@@ -42,5 +47,10 @@ class GroupsController < ApplicationController
 
   def user_only
     redirect_to new_user_path unless signed_in?
+  end
+
+  def owner_only 
+    @group = Group.find(params[:id])
+    redirect_to root_path unless @group.owner == current_user
   end
 end
