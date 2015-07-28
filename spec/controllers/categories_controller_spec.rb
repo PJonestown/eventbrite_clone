@@ -21,4 +21,18 @@ RSpec.describe CategoriesController, type: :controller do
       expect(assigns(:groups)).to match_array [group]
     end
   end
+
+  describe 'GET #index' do
+    it 'renders index template' do
+      get :index
+      expect(response).to render_template :index
+    end
+
+    it 'assigns the categories as @categories' do
+      a = create(:category)
+      b = create(:category, name: 'hey')
+      get :index
+      expect(assigns(:categories)).to match_array [a, b]
+    end
+  end
 end
