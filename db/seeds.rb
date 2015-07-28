@@ -14,16 +14,16 @@ Category.create(name: 'Other')
 
 Group.create(name: 'Walks on the beach',
              description: 'We meet regularly every evening as if drawn by some need.',
-             owner_id: 1, category_id: 6, private: false)
+             owner_id: 1, category_id: 6, is_private: false)
 Group.create(name: 'Conspiracy club',
              description: 'Anything from bombs to underground post offices. You hide they seek.',
-             owner_id: 3, category_id: 6, private: true)
+             owner_id: 3, category_id: 6, is_private: true)
 Group.create(name: 'Mountain climbing meetup',
              description: 'The only real sport (except for racing and buullfighting of course)',
-             owner_id: 6, category_id: 4, private: false)
+             owner_id: 6, category_id: 4, is_private: false)
 Group.create(name: 'Tennis club',
              description: "Mandatory lemon pledge sunscreen. It’s Marlon Brando’s fault, Jim",
-             owner_id: 2, category_id: 4, private: false)
+             owner_id: 2, category_id: 4, is_private: false)
 
 Membership.create(member_id: 6, group_membership_id: 1)
 Membership.create(member_id: 1, group_membership_id: 1)
