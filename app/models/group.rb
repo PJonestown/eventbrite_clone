@@ -10,6 +10,8 @@ class Group < ActiveRecord::Base
 
   belongs_to :categories
 
+  has_many :join_requests
+
   validates :name, :owner_id, :category_id, :description, :presence => true
   validates :is_private, inclusion: [true, false]
   validates :name, :uniqueness => true

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :gathering_attendances
   resources :groups do
     resources :gatherings
+    resources :join_requests
   end
 
   resources :categories, only: [:show, :index] do

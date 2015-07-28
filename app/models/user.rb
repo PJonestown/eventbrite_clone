@@ -17,5 +17,7 @@ class User < ActiveRecord::Base
   has_many :moderations, :foreign_key => 'moderator_id'
   has_many :moderated_groups, :through => :moderations
 
+  has_many :join_requests
+
   validates :username, uniqueness: true, presence: true
 end
