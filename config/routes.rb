@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   resources :groups do
     resources :gatherings
   end
+
+  resources :categories, only: [:show, :index] do
+    resources :groups, only: [:index]
+  end
   resources :memberships
 
   get     'sign_in'   =>  'sessions#new'
