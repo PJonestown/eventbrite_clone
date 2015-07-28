@@ -4,4 +4,8 @@ module IntegrationHelper
     fill_in 'Username', with: user.username
     click_button 'Sign in'
   end
+
+  def sign_out
+    click_link 'Sign out'
+  end
 end

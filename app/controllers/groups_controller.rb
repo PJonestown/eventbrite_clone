@@ -4,6 +4,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
+    members_only(@group) if @group.is_private
     @gatherings = @group.gatherings
   end
 
@@ -52,5 +53,9 @@ class GroupsController < ApplicationController
   def owner_only 
     @group = Group.find(params[:id])
     redirect_to root_path unless @group.owner == current_user
+  end
+
+  def members_only(group)
+    redirect_to new_group_join_request_path unless group.members.include?(current_user) 
   end
 end
