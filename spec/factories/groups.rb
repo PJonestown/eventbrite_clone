@@ -10,6 +10,10 @@ FactoryGirl.define do
       name 'Boston ruby'
     end
 
+    factory :private_group do
+      name 'Super Secret Club'
+    end
+
     factory :invalid_group do
       name ''
     end
