@@ -4,6 +4,7 @@ FactoryGirl.define do
     description 'Free beer'
     owner_id 1
     category_id 1
+    is_private false
 
     factory :other_group do
       name 'Boston ruby'
