@@ -6,6 +6,7 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     members_only(@group) if @group.is_private
     @gatherings = @group.gatherings
+    @membership = Membership.new
   end
 
   def new

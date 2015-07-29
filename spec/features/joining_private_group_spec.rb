@@ -21,8 +21,11 @@ feature 'private group' do
     # Owner gives access to group
     sign_out
     sign_in @owner
+    create(:membership, member_id: @owner.id, group_membership_id: @group.id)
     visit group_join_requests_path(@group)
     expect(page).to have_content 'Please let me join'
     expect(page).to have_link @user.username
+    click_button "Make #{@user.username} a Member"
+    expect(current_path).to eq group_memberships_path(@group)
   end
 end

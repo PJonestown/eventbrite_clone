@@ -2,6 +2,13 @@
   <% @join_requests.each do |f| %>
     <li><%= f.message %></li>
     <li><%= link_to f.user.username, user_path(f.user) %></li>
+    <%= simple_form_for([@group, @membership]) do |form| %>
+
+      <%= form.hidden_field :member_id, :value => f.user_id %>
+      <%= form.hidden_field :group_membership_id, :value => f.group_id %>
+      <%= form.submit "Make #{f.user.username} a Member", class: "btn btn-large btn-primary" %>
+      <% end %>
+
   <% end %>
 </ul>
 

@@ -11,12 +11,13 @@ Rails.application.routes.draw do
   resources :groups do
     resources :gatherings
     resources :join_requests
+    resources :memberships #, only: [:create]
   end
 
   resources :categories, only: [:show, :index] do
     resources :groups, only: [:index]
   end
-  resources :memberships
+  # resources :memberships
 
   get     'sign_in'   =>  'sessions#new'
   post    'sign_in'   =>  'sessions#create'

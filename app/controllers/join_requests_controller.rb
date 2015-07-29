@@ -21,6 +21,7 @@ class JoinRequestsController < ApplicationController
   def index
     @group = Group.find(params[:group_id])
     @join_requests = @group.join_requests
+    @membership = Membership.new
   end
 
   private

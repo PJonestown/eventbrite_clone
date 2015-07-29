@@ -1,11 +1,11 @@
 <% if @group.members.include?(current_user) %>
-    <%= simple_form_for(@current_user.memberships.find_by(group_membership_id: @group.id),
-                      method: :delete) do |f| %>
+  <%= simple_form_for [@group, current_user.memberships.find_by(group_membership_id: @group)], 
+                                                             :method => 'delete' do |f| %>
       <%= f.submit "Leave Group", class: 'btn btn-large btn-danger' %>
     <% end %>
 
 <% else %>
-  <%= simple_form_for(current_user.memberships.build) do |f| %>
+  <%= simple_form_for [@group, @membership] do |f| %>
     <%= f.hidden_field :group_membership_id, :value => @group.id %>
     <%= f.submit "Join Group", class: "btn btn-large btn-primary" %>
   <% end %>
