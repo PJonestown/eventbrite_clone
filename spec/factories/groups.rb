@@ -12,6 +12,7 @@ FactoryGirl.define do
 
     factory :private_group do
       name 'Super Secret Club'
+      is_private true
     end
 
     factory :invalid_group do

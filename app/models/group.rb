@@ -15,4 +15,6 @@ class Group < ActiveRecord::Base
   validates :name, :owner_id, :category_id, :description, :presence => true
   validates :is_private, inclusion: [true, false]
   validates :name, :uniqueness => true
+
+  scope :is_public, -> { where(is_private: false) }
 end

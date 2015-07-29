@@ -23,7 +23,8 @@ class GroupsController < ApplicationController
   end
 
   def index
-    @groups = Group.all.includes(:owner)
+    #@groups = Group.all.includes(:owner)
+    @groups = Group.is_public.includes(:owner)
   end
 
   def edit
