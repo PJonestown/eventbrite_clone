@@ -1,5 +1,6 @@
 class JoinRequestsController < ApplicationController
-  before_action :users_only
+  before_action :users_only, :except => [:index]
+  before_action :owner_only, :only => [:index]
 
   def new
     @group = Group.find(params[:group_id])
@@ -18,6 +19,8 @@ class JoinRequestsController < ApplicationController
   end
 
   def index
+    @group = Group.find(params[:group_id])
+    @join_requests = @group.join_requests
   end
 
   private
@@ -28,5 +31,10 @@ class JoinRequestsController < ApplicationController
 
   def users_only
     redirect_to sign_in_path unless signed_in?
+  end
+
+  def owner_only
+    @group = Group.find(params[:group_id])
+    redirect_to group_path(@group) unless signed_in? && @group.owner_id == current_user.id
   end
 end

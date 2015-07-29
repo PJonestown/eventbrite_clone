@@ -59,9 +59,40 @@ RSpec.describe JoinRequestsController, type: :controller do
   end
 
   describe "GET #index" do
-    it "returns http success" do
-      get :index, group_id: @group.id
-      expect(response).to render_template :index
+    context 'group owner' do
+
+      before :each do
+        request.session[:user_id] = @owner.id
+      end
+
+      it 'renders the index template' do
+        get :index, group_id: @group.id
+        expect(response).to render_template :index
+      end
+
+      it 'assigns all group join_requests to @join_requests' do
+        a = create(:join_request, group_id: @group.id, user_id: @user.id)
+        create(:join_request, group_id: @group.id + 1, user_id: @user.id)
+        b = create(:join_request, group_id: @group.id, user_id: @user.id)
+        get :index, group_id: @group.id
+        expect(assigns(:join_requests)).to match_array([a, b])
+      end
+    end
+
+    context 'incorrect group owner' do
+      it 'should redirect' do
+        create(:group, owner_id: @user.id)
+        get :index, group_id: @group.id
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+
+    context 'guest' do
+      it 'should redirect' do
+        request.session[:user_id] = nil
+        get :index, group_id: @group.id
+        expect(response).to have_http_status(:redirect)
+      end
     end
   end
 end
