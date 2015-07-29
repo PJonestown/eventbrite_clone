@@ -23,8 +23,7 @@ class GroupsController < ApplicationController
   end
 
   def index
-    #@groups = Group.all.includes(:owner)
-    @groups = Group.is_public.includes(:owner)
+    @groups = Group.all.includes(:owner)
   end
 
   def edit
@@ -51,12 +50,12 @@ class GroupsController < ApplicationController
     redirect_to new_user_path unless signed_in?
   end
 
-  def owner_only 
+  def owner_only
     @group = Group.find(params[:id])
     redirect_to root_path unless @group.owner == current_user
   end
 
   def members_only(group)
-    redirect_to new_group_join_request_path(@group) unless group.members.include?(current_user) 
+    redirect_to new_group_join_request_path(@group) unless group.members.include?(current_user)
   end
 end
