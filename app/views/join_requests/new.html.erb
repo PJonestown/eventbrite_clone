@@ -1,2 +1,12 @@
-<h1>JoinRequests#new</h1>
-<p>Find me in app/views/join_requests/new.html.erb</p>
+<div class = 'container'>
+  <div class = 'row'>
+    <div class = 'col-sm-offset-4 col-sm-4'>
+      <h3>Request to join <%= @group.name %></h3>
+      <%= simple_form_for [@group, @join_request] do |f| %>
+        <%= f.input :message, required: false, autofocus: true %>
+        <%= f.submit 'Send Join Request', class: 'btn btn-primary' %>
+
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -11,6 +11,11 @@ feature 'private group' do
   it 'should let the user join' do
     sign_in @user
     visit groups_path
-    expect(page).not_to have_content @group.name
+    expect(page).not_to have_content @group.name # maybe show in index too
+    visit group_path(@group)
+    expect(current_path).to eq new_group_join_request_path(@group)
+    fill_in 'Message', with: 'Please let me join!'
+    click_button 'Send Join Request'
+    expect(current_path).to eq root_path
   end
 end

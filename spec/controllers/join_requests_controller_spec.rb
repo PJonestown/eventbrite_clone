@@ -12,6 +12,16 @@ RSpec.describe JoinRequestsController, type: :controller do
       get :new, group_id: @group.id
       expect(response).to render_template :new
     end
+
+    it 'assigns @join_request as a new join_request' do
+      get :new, group_id: @group.id
+      expect(assigns(:join_request)).to be_a_new (JoinRequest)
+    end
+
+    it 'assigns the correct group as @group' do
+      get :new, group_id: @group.id
+      expect(assigns(:group)).to eq @group
+    end
   end
 
   describe "GET #index" do

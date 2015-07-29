@@ -57,6 +57,6 @@ class GroupsController < ApplicationController
   end
 
   def members_only(group)
-    redirect_to new_group_join_request_path unless group.members.include?(current_user) 
+    redirect_to new_group_join_request_path(@group) unless group.members.include?(current_user) 
   end
 end
