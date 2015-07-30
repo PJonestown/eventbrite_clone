@@ -1,22 +1,21 @@
 class MembershipsController < ApplicationController
-  def create
-    # Determine whether request is coming from groups#show or join_request#index
-    # if Group.find_by id: params[:group_id]
+  before_action :user_only, :except => [:index]
+  before_action :owner_only_if_private, :only => [:create]
 
-      @group = Group.find(params[:group_id])
-      if @group.owner == current_user && @group.members.include?(current_user)
-        @membership = Membership.new(membership_params)
-        if @membership.save!
-          redirect_to group_memberships_path(@group)
-        else
-          render :index
-        end
+  def create
+    @group = Group.find(params[:group_id])
+    if @group.owner == current_user && @group.members.include?(current_user)
+      @membership = Membership.new(membership_params)
+      if @membership.save
+        redirect_to group_memberships_path(@group) 
       else
-        #@group = Group.find(params[:membership][:group_membership_id])
-        current_user.memberships.create(group_membership_id: @group.id)
-        redirect_to(:back)
+        render :index
       end
+    else
+      current_user.memberships.create(group_membership_id: @group.id)
+      redirect_to(:back)
     end
+  end
 
   def destroy
     @membership = Membership.find(params[:id])
@@ -33,5 +32,14 @@ class MembershipsController < ApplicationController
 
   def membership_params
     params.require(:membership).permit(:member_id, :group_membership_id)
+  end
+
+  def user_only
+    redirect_to :back unless signed_in?
+  end
+
+  def owner_only_if_private
+    @group = Group.find(params[:group_id])
+    redirect_to :back if @group.is_private && current_user != @group.owner
   end
 end
