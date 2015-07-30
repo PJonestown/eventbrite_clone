@@ -24,6 +24,11 @@ class MembershipsController < ApplicationController
     redirect_to(:back)
   end
 
+  def index
+    @group = Group.find(params[:group_id])
+    @memberships = @group.memberships
+  end
+
   private
 
   def membership_params

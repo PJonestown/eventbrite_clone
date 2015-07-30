@@ -8,7 +8,7 @@ feature 'private group' do
     @user = create(:other_user)
   end
 
-  it 'should let the user join' do
+  it 'should let the user join/leave' do
     # Request access to group
     sign_in @user
     visit groups_path
@@ -27,5 +27,15 @@ feature 'private group' do
     expect(page).to have_link @user.username
     click_button "Make #{@user.username} a Member"
     expect(current_path).to eq group_memberships_path(@group)
+
+    # User has access to group and leaves
+    sign_out
+    sign_in @user
+    visit group_path(@group)
+    expect(current_path).to eq group_path(@group)
+    click_button 'Leave Group'
+    visit group_path(@group)
+    expect(current_path).to eq new_group_join_request_path(@group)
+
   end
 end

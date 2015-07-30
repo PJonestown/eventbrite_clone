@@ -1,0 +1,5 @@
+<ul>
+  <% @memberships.each do |m| %>
+    <li><%= User.find(m.member_id).username %></li>
+  <% end %>
+</ul>
