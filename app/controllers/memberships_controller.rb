@@ -12,9 +12,9 @@ class MembershipsController < ApplicationController
           render :index
         end
       else
-        @group = Group.find(params[:membership][:group_membership_id])
+        #@group = Group.find(params[:membership][:group_membership_id])
         current_user.memberships.create(group_membership_id: @group.id)
-        redirect_to root_path#redirect_to(:back)
+        redirect_to(:back)
       end
     end
 

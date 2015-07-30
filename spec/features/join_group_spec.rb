@@ -17,6 +17,7 @@ feature 'attending an event' do
 
       # leave
       click_button 'Leave Group'
+      expect(page).to have_button 'Join Group'
     end
   end
 end

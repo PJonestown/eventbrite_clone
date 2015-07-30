@@ -12,7 +12,7 @@
 
 <% else %>
   <p>Want to go?</p>
-  <%= simple_form_for(current_user.memberships.build) do |f| %>
+  <%= simple_form_for [@group, @group.memberships.build] do |f| %>
     <%= f.hidden_field :group_membership_id, :value => @group.id %>
     <%= f.submit "Join us!", class: "btn btn-large btn-primary" %>
   <% end %>
