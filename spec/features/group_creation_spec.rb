@@ -21,6 +21,7 @@ feature 'group creation' do
       fill_in 'Name', with: 'A brand new group'
       fill_in 'Description', with: 'Now even newer!'
       select(category.name)
+      choose('Allow any member to create a gathering')
       click_button 'Start Group'
       expect(current_path).to eq group_path(user.owned_groups.last)
     end
