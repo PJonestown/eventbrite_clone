@@ -5,6 +5,7 @@ FactoryGirl.define do
     owner_id 1
     category_id 1
     is_private false
+    restriction_type 0
 
     factory :other_group do
       name 'Boston ruby'
