@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe MembershipsController, type: :controller do
-  
+
   before :each do
     @owner = create(:user)
     @group = create(:group, owner_id: @owner.id)
@@ -83,6 +83,30 @@ RSpec.describe MembershipsController, type: :controller do
                         :membership => attributes_for(:membership,
                                                       member_id: @user.id,
                                                       group_membership_id: @group.id)
+        }.not_to change(Membership, :count)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    before :each do
+      request.session[:user_id] = @user.id
+    end
+
+    context 'own membership' do
+      it 'should delete the membership' do
+        @membership = create(:membership, member_id: @user.id, group_membership_id: @group.id)
+        expect {
+          delete :destroy, :group_id => @group, id: @membership
+        }.to change(Membership, :count).by(-1)
+      end
+    end
+
+    context "another user's membership" do
+      it 'should not delete the membership' do
+        @membership = create(:membership, member_id: @owner.id, group_membership_id: @group.id)
+        expect {
+          delete :destroy, :group_id => @group, id: @membership
         }.not_to change(Membership, :count)
       end
     end

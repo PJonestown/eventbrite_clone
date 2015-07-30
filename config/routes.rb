@@ -4,20 +4,21 @@ Rails.application.routes.draw do
   resources :users do
     resources :moderations
   end
+
   resources :events
   resources :gatherings, only: [:index]
   resources :attendances
   resources :gathering_attendances
+
   resources :groups do
     resources :gatherings
     resources :join_requests
-    resources :memberships #, only: [:create]
+    resources :memberships
   end
 
   resources :categories, only: [:show, :index] do
     resources :groups, only: [:index]
   end
-  # resources :memberships
 
   get     'sign_in'   =>  'sessions#new'
   post    'sign_in'   =>  'sessions#create'
