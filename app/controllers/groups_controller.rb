@@ -1,7 +1,6 @@
 class GroupsController < ApplicationController
   before_action :user_only, :except => [:show, :index]
   before_action :owner_only, :only => [:edit, :update]
-  #helper_method :new_gathering_permission?
 
   def show
     @group = Group.find(params[:id])
@@ -30,6 +29,7 @@ class GroupsController < ApplicationController
 
   def edit
     @group = Group.find(params[:id])
+    @categories = Category.all
   end
 
   def update
@@ -61,17 +61,4 @@ class GroupsController < ApplicationController
   def members_only(group)
     redirect_to new_group_join_request_path(@group) unless group.members.include?(current_user)
   end
-
-#  def new_gathering_permission?
- #   if @group.restriction_type == 0
-  #    true if @group.members.include?(current_user)
-
-   # elsif @group.restriction_type == 1
-    #  true if @group.owner_id == current_user.id ||
-     #         @group.moderators.include?(current_user)
-
-    #else
-     # true if current_user.id == @group.owner_id
-    #end
-  #end
 end

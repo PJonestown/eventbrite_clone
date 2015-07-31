@@ -97,6 +97,7 @@ RSpec.describe GroupsController, type: :controller do
         expect(assigns(:group)).to eq @group
       end
     end
+
     context 'incorrect user' do
       before :each do
         owner = create(:user)

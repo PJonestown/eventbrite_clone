@@ -12,6 +12,11 @@
           :required => false,
           label: false%>
         <%= f.input :is_private, label: 'Make group private', as: :radio_buttons %>
+      <%= f.collection_radio_buttons :restriction_type,
+          [[0, 'Allow any member to create a gathering'],
+           [1, 'Allow moderators to create gatherings'],
+           [2, 'Only you can create gatherings']], :first, :last, label: 'Hi' %>
+
 
         <%= f.submit 'Update Group', class: 'btn btn-primary' %>
 
