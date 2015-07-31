@@ -1,5 +1,6 @@
 class GatheringsController < ApplicationController
-  before_action :group_owner_only, :except => [:index, :show]
+  #before_action :group_owner_only, :except => [:index, :show, :new]
+  before_action :check_permission, :only => [:new, :create]
 
   def new
     @group = Group.find(params[:group_id])
@@ -31,5 +32,10 @@ class GatheringsController < ApplicationController
   def group_owner_only
     group = Group.find(params[:group_id])
     redirect_to group_path(group) unless current_user && current_user.id == group.owner_id
+  end
+
+  def check_permission
+    @group = Group.find(params[:group_id])
+    redirect_to :back unless new_gathering_permission?
   end
 end

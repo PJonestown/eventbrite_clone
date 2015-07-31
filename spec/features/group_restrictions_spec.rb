@@ -21,7 +21,7 @@ feature 'group restrictions' do
     fill_in 'Name', with: 'Anything'
     fill_in 'Description', with: 'A new description'
     click_button 'Create Gathering'
-    expect current_path.to eq group_path(@group)
+    expect(current_path).to eq group_path(@group)
     expect(page).to have_content 'Anything'
   end
 end
