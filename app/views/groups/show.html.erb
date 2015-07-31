@@ -1,6 +1,6 @@
 <%= render 'join' %>
 
-<% if signed_in? && new_gathering_permission? %>
+<% if new_gathering_permission? %>
   <p><%= link_to 'New Gathering', new_group_gathering_path(@group) %></p>
 <% end %>
 

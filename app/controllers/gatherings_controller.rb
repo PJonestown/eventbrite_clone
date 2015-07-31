@@ -36,6 +36,6 @@ class GatheringsController < ApplicationController
 
   def check_permission
     @group = Group.find(params[:group_id])
-    redirect_to :back unless new_gathering_permission?
+    redirect_to :back unless  new_gathering_permission?
   end
 end

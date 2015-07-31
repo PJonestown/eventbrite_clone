@@ -1,5 +1,6 @@
 module GroupsHelper
   def new_gathering_permission?
+    return false unless signed_in?
     if @group.restriction_type == 0
       true if @group.members.include?(current_user)
 
