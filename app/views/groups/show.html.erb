@@ -1,8 +1,7 @@
 <%= render 'join' %>
-<%= render 'new_gathering_link' %>
 
-<% if current_user and current_user.id == @group.owner_id %>
-  <%= link_to 'New Gathering', new_group_gathering_path(@group) %>
+<% if signed_in? && new_gathering_permission? %>
+  <p><%= link_to 'New Gathering', new_group_gathering_path(@group) %></p>
 <% end %>
 
 <%= @group.name %>
