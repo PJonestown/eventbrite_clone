@@ -15,7 +15,6 @@ feature 'group restrictions' do
                       group_membership_id: @group.id)
     Moderation.create(moderator_id: @mod.id,
                       moderated_group_id: @group.id)
-
   end
 
   it 'should change restriction settings' do
@@ -48,5 +47,20 @@ feature 'group restrictions' do
     click_button 'Create Gathering'
     expect(current_path).to eq group_path(@group)
     expect(page).to have_content 'Mod gathering'
+
+    # Change permission type
+    @group.restriction_type = 2
+
+    # Owners only
+    sign_out
+    sign_in @owner
+    visit group_path(@group)
+    click_link 'New Gathering'
+    expect(current_path).to eq new_group_gathering_path(@group)
+    fill_in 'Name', with: 'Owner gathering'
+    fill_in 'Description', with: 'A new description'
+    click_button 'Create Gathering'
+    expect(current_path).to eq group_path(@group)
+    expect(page).to have_content 'Owner gathering'
   end
 end
