@@ -18,7 +18,6 @@ RSpec.describe GatheringsController, type: :controller do
 
   describe 'GET #new' do
     context 'any group member permission' do
-
       context 'guest' do
         it 'should redirect' do
           get :new, :group_id => @group.id
@@ -42,13 +41,32 @@ RSpec.describe GatheringsController, type: :controller do
         end
       end
 
-      context 'signed in but not owner' do
+      context 'signed in but not member' do
         it 'should redirect' do
           other_user = create(:other_user)
           request.session[:user_id] = other_user.id
 
           get :new, :group_id => @group
           expect(response).to have_http_status(:redirect)
+        end
+      end
+
+      context 'group member' do
+        before :each do
+          @member = create(:other_user)
+          Membership.create(member_id: @member.id,
+                            group_membership_id: @group.id)
+          request.session[:user_id] = @member.id
+        end
+
+        it 'should render new template' do
+          get :new, :group_id => @group.id
+          expect(response).to render_template :new
+        end
+
+        it 'should assign a new gathering to @gathering' do
+          get :new, :group_id => @group
+          expect(assigns(:gathering)).to be_a_new(Gathering)
         end
       end
     end
