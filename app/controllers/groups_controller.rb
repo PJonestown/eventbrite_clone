@@ -46,7 +46,7 @@ class GroupsController < ApplicationController
                                   :description,
                                   :category_id,
                                   :is_private,
-                                  :restriction_type)
+                                  :restricted)
   end
 
   def user_only

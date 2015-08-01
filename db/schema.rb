@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730192737) do
+ActiveRecord::Schema.define(version: 20150801181230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,13 +62,13 @@ ActiveRecord::Schema.define(version: 20150730192737) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "owner_id"
     t.text     "description"
     t.integer  "category_id"
-    t.boolean  "is_private",       default: false
-    t.integer  "restriction_type"
+    t.boolean  "is_private",  default: false
+    t.boolean  "restricted",  default: false
   end
 
   add_index "groups", ["category_id"], name: "index_groups_on_category_id", using: :btree

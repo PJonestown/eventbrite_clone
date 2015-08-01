@@ -71,10 +71,10 @@ RSpec.describe GatheringsController, type: :controller do
       end
     end
 
-    context 'Mods and owner only permission' do
+    context 'Restricted permission' do
       before :each do
         @group = create(:group, name: 'mod only',
-                        restriction_type: 1,
+                        restricted: true,
                         owner_id: @owner.id)
       end
       context 'guest' do
@@ -139,73 +139,6 @@ RSpec.describe GatheringsController, type: :controller do
         it 'should assign a new gathering to @gathering' do
           get :new, :group_id => @group
           expect(assigns(:gathering)).to be_a_new(Gathering)
-        end
-      end
-    end
-
-    context 'Owner only permission' do
-      before :each do
-        @group = create(:group, name: 'mod only',
-                        restriction_type: 2,
-                        owner_id: @owner.id)
-      end
-      context 'guest' do
-        it 'should redirect' do
-          get :new, :group_id => @group.id
-          expect(response).to have_http_status(:redirect)
-        end
-      end
-
-      context 'group owner' do
-        before :each do
-          request.session[:user_id] = @owner.id
-        end
-
-        it 'should render new template' do
-          get :new, :group_id => @group.id
-          expect(response).to render_template :new
-        end
-
-        it 'should assign a new gathering to @gathering' do
-          get :new, :group_id => @group
-          expect(assigns(:gathering)).to be_a_new(Gathering)
-        end
-      end
-
-      context 'signed in but not member' do
-        it 'should redirect' do
-          other_user = create(:other_user)
-          request.session[:user_id] = other_user.id
-
-          get :new, :group_id => @group
-          expect(response).to have_http_status(:redirect)
-        end
-      end
-
-      context 'group member' do
-        before :each do
-          @member = create(:other_user)
-          Membership.create(member_id: @member.id,
-                            group_membership_id: @group.id)
-          request.session[:user_id] = @member.id
-        end
-
-        it 'should redirect' do
-          get :new, :group_id => @group.id
-          expect(response).to have_http_status(:redirect)
-        end
-      end
-
-      context 'moderator' do
-        before :each do
-          @user = create(:other_user)
-          Moderation.create(moderator_id: @user.id, moderated_group_id: @group.id)
-          request.session[:user_id] = @user.id
-        end
-
-        it 'should redirect' do
-          get :new, :group_id => @group.id
-          expect(response).to have_http_status(:redirect)
         end
       end
     end
