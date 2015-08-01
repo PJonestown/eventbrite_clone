@@ -3,9 +3,12 @@ include IntegrationHelper
 
 feature 'private group' do
   before :each do
-    @owner = create(:user)
-    @group = create(:private_group, owner_id: @owner.id)
+    owner = create(:user)
+    @group = create(:private_group, owner_id: owner.id, restricted: true)
     @user = create(:other_user)
+    @mod = create(:user, username: 'the_mod')
+    Membership.create(member_id: @mod.id, group_membership_id: @group.id)
+    Moderation.create(moderator_id: @mod.id, moderated_group_id: @group.id)
   end
 
   it 'should let the user join/leave' do
@@ -20,8 +23,7 @@ feature 'private group' do
 
     # Owner gives access to group
     sign_out
-    sign_in @owner
-    create(:membership, member_id: @owner.id, group_membership_id: @group.id)
+    sign_in @mod
     visit group_join_requests_path(@group)
     expect(page).to have_content 'Please let me join'
     expect(page).to have_link @user.username
@@ -36,6 +38,5 @@ feature 'private group' do
     click_button 'Leave Group'
     visit group_path(@group)
     expect(current_path).to eq new_group_join_request_path(@group)
-
   end
 end

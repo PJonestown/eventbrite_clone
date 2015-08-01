@@ -1,11 +1,11 @@
 class MembershipsController < ApplicationController
   before_action :user_only, :except => [:index]
-  before_action :owner_only_if_private, :only => [:create]
   before_action :correct_user_only, :only => [:destroy]
+  before_action :owner_and_mods_only_if_private, :only => [:create]
 
   def create
     @group = Group.find(params[:group_id])
-    if @group.owner == current_user && @group.members.include?(current_user)
+    if new_memberships_permission? && @group.members.include?(current_user)
       @membership = Membership.new(membership_params)
       if @membership.save
         redirect_to group_memberships_path(@group)
@@ -39,13 +39,17 @@ class MembershipsController < ApplicationController
     redirect_to :back unless signed_in?
   end
 
-  def owner_only_if_private
-    @group = Group.find(params[:group_id])
-    redirect_to :back if @group.is_private && current_user != @group.owner
-  end
-
   def correct_user_only
     @membership = Membership.find(params[:id])
     redirect_to :back unless current_user.id == @membership.member_id
+  end
+
+  # TODO: Needs refactor
+  def owner_and_mods_only_if_private
+    @group = Group.find(params[:group_id])
+    if @group.is_private
+      redirect_to :back unless @group.owner == current_user ||
+                               @group.moderators.include?(current_user)
+    end
   end
 end

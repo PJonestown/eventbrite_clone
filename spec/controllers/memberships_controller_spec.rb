@@ -88,6 +88,24 @@ RSpec.describe MembershipsController, type: :controller do
     end
   end
 
+  context 'mod' do
+    context 'private' do
+      it 'should save user to the database' do
+        mod = create(:user, username: 'the_mod')
+        Membership.create(member_id: mod.id, group_membership_id: @group.id)
+        Moderation.create(moderator_id: mod.id, moderated_group_id: @group.id)
+        request.session[:user_id] = mod.id
+
+        expect {
+          post :create, :group_id => @group,
+                        :membership => attributes_for(:membership,
+                                                      member_id: @user.id,
+                                                      group_membership_id: @group.id)
+        }.to change(Membership, :count).by(1)
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     before :each do
       request.session[:user_id] = @user.id
