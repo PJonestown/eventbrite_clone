@@ -14,4 +14,10 @@ module GroupsHelper
     true if @group.owner_id == current_user.id ||
             @group.moderators.include?(current_user)
   end
+
+  def privileged_member?
+    return false if !singed_in?
+    return true if @group.owner_id == current_user.id ||
+                   @group.moderators.include?(current_user)
+  end
 end

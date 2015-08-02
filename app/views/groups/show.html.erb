@@ -2,6 +2,8 @@
 
 <% if new_gathering_permission? %>
   <p><%= link_to 'New Gathering', new_group_gathering_path(@group) %></p>
+<% elsif signed_in? && @group.members.include?(current_user) %>
+  <p><%= link_to 'Gathering Request', new_group_gathering_path(@group) %></p>
 <% end %>
 
 <%= @group.name %>

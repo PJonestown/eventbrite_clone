@@ -73,10 +73,9 @@ RSpec.describe GatheringsController, type: :controller do
 
     context 'Restricted permission' do
       before :each do
-        @group = create(:group, name: 'mod only',
-                        restricted: true,
-                        owner_id: @owner.id)
+        @group.restricted = true
       end
+
       context 'guest' do
         it 'should redirect' do
           get :new, :group_id => @group.id
@@ -118,15 +117,21 @@ RSpec.describe GatheringsController, type: :controller do
           request.session[:user_id] = @member.id
         end
 
-        it 'should redirect' do
+        it 'should render new template' do
           get :new, :group_id => @group.id
-          expect(response).to have_http_status(:redirect)
+          expect(response).to render_template :new
+        end
+
+        it 'should assign @gathering as a new gathering' do
+          get :new, :group_id => @group
+          expect(assigns(:gathering)).to be_a_new(Gathering)
         end
       end
 
       context 'moderator' do
         before :each do
           @user = create(:other_user)
+          Membership.create(member_id: @user.id, group_membership_id: @group.id)
           Moderation.create(moderator_id: @user.id, moderated_group_id: @group.id)
           request.session[:user_id] = @user.id
         end

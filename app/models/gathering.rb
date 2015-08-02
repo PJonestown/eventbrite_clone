@@ -6,4 +6,5 @@ class Gathering < ActiveRecord::Base
   has_many :attendees, :through => :gathering_attendances
 
   validates :creator_id, :name, :description, :date, :presence => true
+  validates :approved, inclusion: [true, false]
 end
