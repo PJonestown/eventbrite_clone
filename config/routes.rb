@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+
   root to: 'groups#index'
 
   resources :users do
     resources :moderations
+    resources :dashboard, only: [:show]
+
+    resources :mod_resources, only: [:index]
   end
 
   resources :events

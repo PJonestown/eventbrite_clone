@@ -1,0 +1,2 @@
+module ModResourcesHelper
+end
