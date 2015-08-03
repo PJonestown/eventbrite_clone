@@ -1,7 +1,7 @@
 <div class = 'container'>
   <div class = 'row'>
     <div class = 'col-sm-offset-4 col-sm-4'>
-      <% if @group.private && !priveleged_member? %>
+      <% if @group.restricted? && !privileged_member? %>
         <p>This gathering won't be public until a moderator approves it.</p>
       <% end %>
       <%= simple_form_for [@group, @gathering] do |g| %>

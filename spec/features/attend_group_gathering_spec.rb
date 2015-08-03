@@ -23,7 +23,6 @@ feature 'attending a group gathering' do
         sign_in user
 
         visit group_gathering_path(@group, @gathering)
-        expect(page).not_to have_button 'Attend'
         expect(page).to have_content 'Want to go?'
         expect(page).to have_button 'Join us!'
         click_button 'Join us!'

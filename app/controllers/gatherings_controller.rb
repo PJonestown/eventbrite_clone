@@ -11,6 +11,7 @@ class GatheringsController < ApplicationController
     @group = Group.find(params[:group_id])
     @gathering = @group.gatherings.build(gathering_params)
     @gathering.creator_id = current_user.id
+    @gathering.approved = false if @group.restricted && !privileged_member?
     if @gathering.save
       redirect_to group_path(@group)
     else

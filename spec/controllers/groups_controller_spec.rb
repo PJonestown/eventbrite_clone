@@ -14,6 +14,15 @@ RSpec.describe GroupsController, type: :controller do
       get :show, id: group
       expect(response).to render_template :show
     end
+
+    it 'assigns only approved gatherings to @gatherings' do
+      a = create(:gathering, group_id: group.id, creator_id: user.id)
+      b = create(:gathering, group_id: group.id, name: 'anything else',
+                 creator_id: user.id)
+      create(:unapproved_gathering, group_id: group.id, creator_id: user.id)
+      get :show, id: group
+      expect(assigns(:gatherings)).to match_array([a, b])
+    end
   end
 
   describe 'GET #new' do

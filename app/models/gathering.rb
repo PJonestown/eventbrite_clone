@@ -7,4 +7,6 @@ class Gathering < ActiveRecord::Base
 
   validates :creator_id, :name, :description, :date, :presence => true
   validates :approved, inclusion: [true, false]
+
+  default_scope { where(approved: true) }
 end
