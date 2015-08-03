@@ -1,1 +1,11 @@
-hi
+<h1> Moderated Groups </h1>
+<% @moderated_groups.each do |g| %>
+  <h3><%= g.name %></h3>
+  <%= 'No unnapproved gatherings' unless g.gatherings.unapproved.any? %>
+  <% g.gatherings.unapproved.each do |i| %>  
+    <p> Unapproved Gatherings</p>
+    <%= i.name %>
+    <%= i.description %>
+    <%= User.find(i.creator_id).username %>
+  <% end %>
+<% end %>
