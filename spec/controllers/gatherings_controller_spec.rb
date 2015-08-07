@@ -199,21 +199,21 @@ RSpec.describe GatheringsController, type: :controller do
       end
     end
 
-    # TODO: This passes even without a before_filter.
-    context 'guest' do
-      before :each do
-        Membership.create(member_id: user.id,
-                          group_membership_id: @group.id)
-        pp gathering
-        pp @group
-      end
+    context ' wrong group member' do
+      context 'valid attributes' do
+        before :each do
+          @wrong_member = create(:user, username: 'wrong_member')
+          Membership.create(member_id: @wrong_member,
+                            group_membership_id: @group.id)
+          request.session[:user_id] = @wrong_member.id
+        end
 
-      it 'should not update the gatheringe' do
-        pp @group.id
-        pp gathering.id
-        patch :update, group_id: @group.id, id: gathering.id,
-          gathering: valid_params
-        expect(gathering.approved).to eq false
+        it 'should not update attributes' do
+          patch :update, group_id: @group.id, id: gathering.id,
+            gathering: valid_params
+          gathering.reload
+          expect(gathering.approved).not_to eq true
+        end
       end
     end
   end
