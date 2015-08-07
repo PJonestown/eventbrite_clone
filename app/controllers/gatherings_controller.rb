@@ -24,13 +24,22 @@ class GatheringsController < ApplicationController
     @gathering = Gathering.find(params[:id])
   end
 
+  # TODO: Too many lines. Need to DRY
   def update
     @group = Group.find(params[:group_id])
     @gathering = Gathering.find(params[:id])
-    if @gathering.update(gathering_params)
-      redirect_to :back
+    if privileged_member?
+      if @gathering.update(gathering_params)
+        redirect_to :back
+      else
+        redirect_to root_path
+      end
     else
-      redirect_to root_path
+      if @gathering.update(restricted_gathering_params)
+        redirect_to :back
+      else
+        redirect_to root_path
+      end
     end
   end
 
@@ -38,6 +47,10 @@ class GatheringsController < ApplicationController
 
   def gathering_params
     params.require(:gathering).permit(:name, :description, :date, :approved)
+  end
+
+  def restricted_gathering_params
+    params.require(:gathering).permit(:name, :description, :date)
   end
 
   def members_only

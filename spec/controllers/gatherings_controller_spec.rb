@@ -1,19 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe GatheringsController, type: :controller do
-  let (:owner)          { create(:user) }
-  let (:group)          { create(:group, owner_id: owner.id) }
-  let (:member)         { create(:other_user) }
-  let (:mod)            { create(:user, username: 'the_mod') }
-  let (:user)           { create(:user, username: 'another_user') }
-  let (:valid_params)   { attributes_for(:unapproved_gathering,
-                                          approved: true,
-                                          creator_id: user.id,
-                                          group_id: group.id) }
-  let (:gathering)      { create(:unapproved_gathering,
-                                  creator_id: user.id,
-                                  group_id: group.id) }
-
+  let(:owner)              { create(:user) }
+  let(:group)              { create(:group, owner_id: owner.id) }
+  let(:member)             { create(:other_user) }
+  let(:mod)                { create(:user, username: 'the_mod') }
+  let(:user)               { create(:user, username: 'another_user') }
+  let(:approval_params)    { attributes_for(:unapproved_gathering,
+                                              approved: true,
+                                              creator_id: user.id,
+                                              group_id: group.id) }
+  let(:valid_params)       { attributes_for(:unapproved_gathering,
+                                              name: 'new_name',
+                                              description: 'new_desc',
+                                              creator_id: user.id,
+                                              group_id: group.id) }
+  let(:gathering)          { create(:unapproved_gathering,
+                                      creator_id: user.id,
+                                      group_id: group.id) }
 
   before :each do
     Membership.create(member_id: owner.id, group_membership_id: group.id)
@@ -178,39 +182,60 @@ RSpec.describe GatheringsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before :each do
-      group.restricted = true
-    end
+    context 'private group' do
+      before :each do
+        group.restricted = true
+      end
 
-    context 'mod' do
-      context 'valid attributes' do
-        before :each do
-          Moderation.create(moderator_id: mod.id,
-                            moderated_group_id: group.id)
-          request.session[:user_id] = mod.id
+      context 'mod' do
+        context 'valid attributes' do
+          before :each do
+            Moderation.create(moderator_id: mod.id,
+                              moderated_group_id: group.id)
+            request.session[:user_id] = mod.id
+          end
 
-        end
-
-        it 'should update the params' do
-          patch :update, group_id: group.id, id: gathering.id,
-            gathering: valid_params
-          gathering.reload
-          expect(gathering.approved).to eq true
+          it 'should update the params' do
+            patch :update, group_id: group.id, id: gathering.id,
+              gathering: approval_params
+            gathering.reload
+            expect(gathering.approved).to eq true
+          end
         end
       end
-    end
 
-    context ' wrong group member' do
-      context 'valid attributes' do
+      context 'wrong group member' do
+        context 'valid attributes' do
+          before :each do
+            Membership.create(member_id: member.id,
+                              group_membership_id: group.id)
+            request.session[:user_id] = member.id
+          end
+
+          it 'should not update attributes' do
+            patch :update, group_id: group.id, id: gathering.id,
+              gathering: approval_params
+            gathering.reload
+            expect(gathering.approved).not_to eq true
+          end
+        end
+      end
+
+      context 'gathering creator' do
         before :each do
-          Membership.create(member_id: member.id,
-                            group_membership_id: group.id)
-          request.session[:user_id] = member.id
+          request.session[:user_id] = user.id
         end
 
-        it 'should not update attributes' do
+        it 'does not update approved attribute' do
           patch :update, group_id: group.id, id: gathering.id,
-            gathering: valid_params
+            gathering: approval_params
+          gathering.reload
+          expect(gathering.approved).not_to eq true
+        end
+
+        it 'updates all other attributes' do
+          patch :update, group_id: group.id, id: gathering.id,
+             gathering: valid_params
           gathering.reload
           expect(gathering.approved).not_to eq true
         end
