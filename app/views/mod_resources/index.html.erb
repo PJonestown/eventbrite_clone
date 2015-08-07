@@ -1,11 +1,11 @@
 <h1> Moderated Groups </h1>
-<% @moderated_groups.each do |g| %>
-  <h3><%= g.name %></h3>
-  <%= 'No unnapproved gatherings' unless g.gatherings.unapproved.any? %>
-  <% g.gatherings.unapproved.each do |i| %>  
+<% @moderated_groups.each do |group| %>
+  <h3><%= group.name %></h3>
+  <%= 'No unnapproved gatherings' unless group.gatherings.unapproved.any? %>
+  <% group.gatherings.unapproved.each do |gathering| %>  
     <p> Unapproved Gatherings</p>
-    <%= i.name %>
-    <%= i.description %>
-    <%= User.find(i.creator_id).username %>
+    <%= link_to gathering.name, group_gathering_path(group, gathering) %>
+    <%= gathering.description %>
+    <%= User.find(gathering.creator_id).username %>
   <% end %>
 <% end %>

@@ -10,6 +10,7 @@ class ModResourcesController < ApplicationController
   private
 
   def correct_user_only
+    @user = User.find(params[:user_id])
     redirect_to :back unless signed_in? &&
                              current_user == User.find(params[:user_id])
   end

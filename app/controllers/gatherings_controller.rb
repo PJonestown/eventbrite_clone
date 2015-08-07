@@ -1,6 +1,6 @@
 class GatheringsController < ApplicationController
-  #before_action :check_permission, :only => [:new, :create]
   before_action :members_only, :only => [:new, :create]
+  before_action :correct_users_only, :only => [:update]
 
   def new
     @group = Group.find(params[:group_id])
@@ -24,19 +24,32 @@ class GatheringsController < ApplicationController
     @gathering = Gathering.find(params[:id])
   end
 
+  def update
+    @group = Group.find(params[:group_id])
+    @gathering = Gathering.find(params[:id])
+    if @gathering.update(gathering_params)
+      redirect_to :back
+    else
+      redirect_to root_path
+    end
+  end
+
   private
 
   def gathering_params
     params.require(:gathering).permit(:name, :description, :date, :approved)
   end
 
-  def check_permission
-    @group = Group.find(params[:group_id])
-    redirect_to :back unless  new_gathering_permission?
-  end
-
   def members_only
     @group = Group.find(params[:group_id])
     redirect_to :back unless signed_in? && @group.members.include?(current_user)
+  end
+
+  def correct_users_only
+    @group = Group.find(params[:group_id])
+    @gathering = Gathering.find(params[:id])
+    redirect_to root_path unless signed_in?
+    redirect_to root_path unless current_user.id = @gathering.creator_id ||
+                                 privileged_member?
   end
 end

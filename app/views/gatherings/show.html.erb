@@ -18,6 +18,12 @@
             <li><%= a.username %></li>
           </ul>
         <% end %>
+        <% if privileged_member? && !@gathering.approved %>
+          <%= simple_form_for [@group, @gathering] do |f| %>
+            <%= f.hidden_field :approved, :value => true %>
+            <%= f.submit "Approve Gathering", class: "btn btn-large btn-primary" %>
+          <% end %>
+        <% end %>
     </div>
   </div>
 </div>

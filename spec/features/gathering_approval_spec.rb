@@ -33,13 +33,13 @@ feature 'private group' do
     visit user_mod_resources_path(@mod)
     expect(page).to have_content @group.name
     expect(page).to have_content @user.username
-    expect(page).to have_content 'a name'
+    click_link 'a name'
+    gathering = Gathering.where(name: 'a name').first
+    expect(current_path).to eq group_gathering_path(@group, gathering)
     click_button 'Approve Gathering'
-    expect(current_path).to eq group_gathering_path(@group, @gathering)
     visit group_path(@group)
     expect(page).to have_content 'a name'
     visit user_mod_resources_path(@mod)
     expect(page).not_to have_content 'a name'
-
   end
 end
