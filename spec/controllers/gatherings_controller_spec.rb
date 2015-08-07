@@ -168,34 +168,33 @@ RSpec.describe GatheringsController, type: :controller do
     end
   end
 
-  describe 'PATCH #create' do
+  describe 'PATCH #update' do
+    let (:user) { create(:other_user) }
+    let (:mod) { create(:user, username: 'the_mod') }
+    let (:valid_params) { attributes_for(:unapproved_gathering,
+                                     approved: true,
+                                     creator_id: user.id,
+                                     group_id: @group.id) }
+    let (:gathering) { create(:unapproved_gathering,
+                              creator_id: user.id,
+                              group_id: @group.id) }
+    before :each do
+      @group.restricted = true
+    end
+
     context 'mod' do
       context 'valid attributes' do
         before :each do
-          @user = create(:other_user)
-          @valid_params = attributes_for(:unapproved_gathering,
-                                     approved: true,
-                                     creator_id: @user.id,
-                                     group_id: @group.id)
-          @mod = create(:user, username: 'the_mod')
-          @group.restricted = true
-          Membership.create(member_id: @user.id,
-                            group_membership_id: @group.id)
-          @gathering = create(:unapproved_gathering,
-                              creator_id: @user.id,
-                              group_id: @group.id)
-          Membership.create(member_id: @mod.id,
-                            group_membership_id: @group.id)
-          Moderation.create(moderator_id: @mod.id,
+          Moderation.create(moderator_id: mod.id,
                             moderated_group_id: @group.id)
-          request.session[:user_id] = @mod.id
+          request.session[:user_id] = mod.id
 
         end
         it 'should update the params' do
-          patch :update, group_id: @group.id, id: @gathering.id,
-            gathering: @valid_params
-          @gathering.reload
-          expect(@gathering.approved).to eq true
+          patch :update, group_id: @group.id, id: gathering.id,
+            gathering: valid_params
+          gathering.reload
+          expect(gathering.approved).to eq true
         end
       end
     end
@@ -203,24 +202,18 @@ RSpec.describe GatheringsController, type: :controller do
     # TODO: This passes even without a before_filter.
     context 'guest' do
       before :each do
-        @user = create(:other_user)
-        @valid_params = attributes_for(:unapproved_gathering,
-                                   approved: true,
-                                   creator_id: @user.id,
-                                   group_id: @group.id)
-        @mod = create(:user, username: 'the_mod')
-        @group.restricted = true
-        Membership.create(member_id: @user.id,
+        Membership.create(member_id: user.id,
                           group_membership_id: @group.id)
-        @gathering = create(:unapproved_gathering,
-                            creator_id: @user.id,
-                            group_id: @group.id)
+        pp gathering
+        pp @group
       end
 
-      it 'should not update the gathering' do
-        patch :update, group_id: @group.id, id: @gathering.id,
-          gathering: @valid_params
-        expect(@gathering.approved).to eq false
+      it 'should not update the gatheringe' do
+        pp @group.id
+        pp gathering.id
+        patch :update, group_id: @group.id, id: gathering.id,
+          gathering: valid_params
+        expect(gathering.approved).to eq false
       end
     end
   end
