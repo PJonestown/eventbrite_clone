@@ -221,6 +221,19 @@ RSpec.describe GatheringsController, type: :controller do
         end
       end
 
+      context 'group owner' do
+        before :each do
+          request.session[:user_id] = owner.id
+        end
+
+        it 'updates attributes' do
+          patch :update, group_id: group.id, id: gathering.id,
+            gathering: approval_params
+          gathering.reload
+          expect(gathering.approved).to eq true
+        end
+      end
+
       context 'gathering creator' do
         before :each do
           request.session[:user_id] = user.id
