@@ -29,13 +29,13 @@ class GatheringsController < ApplicationController
     @group = Group.find(params[:group_id])
     @gathering = Gathering.find(params[:id])
     if privileged_member?
-      if @gathering.update(gathering_params)
+      if @gathering.update(mod_restricted_gathering_params)
         redirect_to :back
       else
         redirect_to root_path
       end
     else
-      if @gathering.update(restricted_gathering_params)
+      if @gathering.update(creator_restricted_gathering_params)
         redirect_to :back
       else
         redirect_to root_path
@@ -49,7 +49,12 @@ class GatheringsController < ApplicationController
     params.require(:gathering).permit(:name, :description, :date, :approved)
   end
 
-  def restricted_gathering_params
+
+  def mod_restricted_gathering_params
+    params.require(:gathering).permit(:approved)
+  end
+
+  def creator_restricted_gathering_params
     params.require(:gathering).permit(:name, :description, :date)
   end
 

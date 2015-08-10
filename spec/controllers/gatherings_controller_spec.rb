@@ -195,11 +195,19 @@ RSpec.describe GatheringsController, type: :controller do
             request.session[:user_id] = mod.id
           end
 
-          it 'should update the params' do
+          it 'should update the approved param' do
             patch :update, group_id: group.id, id: gathering.id,
               gathering: approval_params
             gathering.reload
             expect(gathering.approved).to eq true
+          end
+
+          it 'should not update any other params' do
+            patch :update, group_id: group.id, id: gathering.id,
+              gathering: valid_params
+            gathering.reload
+            expect(gathering.name).not_to eq 'new_name'
+            expect(gathering.description).not_to eq 'new_desc'
           end
         end
       end
@@ -214,7 +222,7 @@ RSpec.describe GatheringsController, type: :controller do
 
           it 'should not update attributes' do
             patch :update, group_id: group.id, id: gathering.id,
-              gathering: approval_params
+              gathering: valid_params
             gathering.reload
             expect(gathering.approved).not_to eq true
           end
@@ -239,7 +247,7 @@ RSpec.describe GatheringsController, type: :controller do
           request.session[:user_id] = user.id
         end
 
-        it 'does not update approved attribute' do
+        it 'should not update approved attribute' do
           patch :update, group_id: group.id, id: gathering.id,
             gathering: approval_params
           gathering.reload
