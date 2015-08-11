@@ -24,7 +24,7 @@ feature 'gathering creation' do
       fill_in 'Name', with: 'New title'
       fill_in 'Description', with: 'Desc'
       click_button 'Create Gathering'
-      expect(current_path).to eq group_path(@group)
+      expect(current_path).to eq group_gathering_path(@group, Gathering.last)
       expect(page).to have_content 'New title'
     end
   end

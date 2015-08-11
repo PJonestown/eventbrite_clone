@@ -67,8 +67,8 @@ RSpec.describe GroupsController, type: :controller do
 
   describe 'POST #create' do
     before :each do
-      user = create(:user)
-      request.session[:user_id] = user.id
+      @user = create(:user)
+      request.session[:user_id] = @user.id
     end
 
     context 'with valid attributes' do
@@ -77,6 +77,11 @@ RSpec.describe GroupsController, type: :controller do
           post :create, group: attributes_for(:group)
         }.to change(Group, :count).by(1)
         expect(flash[:success]).to be_present
+      end
+
+      it 'automatically makes the creator a member' do
+        post :create, group: attributes_for(:group)
+        expect(group.members.include?(@user)).to eq true
       end
     end
 

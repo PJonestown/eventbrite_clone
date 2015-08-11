@@ -69,8 +69,8 @@ class GatheringsController < ApplicationController
   def correct_users_only
     @group = Group.find(params[:group_id])
     @gathering = Gathering.find(params[:id])
-    redirect_to root_path unless signed_in?
-    redirect_to root_path unless current_user.id == @gathering.creator_id ||
+    redirect_to group_path(@group) unless signed_in?
+    redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
                                  privileged_member?
   end
 end

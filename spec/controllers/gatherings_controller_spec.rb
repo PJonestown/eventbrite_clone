@@ -32,6 +32,29 @@ RSpec.describe GatheringsController, type: :controller do
       get :show, :group_id => group.id, id: gathering
       expect(response).to render_template :show
     end
+
+    context 'unapproved gathering' do
+      context 'gathering creator' do
+
+      end
+
+      context 'group owner' do
+
+      end
+
+      context 'mod' do
+
+      end
+
+      context 'guest' do
+
+      end
+
+      context 'unpriviliged member' do
+
+      end
+
+    end
   end
 
   describe 'GET #new' do

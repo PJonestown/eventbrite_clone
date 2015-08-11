@@ -24,7 +24,8 @@ feature 'private group' do
     fill_in 'Name', with: 'a name'
     fill_in 'Description', with: 'a description'
     click_button 'Create Gathering'
-    expect(current_path).to eq group_path(@group)
+    expect(current_path).to eq group_gathering_path(@group, Gathering.last)
+    visit group_path(@group)
     expect(page).not_to have_content 'a name'
 
     # Mod approves gathering and makes it public
