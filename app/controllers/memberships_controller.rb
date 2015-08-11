@@ -9,6 +9,8 @@ class MembershipsController < ApplicationController
       @membership = Membership.new(membership_params)
       if @membership.save
         redirect_to group_memberships_path(@group)
+        new_member = User.find(@membership.member_id).username
+        flash[:success] = "Added #{new_member} to #{@group.name}"
       else
         render :index
       end

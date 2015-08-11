@@ -33,6 +33,7 @@ RSpec.describe UsersController, type: :controller do
         expect {
           post :create, user: attributes_for(:user)
         }.to change(User, :count).by(1)
+        expect(flash[:success]).to be_present
       end
     end
 

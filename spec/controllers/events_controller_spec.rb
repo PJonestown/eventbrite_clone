@@ -59,6 +59,7 @@ RSpec.describe EventsController, type: :controller do
         expect {
           post :create, event: attributes_for(:event)
         }.to change(Event, :count).by(1)
+        expect(flash[:success]).to be_present
       end
     end
 

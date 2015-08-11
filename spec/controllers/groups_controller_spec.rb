@@ -76,6 +76,7 @@ RSpec.describe GroupsController, type: :controller do
         expect {
           post :create, group: attributes_for(:group)
         }.to change(Group, :count).by(1)
+        expect(flash[:success]).to be_present
       end
     end
 

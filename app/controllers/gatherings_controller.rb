@@ -13,7 +13,8 @@ class GatheringsController < ApplicationController
     @gathering.creator_id = current_user.id
     @gathering.approved = false if @group.restricted && !privileged_member?
     if @gathering.save
-      redirect_to group_path(@group)
+      redirect_to group_gathering_path(@group, @gathering)
+      flash[:success] = "#{@gathering.name} created for #{@group.name}"
     else
       render :new
     end
@@ -30,13 +31,15 @@ class GatheringsController < ApplicationController
     @gathering = Gathering.find(params[:id])
     if privileged_member?
       if @gathering.update(mod_restricted_gathering_params)
-        redirect_to :back
+        redirect_to group_gathering_path(@group, @gathering)
+        flash[:success] = "Approved #{@gathering.name} for #{@group.name}" 
       else
         redirect_to root_path
       end
     else
       if @gathering.update(creator_restricted_gathering_params)
-        redirect_to :back
+        redirect_to group_gathering_path(@group, @gathering)
+        flash[:success] = "Successfully updated #{@gathering.name}"
       else
         redirect_to root_path
       end

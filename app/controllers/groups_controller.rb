@@ -18,6 +18,7 @@ class GroupsController < ApplicationController
     @group = current_user.owned_groups.build(group_params)
     if @group.save
       redirect_to @group
+      flash[:success] = "Successfully created #{@group.name}"
     else
       render :new
     end
@@ -36,6 +37,7 @@ class GroupsController < ApplicationController
     group = Group.find(params[:id])
     group.update!(group_params)
     redirect_to group
+    flash[:success] = "Successfully updated #{@group.name}"
   end
 
   private

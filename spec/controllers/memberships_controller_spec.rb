@@ -47,6 +47,7 @@ RSpec.describe MembershipsController, type: :controller do
                                                         member_id: @user.id,
                                                         group_membership_id: @group.id)
           }.to change(Membership, :count).by(1)
+          expect(flash[:success]).to be_present
         end
       end
     end

@@ -169,6 +169,7 @@ RSpec.describe GatheringsController, type: :controller do
         expect {
           post :create, :group_id => group, :gathering => attributes_for(:gathering)
         }.to change(Gathering, :count).by(1)
+        expect(flash[:success]).to be_present
       end
     end
 
@@ -200,6 +201,7 @@ RSpec.describe GatheringsController, type: :controller do
               gathering: approval_params
             gathering.reload
             expect(gathering.approved).to eq true
+            expect(flash[:success]).to be_present
           end
 
           it 'should not update any other params' do
@@ -239,6 +241,7 @@ RSpec.describe GatheringsController, type: :controller do
             gathering: approval_params
           gathering.reload
           expect(gathering.approved).to eq true
+          expect(flash[:success]).to be_present
         end
       end
 
@@ -259,6 +262,7 @@ RSpec.describe GatheringsController, type: :controller do
              gathering: valid_params
           gathering.reload
           expect(gathering.approved).not_to eq true
+          expect(flash[:success]).to be_present
         end
       end
     end
