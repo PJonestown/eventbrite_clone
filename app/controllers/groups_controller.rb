@@ -17,6 +17,7 @@ class GroupsController < ApplicationController
   def create
     @group = current_user.owned_groups.build(group_params)
     if @group.save
+      Membership.create(member_id: current_user.id, group_membership_id: @group.id)
       redirect_to @group
       flash[:success] = "Successfully created #{@group.name}"
     else

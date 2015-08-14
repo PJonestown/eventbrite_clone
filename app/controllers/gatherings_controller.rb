@@ -1,6 +1,7 @@
 class GatheringsController < ApplicationController
   before_action :members_only, :only => [:new, :create]
   before_action :correct_users_only, :only => [:update]
+  before_action :correct_users_if_unapproved, :only => [:show]
 
   def new
     @group = Group.find(params[:group_id])
@@ -73,4 +74,15 @@ class GatheringsController < ApplicationController
     redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
                                  privileged_member?
   end
+
+  def correct_users_if_unapproved
+    @group = Group.find(params[:group_id])
+    @gathering = Gathering.find(params[:id])
+    if !@gathering.approved
+      redirect_to group_path(@group) unless signed_in?
+      redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
+                                     privileged_member?
+    end
+  end
+
 end

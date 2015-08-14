@@ -19,6 +19,7 @@ RSpec.describe GatheringsController, type: :controller do
                                       creator_id: user.id,
                                       group_id: group.id) }
 
+  # TODO: Only where neccessary
   before :each do
     Membership.create(member_id: owner.id, group_membership_id: group.id)
     Membership.create(member_id: member.id,
@@ -28,32 +29,69 @@ RSpec.describe GatheringsController, type: :controller do
 
   describe 'GET #show' do
     it 'should render the show template' do
-      gathering = create(:gathering, creator_id: 1)
+      gathering.approved = true
       get :show, :group_id => group.id, id: gathering
       expect(response).to render_template :show
     end
 
     context 'unapproved gathering' do
-      context 'gathering creator' do
+      before :each do
+        group.restricted = true
+      end
 
+      context 'gathering creator' do
+        before :each do
+          request.session[:user_id] = user.id
+        end
+
+        it 'Should render the show template' do
+          get :show, :group_id => group.id, id: gathering
+          expect(response).to render_template :show
+        end
       end
 
       context 'group owner' do
+        before :each do
+          request.session[:user_id] = owner.id
+        end
 
+        it 'should render the show template' do
+          get :show, :group_id => group.id, id: gathering
+          expect(response).to render_template :show
+        end
       end
 
       context 'mod' do
+        before :each do
+          Moderation.create(moderator_id: mod.id, moderated_group_id: group.id)
+          request.session[:user_id] = mod.id
+        end
 
+        it 'should render the show template' do
+          get :show, :group_id => group.id, id: gathering
+          expect(response).to render_template :show
+        end
       end
 
       context 'guest' do
-
+        # TODO: nilclass
+        xit 'should redirect' do
+          get :show, :group_id => group.id, id: gathering
+          expect(response).to have_http_status :redirect
+        end
       end
 
       context 'unpriviliged member' do
+        before :each do
+          Membership.create(member_id: member.id, group_membership_id: group.id)
+          request.session[:user_id] = member.id
+        end
 
+        it 'should redirect' do
+          get :show, :group_id => group.id, id: gathering
+          expect(response).to have_http_status :redirect
+        end
       end
-
     end
   end
 

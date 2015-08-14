@@ -7,6 +7,11 @@ FactoryGirl.define do
     is_private false
     restricted false
 
+    factory :restricted_group do
+      name 'Restricted group'
+      restricted true
+    end
+
     factory :other_group do
       name 'Boston ruby'
     end

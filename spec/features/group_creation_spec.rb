@@ -22,6 +22,8 @@ feature 'group creation' do
       select(category.name)
       click_button 'Start Group'
       expect(current_path).to eq group_path(user.owned_groups.last)
+      group = Group.last
+      expect(group.members.include?(user)).to eq true
     end
   end
 end
