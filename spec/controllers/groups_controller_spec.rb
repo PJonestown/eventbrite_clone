@@ -78,11 +78,6 @@ RSpec.describe GroupsController, type: :controller do
         }.to change(Group, :count).by(1)
         expect(flash[:success]).to be_present
       end
-
-      it 'automatically makes the creator a member' do
-        post :create, group: attributes_for(:group)
-        expect(group.members.include?(@user)).to eq true
-      end
     end
 
     context 'with invalid attributes' do
