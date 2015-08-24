@@ -34,7 +34,7 @@ class GatheringsController < ApplicationController
         redirect_to root_path
       end
     else
-      if @gathering.update(creator_restricted_gathering_params)
+      if @gathering.update(gathering_params)
         redirect_to group_gathering_path(@group, @gathering)
         flash[:success] = "Successfully updated #{@gathering.name}"
       else
@@ -54,15 +54,11 @@ class GatheringsController < ApplicationController
   end
 
   def gathering_params
-    params.require(:gathering).permit(:name, :description, :date, :approved)
+    params.require(:gathering).permit(:name, :description, :date)
   end
 
   def mod_restricted_gathering_params
     params.require(:gathering).permit(:approved)
-  end
-
-  def creator_restricted_gathering_params
-    params.require(:gathering).permit(:name, :description, :date)
   end
 
   def members_only
