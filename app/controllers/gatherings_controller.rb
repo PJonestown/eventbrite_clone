@@ -1,15 +1,15 @@
 class GatheringsController < ApplicationController
+  before_action :set_group
+  before_action :set_gathering, :except => [:new, :create]
   before_action :members_only, :only => [:new, :create]
   before_action :correct_users_only, :only => [:update]
   before_action :correct_users_if_unapproved, :only => [:show]
 
   def new
-    @group = Group.find(params[:group_id])
     @gathering = @group.gatherings.build
   end
 
   def create
-    @group = Group.find(params[:group_id])
     @gathering = @group.gatherings.build(gathering_params)
     @gathering.creator_id = current_user.id
     @gathering.approved = false if @group.restricted && !privileged_member?
@@ -22,14 +22,10 @@ class GatheringsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:group_id])
-    @gathering = Gathering.find(params[:id])
   end
 
   # TODO: Too many lines. Need to DRY
   def update
-    @group = Group.find(params[:group_id])
-    @gathering = Gathering.find(params[:id])
     if privileged_member?
       if @gathering.update(mod_restricted_gathering_params)
         redirect_to group_gathering_path(@group, @gathering)
@@ -49,6 +45,14 @@ class GatheringsController < ApplicationController
 
   private
 
+  def set_group
+    @group = Group.find(params[:group_id])
+  end
+
+  def set_gathering
+    @gathering = Gathering.find(params[:id])
+  end
+
   def gathering_params
     params.require(:gathering).permit(:name, :description, :date, :approved)
   end
@@ -62,21 +66,20 @@ class GatheringsController < ApplicationController
   end
 
   def members_only
-    @group = Group.find(params[:group_id])
+    set_group
     redirect_to :back unless signed_in? && @group.members.include?(current_user)
   end
 
   def correct_users_only
-    @group = Group.find(params[:group_id])
-    @gathering = Gathering.find(params[:id])
+    set_group
+    set_gathering
     redirect_to group_path(@group) unless signed_in?
     redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
                                           privileged_member?
   end
 
   def correct_users_if_unapproved
-    @group = Group.find(params[:group_id])
-    @gathering = Gathering.find(params[:id])
+    set_gathering
     return if @gathering.approved
     correct_users_only
   end
