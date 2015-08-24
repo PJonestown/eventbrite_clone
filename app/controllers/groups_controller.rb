@@ -1,9 +1,9 @@
 class GroupsController < ApplicationController
+  before_action :set_group, :except => [:new, :create, :index]
   before_action :user_only, :except => [:show, :index]
   before_action :owner_only, :only => [:edit, :update]
 
   def show
-    @group = Group.find(params[:id])
     members_only(@group) if @group.is_private
     @gatherings = @group.gatherings.approved
     @membership = Membership.new
@@ -30,18 +30,20 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @group = Group.find(params[:id])
     @categories = Category.all
   end
 
   def update
-    group = Group.find(params[:id])
-    group.update!(group_params)
-    redirect_to group
+    @group.update!(group_params)
+    redirect_to @group
     flash[:success] = "Successfully updated #{@group.name}"
   end
 
   private
+
+  def set_group
+    @group = Group.find(params[:id])
+  end
 
   def group_params
     params.require(:group).permit(:name,
@@ -57,7 +59,7 @@ class GroupsController < ApplicationController
   end
 
   def owner_only
-    @group = Group.find(params[:id])
+    set_group
     redirect_to root_path unless @group.owner == current_user
   end
 
