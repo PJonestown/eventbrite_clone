@@ -46,11 +46,9 @@ class MembershipsController < ApplicationController
     redirect_to :back unless current_user.id == @membership.member_id
   end
 
-  # TODO: Needs refactor
   def owner_and_mods_only_if_private
     @group = Group.find(params[:group_id])
-    if @group.is_private
-      redirect_to :back unless privileged_member?
-    end
+    return unless @group.is_private
+    redirect_to :back unless privileged_member?
   end
 end

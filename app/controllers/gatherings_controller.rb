@@ -33,7 +33,7 @@ class GatheringsController < ApplicationController
     if privileged_member?
       if @gathering.update(mod_restricted_gathering_params)
         redirect_to group_gathering_path(@group, @gathering)
-        flash[:success] = "Approved #{@gathering.name} for #{@group.name}" 
+        flash[:success] = "Approved #{@gathering.name} for #{@group.name}"
       else
         redirect_to root_path
       end
@@ -53,7 +53,6 @@ class GatheringsController < ApplicationController
     params.require(:gathering).permit(:name, :description, :date, :approved)
   end
 
-
   def mod_restricted_gathering_params
     params.require(:gathering).permit(:approved)
   end
@@ -72,17 +71,13 @@ class GatheringsController < ApplicationController
     @gathering = Gathering.find(params[:id])
     redirect_to group_path(@group) unless signed_in?
     redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
-                                 privileged_member?
+                                          privileged_member?
   end
 
   def correct_users_if_unapproved
     @group = Group.find(params[:group_id])
     @gathering = Gathering.find(params[:id])
-    if !@gathering.approved
-      redirect_to group_path(@group) unless signed_in?
-      redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
-                                     privileged_member?
-    end
+    return if @gathering.approved
+    correct_users_only
   end
-
 end
