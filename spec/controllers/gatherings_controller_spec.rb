@@ -244,6 +244,52 @@ RSpec.describe GatheringsController, type: :controller do
     end
   end
 
+  describe 'GET#edit' do
+    context 'guest' do
+      it 'should redirect' do
+        get :edit, :group_id => group.id, :id => gathering.id
+        expect(response).to have_http_status :redirect
+      end
+
+      it 'should have warning flash' do
+        get :edit, :group_id => group.id, :id => gathering.id
+        expect(flash[:warning]).to be_present
+      end
+    end
+
+    context 'gathering creator' do
+      before do
+        request.session[:user_id] = user.id
+      end
+
+      it 'should render the edit template' do
+        get :edit, :group_id => group.id, :id => gathering.id
+        expect(response).to render_template :edit
+      end
+
+      it 'should set @gathering to the correct gathering' do
+        get :edit, :group_id => group.id, :id => gathering.id
+        expect(assigns(:gathering)).to eq gathering
+      end
+    end
+
+    context 'group owner' do
+      before do
+        request.session[:user_id] = owner.id
+      end
+
+      it 'should redirect' do
+        get :edit, :group_id => group.id, :id => gathering.id
+        expect(response).to have_http_status :redirect
+      end
+
+      it 'should have warning flash' do
+        get :edit, :group_id => group.id, :id => gathering.id
+        expect(flash[:warning]).to be_present
+      end
+    end
+  end
+
   describe 'PATCH #update' do
     context 'private group' do
       before :each do

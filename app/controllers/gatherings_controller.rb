@@ -24,6 +24,13 @@ class GatheringsController < ApplicationController
   def show
   end
 
+  def edit
+    unless signed_in? && @gathering.creator_id == current_user.id
+      redirect_to root_path
+      flash[:warning] = "You don't have permission for this action"
+    end
+  end
+
   # TODO: Too many lines. Need to DRY
   def update
     if privileged_member?
