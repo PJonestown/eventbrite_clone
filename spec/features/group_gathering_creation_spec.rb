@@ -34,7 +34,6 @@ feature 'gathering creation' do
       fill_in 'Name', with: 'Edited name'
       click_button 'Update Gathering'
       expect(current_path).to eq group_gathering_path(@group, Gathering.last)
-      save_and_open_page
       expect(page).to have_content 'Edited name'
     end
   end

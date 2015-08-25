@@ -33,17 +33,17 @@ class GatheringsController < ApplicationController
 
   # TODO: Too many lines. Need to DRY
   def update
-    if privileged_member?
+    if @gathering.creator_id == current_user.id
+      if @gathering.update(gathering_params)
+        redirect_to group_gathering_path(@group, @gathering)
+        flash[:success] = "Updated #{@gathering.name}"
+      else
+        render edit_group_gathering_path(@group, @gathering)
+      end
+    elsif privileged_member?
       if @gathering.update(mod_restricted_gathering_params)
         redirect_to group_gathering_path(@group, @gathering)
         flash[:success] = "Approved #{@gathering.name} for #{@group.name}"
-      else
-        redirect_to root_path
-      end
-    else
-      if @gathering.update(gathering_params)
-        redirect_to group_gathering_path(@group, @gathering)
-        flash[:success] = "Successfully updated #{@gathering.name}"
       else
         redirect_to root_path
       end
