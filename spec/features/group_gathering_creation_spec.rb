@@ -17,6 +17,7 @@ feature 'gathering creation' do
 
   context 'group owner' do
     it 'should create a new group event' do
+      # Creating
       sign_in @user
       visit group_path(@group)
       click_link 'New Gathering'
@@ -26,6 +27,15 @@ feature 'gathering creation' do
       click_button 'Create Gathering'
       expect(current_path).to eq group_gathering_path(@group, Gathering.last)
       expect(page).to have_content 'New title'
+
+      # Editing and Updating
+      click_link 'Edit'
+      expect(current_path).to eq edit_group_gathering_path(@group, Gathering.last)
+      fill_in 'Name', with: 'Edited name'
+      click_button 'Update Gathering'
+      expect(current_path).to eq group_gathering_path(@group, Gathering.last)
+      save_and_open_page
+      expect(page).to have_content 'Edited name'
     end
   end
 end

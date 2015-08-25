@@ -1,0 +1,6 @@
+<%= simple_form_for [@group, @gathering] do |g| %>
+  <%= g.input :name, required: false, autofocus: true  %>
+  <%= g.input :description, required: false %>
+  <%= g.input :date, as: :date, required: false, start_year: Date.today.year %>
+  <%= g.submit class: 'btn btn-primary' %>
+<% end %>

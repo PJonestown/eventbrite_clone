@@ -11,6 +11,11 @@
           </div>
           <small><%= @gathering.date %></small>
           <small><%= link_to @gathering.creator.username, @gathering.creator %></small>
+          <% if signed_in? && @gathering.creator_id == current_user.id %>
+
+            <small><%= link_to 'Edit', edit_group_gathering_path(@group, @gathering) %></small>
+          <% end %>
+
         </div>
         <h2>People attending</h2>
         <% @gathering.attendees.each do |a| %>
