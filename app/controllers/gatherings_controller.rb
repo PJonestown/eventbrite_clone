@@ -4,6 +4,7 @@ class GatheringsController < ApplicationController
   before_action :members_only, :only => [:new, :create]
   before_action :correct_users_only, :only => [:update]
   before_action :correct_users_if_unapproved, :only => [:show]
+  before_action :creator_only, :only => [:edit]
 
   def new
     @gathering = @group.gatherings.build
@@ -25,10 +26,6 @@ class GatheringsController < ApplicationController
   end
 
   def edit
-    unless signed_in? && @gathering.creator_id == current_user.id
-      redirect_to root_path
-      flash[:warning] = "You don't have permission for this action"
-    end
   end
 
   # TODO: Too many lines. Need to DRY
@@ -85,5 +82,13 @@ class GatheringsController < ApplicationController
     set_gathering
     return if @gathering.approved
     correct_users_only
+  end
+
+  def creator_only
+    set_gathering
+    unless signed_in? && @gathering.creator_id == current_user.id
+      redirect_to root_path
+      flash[:warning] = "You don't have permission for this action"
+    end
   end
 end
