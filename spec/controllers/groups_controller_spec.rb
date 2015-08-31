@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe GroupsController, type: :controller do
+  let(:owner) { create(:user) }
+  let(:user) { create(:other_user) }
+  let(:group) { create(:group, owner_id: owner.id) }
 
   describe 'Get #show' do
-    let(:group) { create(:group) }
-    let(:user) { create(:user) }
-
     it 'assigns the requested group as @group' do
       get :show, id: group
       expect(assigns(:group)).to eq group
@@ -35,8 +35,7 @@ RSpec.describe GroupsController, type: :controller do
     end
 
     context 'signed in user' do
-      before :each do
-        user = create(:user)
+      before do
         request.session[:user_id] = user.id
       end
 
@@ -67,9 +66,8 @@ RSpec.describe GroupsController, type: :controller do
   end
 
   describe 'POST #create' do
-    before :each do
-      @user = create(:user)
-      request.session[:user_id] = @user.id
+    before do
+      request.session[:user_id] = user.id
     end
 
     context 'with valid attributes' do
@@ -93,33 +91,28 @@ RSpec.describe GroupsController, type: :controller do
   context 'GET #edit' do
     context 'group owner' do
       before :each do
-        owner = create(:user)
-        @group = create(:group, owner_id: owner.id)
         request.session[:user_id] = owner.id
       end
 
       it 'should render the edit template' do
-        get :edit, id: @group
+        get :edit, id: group
         expect(response).to render_template :edit
       end
 
       it 'assigns the group as @group' do
-        get :edit, id: @group
-        expect(assigns(:group)).to eq @group
+        get :edit, id: group
+        expect(assigns(:group)).to eq group
       end
     end
 
     context 'incorrect user' do
       before do
-        owner = create(:user)
-        @group = create(:group, owner_id: owner.id)
-        user = create(:other_user)
         request.session[:user_id] = user.id
         request.env['HTTP_REFERER'] = 'root'
       end
 
       it 'should redirect' do
-        get :edit, id: @group
+        get :edit, id: group
         expect(response).to have_http_status(:redirect)
       end
     end
