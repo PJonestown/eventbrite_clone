@@ -1,22 +1,7 @@
 <div class = 'container'>
   <div class = 'row'>
     <div class = 'col-sm-offset-4 col-sm-4'>
-      <%= simple_form_for @group do |f| %>
-
-        <%= f.input :name, required: false, autofocus: true %>
-        <%= f.input :description, required: false %>
-        <%= f.input :category_id,
-          :collection => @categories,
-          group_method: :name,
-          prompt: 'Select a category',
-          :required => false,
-          label: false%>
-        <%= f.input :is_private, label: 'Make group private', as: :radio_buttons %>
-        <%= f.input :restricted, label: 'Only allow yourself and appointed mods to create gatherings',
-                                 as: :radio_buttons %>
-        <%= f.submit 'Start Group', class: 'btn btn-primary' %>
-
-      <% end %>
+      <%= render 'form' %>
     </div>
   </div>
 </div>

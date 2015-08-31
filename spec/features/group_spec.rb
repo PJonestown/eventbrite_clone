@@ -22,7 +22,7 @@ feature 'group creation' do
       fill_in 'Name', with: 'A brand new group'
       fill_in 'Description', with: 'Now even newer!'
       select(category.name)
-      click_button 'Start Group'
+      click_button 'Create Group'
       expect(current_path).to eq group_path(user.owned_groups.last)
       group = Group.last
       expect(group.members.include?(user)).to eq true
