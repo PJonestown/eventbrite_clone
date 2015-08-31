@@ -15,6 +15,8 @@ feature 'group creation' do
       user = create(:user)
       category = create(:category)
       sign_in user
+
+      # New and Create
       click_link 'Start Group'
       expect(current_path).to eq new_group_path
       fill_in 'Name', with: 'A brand new group'
@@ -24,6 +26,12 @@ feature 'group creation' do
       expect(current_path).to eq group_path(user.owned_groups.last)
       group = Group.last
       expect(group.members.include?(user)).to eq true
+
+      # Edit and Update
+      click_link 'Edit Group'
+      fill_in 'Name', with: 'Edited Name'
+      click_button 'Update Group'
+      expect(page).to have_content 'Edited Name'
     end
   end
 end

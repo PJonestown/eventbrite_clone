@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GroupsController, type: :controller do
+
   describe 'Get #show' do
     let(:group) { create(:group) }
     let(:user) { create(:user) }
@@ -109,11 +110,12 @@ RSpec.describe GroupsController, type: :controller do
     end
 
     context 'incorrect user' do
-      before :each do
+      before do
         owner = create(:user)
         @group = create(:group, owner_id: owner.id)
         user = create(:other_user)
         request.session[:user_id] = user.id
+        request.env['HTTP_REFERER'] = 'root'
       end
 
       it 'should redirect' do

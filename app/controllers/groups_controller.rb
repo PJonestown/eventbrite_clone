@@ -1,7 +1,8 @@
 class GroupsController < ApplicationController
   before_action :set_group, :except => [:new, :create, :index]
   before_action :user_only, :except => [:show, :index]
-  before_action :owner_only, :only => [:edit, :update]
+  before_action :privileged_members_only, :only => [:edit, :update]
+  #before_action :owner_only, :only => [:edit, :update]
 
   def show
     members_only(@group) if @group.is_private
@@ -61,6 +62,11 @@ class GroupsController < ApplicationController
   def owner_only
     set_group
     redirect_to root_path unless @group.owner == current_user
+  end
+
+  def privileged_members_only 
+    set_group
+    redirect_to :back unless privileged_member?
   end
 
   def members_only(group)

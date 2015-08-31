@@ -6,6 +6,9 @@
   <p><%= link_to 'Gathering Request', new_group_gathering_path(@group) %></p>
 <% end %>
 
+<%= link_to 'Edit Group', edit_group_path(@group) if privileged_member? %>
+
+
 <%= @group.name %>
 <% @gatherings.each do |g| %>
   <ul>
