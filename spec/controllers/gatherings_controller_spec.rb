@@ -376,7 +376,7 @@ RSpec.describe GatheringsController, type: :controller do
     end
   end
   describe 'DELETE #destroy' do
-    context 'correct user' do 
+    context 'correct user' do
 
       before do
         request.session[:user_id] = user.id

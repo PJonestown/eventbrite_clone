@@ -224,4 +224,54 @@ RSpec.describe GroupsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'group owner' do
+
+      before do
+        request.session[:user_id] = owner.id
+        @group = create(:group, owner_id: owner.id)
+      end
+
+      it 'deletes the contact' do
+        expect {
+          delete :destroy, id: @group
+        }.to change(Group, :count).by(-1)
+      end
+
+      it 'redirects' do
+        delete :destroy, id: @group
+        expect(response).to have_http_status :redirect
+      end
+
+      it 'has success flash' do
+        delete :destroy, id: @group
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context 'mod' do
+
+      before do
+        @group = create(:group, name: 'another', owner_id: owner.id)
+        Moderation.create(moderator_id: user.id, moderated_group_id: group.id)
+        request.session[:user_id] = user.id
+      end
+
+      it 'should not delete group' do
+        expect {
+          delete :destroy, id: @group
+        }.to change(Group, :count).by 0
+      end
+    end
+
+    context 'guest' do
+      it 'should not delete group' do
+        @group = create(:group, name: 'someanother', owner_id: owner.id)
+        expect {
+          delete :destroy, id: @group
+        }.to change(Group, :count).by 0
+      end
+    end
+  end
 end

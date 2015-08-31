@@ -32,6 +32,11 @@ feature 'group creation' do
       fill_in 'Name', with: 'Edited Name'
       click_button 'Update Group'
       expect(page).to have_content 'Edited Name'
+
+      # Destroy
+      click_link 'Delete Group'
+      expect(current_path).to eq root_path
+      expect(page).not_to have_content 'Edited Name'
     end
   end
 end
