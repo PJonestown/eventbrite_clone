@@ -35,7 +35,7 @@ class GatheringsController < ApplicationController
         redirect_to group_gathering_path(@group, @gathering)
         flash[:success] = "Updated #{@gathering.name}"
       else
-        render edit_group_gathering_path(@group, @gathering)
+        redirect_to edit_group_gathering_path(@group, @gathering)
       end
     elsif privileged_member?
       if @gathering.update(mod_restricted_gathering_params)

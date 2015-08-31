@@ -15,6 +15,9 @@ RSpec.describe GatheringsController, type: :controller do
                                               description: 'new_desc',
                                               creator_id: user.id,
                                               group_id: group.id) }
+  let(:invalid_params)     { attributes_for(:invalid_gathering,
+                                              creator_id: user.id,
+                                              group_id: group.id) }
   let(:gathering)          { create(:unapproved_gathering,
                                       creator_id: user.id,
                                       group_id: group.id) }
@@ -358,11 +361,21 @@ RSpec.describe GatheringsController, type: :controller do
           request.session[:user_id] = user.id
         end
 
-        it 'should not update approved attribute' do
-          patch :update, group_id: group.id, id: gathering.id,
-            gathering: approval_params
-          gathering.reload
-          expect(gathering.approved).not_to eq true
+        context 'invalid attributes' do
+
+          it 'should not update approved attribute' do
+            patch :update, group_id: group.id, id: gathering.id,
+              gathering: approval_params
+            gathering.reload
+            expect(gathering.approved).not_to eq true
+          end
+
+          it 'should not update gathering' do
+            patch :update, group_id: group.id, id: gathering.id,
+              gathering: invalid_params
+            gathering.reload
+            expect(gathering.name).not_to eq ''
+          end
         end
 
         it 'updates all other attributes' do
