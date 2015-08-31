@@ -14,6 +14,8 @@
           <% if signed_in? && @gathering.creator_id == current_user.id %>
 
             <small><%= link_to 'Edit', edit_group_gathering_path(@group, @gathering) %></small>
+            <small><%= link_to 'Delete Gathering', group_gathering_path(@group, @gathering),
+              :method => :delete, :confirm => 'Are you sure?'%>
           <% end %>
 
         </div>

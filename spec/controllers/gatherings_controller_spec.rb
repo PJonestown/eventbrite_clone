@@ -375,4 +375,29 @@ RSpec.describe GatheringsController, type: :controller do
       end
     end
   end
+  describe 'DELETE #destroy' do
+    context 'correct user' do 
+
+      before do
+        request.session[:user_id] = user.id
+        @gathering = create(:gathering, creator_id: user.id, group_id: group.id)
+      end
+
+      it 'deletes the contact' do
+        expect {
+          delete :destroy, group_id: group, id: @gathering
+        }.to change(Gathering, :count).by(-1)
+      end
+
+      it 'redirects' do
+        delete :destroy, group_id: group, id: @gathering
+        expect(response).to have_http_status :redirect
+      end
+
+      it 'has success flash' do
+        delete :destroy, group_id: group, id: @gathering
+        expect(flash[:success]).to be_present
+      end
+    end
+  end
 end

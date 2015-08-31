@@ -4,7 +4,7 @@ class GatheringsController < ApplicationController
   before_action :members_only, :only => [:new, :create]
   before_action :correct_users_only, :only => [:update]
   before_action :correct_users_if_unapproved, :only => [:show]
-  before_action :creator_only, :only => [:edit]
+  before_action :creator_only, :only => [:edit, :destroy]
 
   def new
     @gathering = @group.gatherings.build
@@ -45,6 +45,12 @@ class GatheringsController < ApplicationController
         redirect_to root_path
       end
     end
+  end
+
+  def destroy
+    @gathering.destroy
+    flash[:success] = "Gathering deleted"
+    redirect_to @group
   end
 
   private

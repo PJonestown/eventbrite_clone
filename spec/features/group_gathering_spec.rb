@@ -35,6 +35,11 @@ feature 'gathering creation' do
       click_button 'Update Gathering'
       expect(current_path).to eq group_gathering_path(@group, Gathering.last)
       expect(page).to have_content 'Edited name'
+
+      # Deleting and Destroying
+      click_link 'Delete Gathering'
+      expect(current_path).to eq group_path(@group)
+      expect(page).not_to have_content 'Edited name'
     end
   end
 end
