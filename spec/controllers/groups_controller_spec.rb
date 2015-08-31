@@ -4,6 +4,8 @@ RSpec.describe GroupsController, type: :controller do
   let(:owner) { create(:user) }
   let(:user) { create(:other_user) }
   let(:group) { create(:group, owner_id: owner.id) }
+  let(:valid_params) { attributes_for(:group, name: 'Edited Name') }
+  let(:invalid_params) { attributes_for(:group, name: '') }
 
   describe 'Get #show' do
     it 'assigns the requested group as @group' do
@@ -90,7 +92,7 @@ RSpec.describe GroupsController, type: :controller do
 
   context 'GET #edit' do
     context 'group owner' do
-      before :each do
+      before do
         request.session[:user_id] = owner.id
       end
 
@@ -105,8 +107,9 @@ RSpec.describe GroupsController, type: :controller do
       end
     end
 
-    context 'incorrect user' do
+    context 'incorrect member' do
       before do
+        Membership.create(member_id: user.id, group_membership_id: group.id)
         request.session[:user_id] = user.id
         request.env['HTTP_REFERER'] = 'root'
       end
@@ -114,6 +117,110 @@ RSpec.describe GroupsController, type: :controller do
       it 'should redirect' do
         get :edit, id: group
         expect(response).to have_http_status(:redirect)
+      end
+    end
+
+    context 'mod' do
+      before do
+        Moderation.create(moderator_id: user.id, moderated_group_id: group.id)
+        request.session[:user_id] = user.id
+      end
+
+      it 'should render the edit template' do
+        get :edit, id: group
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    context 'owner' do
+
+      before do
+        request.session[:user_id] = owner.id
+      end
+
+      context 'valid params' do
+
+        it 'should update the group' do
+          patch :update, id: group,
+            group: valid_params
+          group.reload
+          expect(group.name).to eq 'Edited Name'
+        end
+
+        it 'should redirect' do
+          patch :update, id: group,
+            group: valid_params
+          expect(response).to have_http_status :redirect
+        end
+
+        it 'should have success flash' do
+          patch :update, id: group,
+            group: valid_params
+          expect(flash[:success]).to be_present
+        end
+      end
+
+      context 'invalid params' do
+
+        it 'should not update params' do
+          patch :update, id: group,
+            group: invalid_params
+          group.reload
+          expect(group.name).not_to eq ''
+        end
+
+        it 'should render the edit template' do
+          patch :update, id: group,
+            group: invalid_params
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'mod' do
+
+      before do
+        Moderation.create(moderator_id: user.id, moderated_group_id: group.id)
+        request.session[:user_id] = user.id
+      end
+
+      context 'valid params' do
+        it 'should update the group' do
+          patch :update, id: group,
+            group: valid_params
+          group.reload
+          expect(group.name).to eq 'Edited Name'
+        end
+      end
+    end
+
+    context 'unprivileged member' do
+      before do
+        request.env['HTTP_REFERER'] = 'root'
+        Membership.create(member_id: user.id, group_membership_id: group.id)
+        request.session[:user_id] = user.id
+      end
+
+      it 'should not update the group' do
+        patch :update, id: group,
+          group: valid_params
+        group.reload
+        expect(group.name).not_to eq 'Edited Name'
+      end
+    end
+
+    context 'guest' do
+      before do
+        request.env['HTTP_REFERER'] = 'root'
+      end
+
+      it 'should not update the group' do
+        patch :update, id: group,
+          group: valid_params
+        group.reload
+        expect(group.name).not_to eq 'Edited Name'
       end
     end
   end

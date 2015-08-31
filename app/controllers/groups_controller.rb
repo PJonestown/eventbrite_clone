@@ -35,9 +35,12 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group.update!(group_params)
-    redirect_to @group
-    flash[:success] = "Successfully updated #{@group.name}"
+    if @group.update(group_params)
+      redirect_to @group
+      flash[:success] = "Successfully updated #{@group.name}"
+    else
+      render :edit
+    end
   end
 
   private
@@ -48,7 +51,6 @@ class GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit(:name,
-                                  :owner_id,
                                   :description,
                                   :category_id,
                                   :is_private,
