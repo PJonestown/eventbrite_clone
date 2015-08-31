@@ -11,7 +11,7 @@ feature 'group creation' do
   end
 
   context 'signed in user' do
-    it 'should create a new group' do
+    it 'should create, edit, and destroy group' do
       user = create(:user)
       category = create(:category)
       sign_in user
