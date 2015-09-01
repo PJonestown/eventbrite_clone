@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe EventsController, type: :controller do
+  let(:creator)       { create(:user) }
+  let(:event)         { create(:event, creator_id: creator.id) }
+  let(:user)          { create(:other_user) }
+
   describe 'GET #index' do
     it 'renders the index template' do
       get :index
@@ -10,13 +14,11 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'GET #show' do
     it 'renders show template' do
-      event = create(:event)
       get :show, id: event
       expect(response).to render_template :show
     end
 
     it 'assigns requested event as @event' do
-      event = create(:event)
       get :show, id: event
       expect(assigns(:event)).to eq event
     end
@@ -31,9 +33,8 @@ RSpec.describe EventsController, type: :controller do
     end
 
     context 'signed in user' do
-      before :each do
-        @user = create(:user)
-        request.session[:user_id] = @user.id
+      before do
+        request.session[:user_id] = user.id
       end
 
       it 'should return http success' do
@@ -50,9 +51,8 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
-      before :each do
-        @user = create(:user)
-        request.session[:user_id] = @user.id
+      before do
+        request.session[:user_id] = user.id
       end
 
       it 'saves a new event to the database' do
