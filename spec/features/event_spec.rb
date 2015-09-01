@@ -16,6 +16,7 @@ feature 'event' do
     click_button 'Create Event'
     event = Event.last
     expect(current_path).to eq event_path(event)
+    expect(event.attendees.include?(user)).to eq true
 
     # Edit and Update
     click_link 'Edit Event'
