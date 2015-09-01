@@ -1,7 +1,7 @@
 require 'rails_helper'
 include IntegrationHelper
 
-feature 'event creation' do
+feature 'event' do
   it 'should create, edit, and destroy an event' do
     user = create(:user)
     sign_in(user)
