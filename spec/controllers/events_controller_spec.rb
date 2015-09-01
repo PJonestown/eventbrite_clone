@@ -6,6 +6,7 @@ RSpec.describe EventsController, type: :controller do
   let(:user)          { create(:other_user) }
 
   describe 'GET #index' do
+
     it 'renders the index template' do
       get :index
       expect(response).to render_template :index
@@ -13,6 +14,7 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe 'GET #show' do
+
     it 'renders show template' do
       get :show, id: event
       expect(response).to render_template :show
@@ -26,6 +28,7 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'GET #new' do
     context 'guest' do
+
       it 'should redirect' do
         get :new
         expect(response).to have_http_status(:redirect)
@@ -33,6 +36,7 @@ RSpec.describe EventsController, type: :controller do
     end
 
     context 'signed in user' do
+
       before do
         request.session[:user_id] = user.id
       end
@@ -51,6 +55,7 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid attributes' do
+
       before do
         request.session[:user_id] = user.id
       end
@@ -64,10 +69,51 @@ RSpec.describe EventsController, type: :controller do
     end
 
     context 'with invalid attrivutes' do
+
       it 'should not save the event' do
         expect {
           post :create, event: attributes_for(:invalid_event)
         }.to change(Event, :count).by(0)
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    context 'event creator' do
+
+      before do
+        request.session[:user_id] = creator.id
+      end
+
+      it 'renders the edit template' do
+        get :edit, id: event
+        expect(response).to render_template :edit
+      end
+
+      it 'should assign @event to the event' do
+        get :edit, id: event
+        expect(assigns(:event)).to eq event
+      end
+    end
+
+    context 'wrong user' do
+
+      before do
+        request.session[:user_id] = user.id
+        request.env['HTTP_REFERER'] = 'root'
+      end
+
+      it 'should redirect' do
+        get :edit, id: event
+        expect(response).to have_http_status :redirect
+      end
+    end
+
+    context 'guest' do
+
+      it 'should redirect' do
+        get :edit, id: event.id
+        expect(response).to have_http_status :redirect
       end
     end
   end

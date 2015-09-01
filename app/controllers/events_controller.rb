@@ -24,11 +24,9 @@ class EventsController < ApplicationController
   end
 
   def edit
-
   end
 
   def update
-
   end
 
   private
@@ -38,12 +36,14 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:title,
-                                  :description,
-                                  :date)
+    params.require(:event).permit(:title, :description, :date)
   end
 
   def user_only
     redirect_to new_user_path unless signed_in?
+  end
+
+  def event_creator_only
+    redirect_to :back unless @event.creator_id == current_user.id
   end
 end
