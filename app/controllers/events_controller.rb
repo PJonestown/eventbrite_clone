@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, :except => [:index, :new, :create]
   before_action :user_only, :except => [:show, :index]
+  before_action :event_creator_only, :only => [:edit, :update, :destroy]
 
   def new
     @event = Event.new
@@ -20,6 +21,14 @@ class EventsController < ApplicationController
   end
 
   def index
+  end
+
+  def edit
+
+  end
+
+  def update
+
   end
 
   private

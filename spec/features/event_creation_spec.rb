@@ -2,28 +2,28 @@ require 'rails_helper'
 include IntegrationHelper
 
 feature 'event creation' do
-  context 'signed out guest' do
-    it 'should redirect to sign up' do
-      visit root_path
-      click_link 'Create Event'
-      expect(current_path).to eq(new_user_path)
-    end
-  end
+  it 'should create, edit, and destroy an event' do
+    user = create(:user)
+    sign_in(user)
 
-  context 'signed in user' do
-    before(:each) do
-      user = create(:user)
-      sign_in(user)
-    end
+    # New and Create
+    visit root_path
+    click_link 'Create Event'
+    expect(current_path).to eq(new_event_path)
+    event = build(:event)
+    fill_in 'Title', with: event.title
+    fill_in 'Description', with: event.description
+    click_button 'Create Event'
+    event = Event.last
+    expect(current_path).to eq event_path(event)
 
-    it 'should create a new event' do
-      visit root_path
-      click_link 'Create Event'
-      expect(current_path).to eq(new_event_path)
-      event = build(:event)
-      fill_in 'Title', with: event.title
-      fill_in 'Description', with: event.description
-      click_button 'Create Event'
-    end
+    # Edit and Update
+    click_link 'Edit Event'
+    expect(current_path).to eq edit_event_path(event)
+    fill_in 'Title', with: 'Edited Title'
+    click_button 'Update Event'
+    expect(current_path).to eq event_path(event)
+    expect(page).to have content 'Edited Title'
+
   end
 end
