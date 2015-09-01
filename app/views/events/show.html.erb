@@ -13,6 +13,9 @@
           <small><%= link_to @event.creator.username, @event.creator %></small>
           <% if signed_in? && @event.creator_id == current_user.id %>
             <small><%= link_to 'Edit Event', edit_event_path(@event) %></small>
+            <small><%= link_to 'Delete Event', event_path(@event), :method =>
+            :delete, :confirm => 'Are you sure?'%></small>
+
           <% end %>
         </div>
         <h2>People attending</h2>

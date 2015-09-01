@@ -3,7 +3,6 @@ FactoryGirl.define do
     title "Ruby meetup"
     description "Free pizza and beer!"
     date "2015-07-09"
-    # association :user
 
     factory :another_event do
       title "Backroom 100nl poker meetup"

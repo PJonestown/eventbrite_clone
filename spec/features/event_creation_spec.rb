@@ -23,7 +23,8 @@ feature 'event creation' do
     fill_in 'Title', with: 'Edited Title'
     click_button 'Update Event'
     expect(current_path).to eq event_path(event)
-    expect(page).to have content 'Edited Title'
+    expect(page).to have_content 'Edited Title'
 
+    # Destroy
   end
 end

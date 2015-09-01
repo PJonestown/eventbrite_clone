@@ -117,4 +117,83 @@ RSpec.describe EventsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    context 'correct user' do
+
+      before do
+        request.session[:user_id] = creator.id
+      end
+
+      context 'with valid attributes' do
+
+        it 'should update the event' do
+          patch :update, id: event, event: attributes_for(:another_event)
+          event.reload
+          expect(event.title).to eq 'Backroom 100nl poker meetup'
+        end
+
+        it 'should have a success flash' do
+          patch :update, id: event, event: attributes_for(:another_event)
+          expect(flash[:success]).to be_present
+        end
+
+        it 'should redirect' do
+          patch :update, id: event, event: attributes_for(:another_event)
+          expect(response).to have_http_status :redirect
+        end
+      end
+
+      context 'with invalid attributes' do
+
+        it 'should not update the event' do
+          patch :update, id: event, event: attributes_for(:invalid_event)
+          event.reload
+          expect(event.title).not_to eq ''
+        end
+
+        it 'should render edit template' do
+          patch :update, id: event, event: attributes_for(:invalid_event)
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'incorrect user' do
+
+      before do
+        request.session[:user_id] = user.id
+        request.env['HTTP_REFERER'] = 'root'
+      end
+
+      it 'should not update event' do
+        patch :update, id: event, event: attributes_for(:another_event)
+        event.reload
+        expect(event.title).not_to eq 'Backroom 100nl poker meetup'
+      end
+
+      it 'should redirect' do
+        patch :update, id: event, event: attributes_for(:another_event)
+        expect(response).to have_http_status :redirect
+      end
+    end
+
+    context 'guest' do
+
+      before do
+        request.env['HTTP_REFERER'] = 'root'
+      end
+
+      it 'should not update event' do
+        patch :update, id: event, event: attributes_for(:another_event)
+        event.reload
+        expect(event.title).not_to eq 'Backroom 100nl poker meetup'
+      end
+
+      it 'should redirect' do
+        patch :update, id: event, event: attributes_for(:another_event)
+        expect(response).to have_http_status :redirect
+      end
+    end
+  end
 end
