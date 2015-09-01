@@ -11,7 +11,7 @@ class EventsController < ApplicationController
     @event = current_user.created_events.build(event_params)
     if @event.save
       redirect_to @event
-      flash[:success] = "Successfully created #{@event.title}"
+      flash[:success] = "Successfully created #{@event.name}"
     else
       render :new
     end
@@ -29,7 +29,7 @@ class EventsController < ApplicationController
   def update
     if @event.update(event_params)
       redirect_to event_path(@event)
-      flash[:success] = "Updated #{@event.title}"
+      flash[:success] = "Updated #{@event.name}"
     else
       render :edit
     end
@@ -48,7 +48,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :date)
+    params.require(:event).permit(:name, :description, :date)
   end
 
   def user_only

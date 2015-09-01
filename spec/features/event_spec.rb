@@ -11,7 +11,7 @@ feature 'event' do
     click_link 'Create Event'
     expect(current_path).to eq(new_event_path)
     event = build(:event)
-    fill_in 'Title', with: event.title
+    fill_in 'Name', with: event.name
     fill_in 'Description', with: event.description
     click_button 'Create Event'
     event = Event.last
@@ -20,7 +20,7 @@ feature 'event' do
     # Edit and Update
     click_link 'Edit Event'
     expect(current_path).to eq edit_event_path(event)
-    fill_in 'Title', with: 'Edited Title'
+    fill_in 'Name', with: 'Edited Title'
     click_button 'Update Event'
     expect(current_path).to eq event_path(event)
     expect(page).to have_content 'Edited Title'

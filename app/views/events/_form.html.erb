@@ -1,5 +1,5 @@
 <%= simple_form_for @event do |e| %>
-  <%= e.input :title, required: false, autofocus: true  %>
+  <%= e.input :name, required: false, autofocus: true  %>
   <%= e.input :description, required: false %>
   <%= e.input :date, as: :date, required: false, start_year: Date.today.year %>
   <%= e.submit class: 'btn btn-primary' %>

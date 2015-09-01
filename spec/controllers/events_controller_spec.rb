@@ -134,7 +134,7 @@ RSpec.describe EventsController, type: :controller do
         it 'should update the event' do
           patch :update, id: event, event: attributes_for(:another_event)
           event.reload
-          expect(event.title).to eq 'Backroom 100nl poker meetup'
+          expect(event.name).to eq 'Backroom 100nl poker meetup'
         end
 
         it 'should have a success flash' do
@@ -153,7 +153,7 @@ RSpec.describe EventsController, type: :controller do
         it 'should not update the event' do
           patch :update, id: event, event: attributes_for(:invalid_event)
           event.reload
-          expect(event.title).not_to eq ''
+          expect(event.name).not_to eq ''
         end
 
         it 'should render edit template' do
@@ -173,7 +173,7 @@ RSpec.describe EventsController, type: :controller do
       it 'should not update event' do
         patch :update, id: event, event: attributes_for(:another_event)
         event.reload
-        expect(event.title).not_to eq 'Backroom 100nl poker meetup'
+        expect(event.name).not_to eq 'Backroom 100nl poker meetup'
       end
 
       it 'should redirect' do
@@ -191,7 +191,7 @@ RSpec.describe EventsController, type: :controller do
       it 'should not update event' do
         patch :update, id: event, event: attributes_for(:another_event)
         event.reload
-        expect(event.title).not_to eq 'Backroom 100nl poker meetup'
+        expect(event.name).not_to eq 'Backroom 100nl poker meetup'
       end
 
       it 'should redirect' do
