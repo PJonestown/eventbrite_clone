@@ -233,7 +233,7 @@ RSpec.describe GroupsController, type: :controller do
         @group = create(:group, owner_id: owner.id)
       end
 
-      it 'deletes the contact' do
+      it 'deletes the group' do
         expect {
           delete :destroy, id: @group
         }.to change(Group, :count).by(-1)

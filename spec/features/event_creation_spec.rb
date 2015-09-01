@@ -26,5 +26,7 @@ feature 'event creation' do
     expect(page).to have_content 'Edited Title'
 
     # Destroy
+    expect { click_link 'Delete Event' }.to change(Event, :count).by(-1)
+    expect(current_path).to eq root_path
   end
 end

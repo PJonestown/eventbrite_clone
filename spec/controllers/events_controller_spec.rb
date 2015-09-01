@@ -196,4 +196,59 @@ RSpec.describe EventsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'event creator' do
+
+      before do
+        request.session[:user_id] = creator.id
+        @event = create(:event, creator_id: creator.id)
+      end
+
+      it 'deletes the event' do
+        expect {
+          delete :destroy, id: @event
+        }.to change(Event, :count).by(-1)
+      end
+
+      it 'redirects' do
+        delete :destroy, id: @event
+        expect(response).to have_http_status :redirect
+      end
+
+      it 'has success flash' do
+        delete :destroy, id: @event
+        expect(flash[:success]).to be_present
+      end
+    end
+  end
+
+  context 'incorrect user' do
+
+    before do
+      @event = create(:event, creator_id: creator.id)
+      request.session[:user_id] = user.id
+      request.env['HTTP_REFERER'] = 'root'
+    end
+
+    it 'should not delete event' do
+      expect {
+        delete :destroy, id: @event
+      }.to change(Group, :count).by 0
+    end
+  end
+
+  context 'guest' do
+
+    before do
+      @event = create(:event, creator_id: creator.id)
+      request.env['HTTP_REFERER'] = 'root'
+    end
+
+    it 'should not delete event' do
+      expect {
+        delete :destroy, id: @event
+      }.to change(Group, :count).by 0
+    end
+  end
 end
