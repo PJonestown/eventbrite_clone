@@ -1,2 +1,6 @@
 <h1>Dashboard#show</h1>
-<p>Find me in app/views/dashboard/show.html.erb</p>
+
+<% @combined.each do |n| %>
+  <h3><%= n.name %></h3>
+  <p><%= n %>
+<% end %>
