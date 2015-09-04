@@ -16,5 +16,11 @@ RSpec.describe HappeningsController, type: :controller do
       get :index
       expect(assigns(:happenings)).to match_array [b, c, d, a]
     end
+
+    it 'should only assign upcoming happenings to @happenings' do
+      past_event = create(:event, date: Date.today - 1.year)
+      get :index
+      expect(assigns(:happenings)).not_to include past_event
+    end
   end
 end
