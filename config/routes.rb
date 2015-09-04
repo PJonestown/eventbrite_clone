@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
-  root to: 'groups#index'
+  get 'happenings/index'
+
+  root to: 'happenings#index'
 
   resources :users do
     resources :moderations
-    resources :dashboard, only: [:show]
-
     resources :mod_resources, only: [:index]
   end
 
