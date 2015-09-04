@@ -9,12 +9,12 @@ RSpec.describe HappeningsController, type: :controller do
     end
 
     it 'should combine events and gatherings and sort them' do
-      a = create(:event)
-      b = create(:event, name: 'something else')
-      c = create(:gathering, group_id: 1, creator_id: 1)
-      d = create(:event, name: 'hi')
+      a = create(:event, date: Date.today + 1.year)
+      b = create(:event, name: 'something else', date: Date.today)
+      c = create(:gathering, group_id: 1, creator_id: 1, date: Date.today + 1.day)
+      d = create(:event, name: 'hi', date: Date.today + 3.days)
       get :index
-      expect(assigns(:happenings)).to match_array [a, b, c, d]
+      expect(assigns(:happenings)).to match_array [b, c, d, a]
     end
   end
 end
