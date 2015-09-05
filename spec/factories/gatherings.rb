@@ -4,6 +4,8 @@ FactoryGirl.define do
     description "MyString"
     date "2015-07-23"
     approved true
+    creator_id 1
+    group_id 1
 
     factory :invalid_gathering do
       name ''

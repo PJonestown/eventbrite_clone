@@ -1,4 +1,6 @@
 class GatheringsController < ApplicationController
+  include GatheringsHelper
+
   before_action :set_group
   before_action :set_gathering, :except => [:new, :create]
   before_action :members_only, :only => [:new, :create]
@@ -77,22 +79,17 @@ class GatheringsController < ApplicationController
   end
 
   def correct_users_only
-    set_group
-    set_gathering
-    redirect_to group_path(@group) unless  signed_in? && 
-                                   current_user.id == @gathering.creator_id ||
-                                          privileged_member?
+    redirect_to group_path(@group) unless privileged_member? ||
+                                          gathering_creator?
   end
 
   def correct_users_if_unapproved
-    set_gathering
     return if @gathering.approved
     correct_users_only
   end
 
   def creator_only
-    set_gathering
-    unless signed_in? && @gathering.creator_id == current_user.id
+    unless gathering_creator?
       redirect_to root_path
       flash[:warning] = "You don't have permission for this action"
     end

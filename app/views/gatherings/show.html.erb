@@ -11,7 +11,7 @@
           </div>
           <small><%= @gathering.date %></small>
           <small><%= link_to @gathering.creator.username, @gathering.creator %></small>
-          <% if signed_in? && @gathering.creator_id == current_user.id %>
+          <% if gathering_creator? %>
 
             <small><%= link_to 'Edit', edit_group_gathering_path(@group, @gathering) %></small>
             <small><%= link_to 'Delete Gathering', group_gathering_path(@group, @gathering),

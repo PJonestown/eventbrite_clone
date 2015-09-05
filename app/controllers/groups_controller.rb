@@ -68,12 +68,10 @@ class GroupsController < ApplicationController
   end
 
   def owner_only
-    set_group
     redirect_to root_path unless @group.owner == current_user
   end
 
   def privileged_members_only
-    set_group
     redirect_to :back unless privileged_member?
   end
 

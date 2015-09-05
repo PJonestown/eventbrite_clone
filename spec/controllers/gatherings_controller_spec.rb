@@ -34,7 +34,9 @@ RSpec.describe GatheringsController, type: :controller do
     xit 'should render the show template' do
       # TODO: nilclass error for group
       gathering.approved = true
-      get :show, :group_id => group.id, id: gathering
+      pp group
+      pp gathering
+      get :show, :group_id => group, id: gathering
       expect(response).to render_template :show
     end
 
