@@ -78,8 +78,7 @@ RSpec.describe GatheringsController, type: :controller do
       end
 
       context 'guest' do
-        # TODO: nilclass error for group
-        xit 'should redirect' do
+        it 'should redirect' do
           get :show, :group_id => group.id, id: gathering
           expect(response).to have_http_status :redirect
         end

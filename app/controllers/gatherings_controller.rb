@@ -79,8 +79,8 @@ class GatheringsController < ApplicationController
   def correct_users_only
     set_group
     set_gathering
-    redirect_to group_path(@group) unless signed_in?
-    redirect_to group_path(@group) unless current_user.id == @gathering.creator_id ||
+    redirect_to group_path(@group) unless  signed_in? && 
+                                   current_user.id == @gathering.creator_id ||
                                           privileged_member?
   end
 

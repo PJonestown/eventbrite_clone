@@ -19,5 +19,7 @@ class User < ActiveRecord::Base
 
   has_many :join_requests
 
+  has_one :profile
+
   validates :username, uniqueness: true, presence: true
 end
