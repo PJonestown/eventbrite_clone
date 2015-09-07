@@ -3,7 +3,6 @@ module SessionsHelper
 
   def sign_in_user(user)
     session[:user_id] = user.id
-    # flash
     redirect_to root_path
   end
 

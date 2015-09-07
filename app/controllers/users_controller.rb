@@ -14,7 +14,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      sign_in_user @user
+      session[:user_id] = @user.id
+      redirect_to new_user_profile_path(@user)
       flash[:success] = "Welcome #{@user.username}!"
     else
       render :new

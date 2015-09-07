@@ -27,7 +27,8 @@
             </ul>
           </li>
         <% else %>
-          <li><%=link_to 'Sign in', sign_in_path %></li>
+          <li><%= link_to 'Sign in', sign_in_path %></li>
+          <li><%= link_to 'Sign up', new_user_path %></li>
         <% end %>
 
 
