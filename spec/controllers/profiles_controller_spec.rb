@@ -17,6 +17,33 @@ RSpec.describe ProfilesController, type: :controller do
   end
 
   describe "POST #create" do
+    context 'user'
+
+    before do
+      request.session[:user_id] = user.id
+    end
+
+    context 'valid attributes' do
+      it 'should save profile to the database' do
+        expect {
+          post :create, :user_id => user, :profile => attributes_for(:profile)
+        }.to change(Profile, :count).by(1)
+      end
+
+      it 'should have a success flash' do
+        post :create, :user_id => user, :profile => attributes_for(:profile)
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context 'invalid attributes' do
+      it 'should not save gathering to the database' do
+        expect {
+          post :create, :user_id => user,
+                        :profile => attributes_for(:invalid_profile)
+        }.not_to change(Profile, :count)
+      end
+    end
   end
 
   describe "GET #show" do
