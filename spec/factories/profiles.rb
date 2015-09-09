@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :profile do
-    zipcode "MyString"
+    location "New York"
     user nil
 
     factory :invalid_profile do
-      zipcode nil
+      location nil
     end
   end
 end

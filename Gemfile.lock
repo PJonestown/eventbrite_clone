@@ -179,6 +179,15 @@ GEM
     tilt (1.4.1)
     turbolinks (2.5.3)
       coffee-rails
+    twitter-typeahead-rails (0.11.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
+    typeahead-addresspicker-rails (0.0.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
+      twitter-typeahead-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.1)
@@ -218,6 +227,7 @@ DEPENDENCIES
   simple_form
   spring
   turbolinks
+  typeahead-addresspicker-rails
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
 

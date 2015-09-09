@@ -2,6 +2,20 @@ require 'rails_helper'
 
 RSpec.describe ProfilesController, type: :controller do
 
+  before do
+    Geocoder.configure(:lookup => :test)
+
+    Geocoder::Lookup::Test.add_stub(
+      'New York', [
+        {
+          'location'     => 'New York',
+          'latitude'     => 40.7143528,
+          'longitude'    => -74.0059731
+        }
+      ]
+    )
+    end
+
   let(:user) { create(:user) }
 
   describe 'GET #new' do
