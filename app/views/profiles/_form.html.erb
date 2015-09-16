@@ -1,4 +1,4 @@
-<%= simple_form_for [@user, @profile] do |f| %>
+<%= simple_form_for ([@user, @profile]) do |f| %>
   <%= f.input :location, required: false, autofocus: true  %>
   <%= f.submit class: 'btn btn-primary' %>
 <% end %>

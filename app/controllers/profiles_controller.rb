@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :set_user, :only => [:new, :create, :show]
+  before_action :set_user, :only => [:new, :create, :show, :update, :edit]
   before_action :set_profile, :only => [:show, :edit, :update]
 
   def new

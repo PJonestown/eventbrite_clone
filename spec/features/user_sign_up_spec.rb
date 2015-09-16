@@ -12,10 +12,13 @@ feature 'user sign up proccess' do
     expect{ click_button 'Create Profile' }.to change(Profile, :count).by(1)
 
     # Edit and Update
+    click_link 'Profile'
+    expect(current_path).to eq user_profile_path(User.last, Profile.last)
     click_link 'Edit Profile'
     expect(current_path).to eq edit_user_profile_path(User.last, Profile.last)
     fill_in 'Location', with: 'Seattle, WA'
     click_button 'Update Profile'
     expect(current_path).to eq user_profile_path(User.last, Profile.last)
+    expect(Profile.last.location).to eq 'Seattle, WA'
   end
 end
