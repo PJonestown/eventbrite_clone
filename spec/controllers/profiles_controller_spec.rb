@@ -74,6 +74,16 @@ RSpec.describe ProfilesController, type: :controller do
   end
 
   describe "GET #edit" do
+    it 'should render the edit template' do
+      get :edit, :user_id => user, :id => profile
+      expect(response).to render_template :edit
+    end
+
+    it 'should assign @profile to the user profile' do
+      get :edit, :user_id => user, :id => profile
+      expect(assigns(:profile)).to eq profile
+    end
+
   end
 
   describe "PATCH #update" do

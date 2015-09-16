@@ -5,6 +5,13 @@ User.create(username: 'vladimir_nabokov')
 User.create(username: 'james_joyce')
 User.create(username: 'earnest_hemingway')
 
+Profile.create(user_id: 1, location: 'New York')
+Profile.create(user_id: 2, location: 'New York')
+Profile.create(user_id: 3, location: 'New York')
+Profile.create(user_id: 4, location: 'Seattle')
+Profile.create(user_id: 5, location: 'Austin, TX')
+Profile.create(user_id: 6, location: 'New York')
+
 Category.create(name: 'Technology')
 Category.create(name: 'Politics/activism')
 Category.create(name: 'Games')
@@ -60,7 +67,7 @@ GatheringAttendance.create(attendee_id: 4, attended_gathering_id: 3)
 Moderation.create(moderator_id: 2, moderated_group_id: 1)
 Moderation.create(moderator_id: 6, moderated_group_id: 1)
 
-Event.new(title: 'One time only event',
+Event.new(name: 'One time only event',
           description: "Did I mention it's only one time and doesn't need a group?",
           date: Time.zone.today + 1.month,
           creator_id: 6)
