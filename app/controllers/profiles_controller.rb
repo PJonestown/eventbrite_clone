@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :set_user, :only => [:new, :create, :show, :update, :edit]
   before_action :set_profile, :only => [:show, :edit, :update]
+  before_action :correct_user_only, :only =>[:edit, :update]
 
   def new
     @profile = @user.build_profile
@@ -23,6 +24,12 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    if @profile.update(profile_params)
+      redirect_to user_profile_path(@group, @gathering)
+      flash[:success] = "Updated profile"
+    else
+      redirect_to edit_user_profile_path(@group, @gathering)
+    end
   end
 
   private
@@ -37,5 +44,9 @@ class ProfilesController < ApplicationController
 
   def set_user
     @user = User.find(params[:user_id])
+  end
+
+  def correct_user_only
+    redirect_to :back unless signed_in? && @user == current_user
   end
 end

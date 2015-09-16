@@ -18,6 +18,7 @@ RSpec.describe ProfilesController, type: :controller do
 
   let(:user) { create(:user) }
   let(:profile) { create(:profile) }
+  let (:incorrect_user) { create(:other_user) }
 
   describe 'GET #new' do
     it 'renders new template' do
@@ -74,14 +75,46 @@ RSpec.describe ProfilesController, type: :controller do
   end
 
   describe "GET #edit" do
-    it 'should render the edit template' do
-      get :edit, :user_id => user, :id => profile
-      expect(response).to render_template :edit
+
+    before do
+      request.env['HTTP_REFERER'] = 'root'
     end
 
-    it 'should assign @profile to the user profile' do
-      get :edit, :user_id => user, :id => profile
-      expect(assigns(:profile)).to eq profile
+    context 'correct user' do
+
+      before do
+        request.session[:user_id] = user.id
+      end
+
+      it 'should render the edit template' do
+        get :edit, :user_id => user, :id => profile
+        expect(response).to render_template :edit
+      end
+
+      it 'should assign @profile to the user profile' do
+        get :edit, :user_id => user, :id => profile
+        expect(assigns(:profile)).to eq profile
+      end
+    end
+
+    context 'incorrect user' do
+
+      before do
+        request.session[:user_id] = incorrect_user.id
+      end
+
+      it 'should redirect' do
+        get :edit, :user_id => user, :id => profile
+        expect(response).to have_http_status :redirect
+      end
+    end
+
+    context 'guest' do
+
+      it 'should redirect' do
+        get :edit, :user_id => user, :id => profile
+        expect(response).to have_http_status :redirect
+      end
     end
 
   end
