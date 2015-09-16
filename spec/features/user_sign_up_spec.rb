@@ -7,7 +7,7 @@ feature 'user sign up proccess' do
     fill_in 'Username', with: 'a_name'
     click_button 'Create User'
     expect(current_path).to eq new_user_profile_path(User.last)
-    fill_in 'Zipcode', with: 'New York, NY, United States'
+    fill_in 'Location', with: 'New York, NY, United States'
     expect{ click_button 'Create Profile' }.to change(Profile, :count).by(1)
   end
 end

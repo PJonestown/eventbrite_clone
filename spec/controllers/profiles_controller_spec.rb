@@ -17,6 +17,7 @@ RSpec.describe ProfilesController, type: :controller do
     end
 
   let(:user) { create(:user) }
+  let(:profile) { create(:profile) }
 
   describe 'GET #new' do
     it 'renders new template' do
@@ -61,6 +62,15 @@ RSpec.describe ProfilesController, type: :controller do
   end
 
   describe "GET #show" do
+    it 'should render the show template' do
+      get :show, :user_id => user, :id => profile
+      expect(response).to render_template :show
+    end
+
+    it 'should assign @profile to the user profile' do
+      get :show, :user_id => user, :id => profile
+      expect(assigns(:profile)).to eq profile
+    end
   end
 
   describe "GET #edit" do

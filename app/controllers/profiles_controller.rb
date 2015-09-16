@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_user, :only => [:new, :create, :show]
+  before_action :set_profile, :only => [:show, :edit, :update]
 
   def new
     @profile = @user.build_profile
@@ -16,7 +17,6 @@ class ProfilesController < ApplicationController
   end
 
   def show
-    @profile = Profile.find(params[:id])
   end
 
   def edit
@@ -29,6 +29,10 @@ class ProfilesController < ApplicationController
 
   def profile_params
     params.require(:profile).permit(:location)
+  end
+
+  def set_profile
+    @profile = Profile.find(params[:id])
   end
 
   def set_user
