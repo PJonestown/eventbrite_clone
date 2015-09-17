@@ -5,5 +5,5 @@ class Profile < ActiveRecord::Base
 
   geocoded_by :location
   before_validation :geocode,
-    :if => lambda{ |obj| obj.location_changed? }
+    :if => ->(obj) { obj.location_changed? }
 end

@@ -29,7 +29,7 @@ RSpec.describe ProfilesController, type: :controller do
         }
       ]
     )
-    end
+  end
 
   describe 'GET #new' do
     it 'renders new template' do
@@ -144,16 +144,16 @@ RSpec.describe ProfilesController, type: :controller do
       context 'valid attributes' do
         it 'should update attributes' do
           patch :update, user_id: user, id: profile,
-              profile: attributes_for(:other_profile)
-            profile.reload
-            expect(profile.location).to eq 'Chicago'
-            expect(flash[:success]).to be_present
+            profile: attributes_for(:other_profile)
+          profile.reload
+          expect(profile.location).to eq 'Chicago'
+          expect(flash[:success]).to be_present
         end
 
-        it 'should have success flash' do 
+        it 'should have success flash' do
           patch :update, user_id: user, id: profile,
               profile: attributes_for(:other_profile)
-            expect(flash[:success]).to be_present
+          expect(flash[:success]).to be_present
         end
 
         it 'should redirect' do
