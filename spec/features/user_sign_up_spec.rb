@@ -16,9 +16,9 @@ feature 'user sign up proccess' do
     expect(current_path).to eq user_profile_path(User.last, Profile.last)
     click_link 'Edit Profile'
     expect(current_path).to eq edit_user_profile_path(User.last, Profile.last)
-    fill_in 'Location', with: 'Seattle, WA'
+    fill_in 'Location', with: 'Chicago'
     click_button 'Update Profile'
     expect(current_path).to eq user_profile_path(User.last, Profile.last)
-    expect(Profile.last.location).to eq 'Seattle, WA'
+    expect(Profile.last.latitude).to eq 41.8781136
   end
 end

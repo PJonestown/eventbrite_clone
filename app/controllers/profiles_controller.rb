@@ -25,10 +25,10 @@ class ProfilesController < ApplicationController
 
   def update
     if @profile.update(profile_params)
-      redirect_to user_profile_path(@group, @gathering)
+      redirect_to user_profile_path(@user, @profile)
       flash[:success] = "Updated profile"
     else
-      redirect_to edit_user_profile_path(@group, @gathering)
+      redirect_to edit_user_profile_path(@user, @profile)
     end
   end
 

@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe ProfilesController, type: :controller do
 
+  let(:user) { create(:user) }
+  let(:profile) { create(:profile) }
+  let (:incorrect_user) { create(:other_user) }
+
   before do
     Geocoder.configure(:lookup => :test)
 
@@ -14,11 +18,18 @@ RSpec.describe ProfilesController, type: :controller do
         }
       ]
     )
-    end
 
-  let(:user) { create(:user) }
-  let(:profile) { create(:profile) }
-  let (:incorrect_user) { create(:other_user) }
+    Geocoder::Lookup::Test.add_stub(
+
+      'Chicago', [
+        {
+          'location'    => 'Chicago',
+          'latitude'    => 41.8781136,
+          'longitude'   => -87.6297982
+        }
+      ]
+    )
+    end
 
   describe 'GET #new' do
     it 'renders new template' do
@@ -116,10 +127,73 @@ RSpec.describe ProfilesController, type: :controller do
         expect(response).to have_http_status :redirect
       end
     end
-
   end
 
   describe "PATCH #update" do
-  end
 
+    before do
+      request.env['HTTP_REFERER'] = 'root'
+    end
+
+    context 'correct user' do
+
+      before do
+        request.session[:user_id] = user.id
+      end
+
+      context 'valid attributes' do
+        it 'should update attributes' do
+          patch :update, user_id: user, id: profile,
+              profile: attributes_for(:other_profile)
+            profile.reload
+            expect(profile.location).to eq 'Chicago'
+            expect(flash[:success]).to be_present
+        end
+
+        it 'should have success flash' do 
+          patch :update, user_id: user, id: profile,
+              profile: attributes_for(:other_profile)
+            expect(flash[:success]).to be_present
+        end
+
+        it 'should redirect' do
+          patch :update, user_id: user, id: profile,
+              profile: attributes_for(:other_profile)
+          expect(response).to have_http_status :redirect
+        end
+      end
+
+      context 'invalid attributes' do
+        it 'should not update attributes' do
+          patch :update, user_id: user, id: profile,
+              profile: attributes_for(:invalid_profile)
+          profile.reload
+          expect(profile.location).to_not eq nil
+        end
+      end
+    end
+
+    context 'incorrect user' do
+
+      before do
+        request.session[:user_id] = incorrect_user.id
+      end
+
+      it 'should not update attributes' do
+        patch :update, user_id: user, id: profile,
+          profile: attributes_for(:other_profile)
+        profile.reload
+        expect(profile.location).to_not eq 'Chicago'
+      end
+    end
+
+    context 'guest' do
+      it 'should not update attributes' do
+        patch :update, user_id: user, id: profile,
+          profile: attributes_for(:other_profile)
+        profile.reload
+        expect(profile.location).to_not eq 'Chicago'
+      end
+    end
+  end
 end
