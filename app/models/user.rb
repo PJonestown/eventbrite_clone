@@ -21,5 +21,7 @@ class User < ActiveRecord::Base
 
   has_one :profile
 
+  has_one :address
+
   validates :username, uniqueness: true, presence: true
 end

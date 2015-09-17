@@ -4,6 +4,8 @@ class Event < ActiveRecord::Base
   has_many :attendances, :foreign_key => :attended_event_id
   has_many :attendees, :through => :attendances
 
+  has_one :address, :as => :addressable
+
   validates :name, :description, :date, presence: true
 
   scope :upcoming, -> { where("date >= ?", Time.zone.today) }

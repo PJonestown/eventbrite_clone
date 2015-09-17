@@ -12,6 +12,8 @@ class Group < ActiveRecord::Base
 
   has_many :join_requests
 
+  has_one :address, :as => :addressable
+
   validates :name, :owner_id, :category_id, :description, :presence => true
   validates :is_private, inclusion: [true, false]
   validates :restricted, inclusion: [true, false]
