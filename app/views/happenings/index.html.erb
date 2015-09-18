@@ -4,10 +4,6 @@
   <h3><%= date.to_formatted_s(:short) %></h3>
   <% happenings = @happenings.select { |happening| happening.date == date } %>
   <% happenings.each do |happening| %>
-    <% if happening.instance_of? Event %>
-      <p><%= link_to happening.name, happening %></p>
-    <% else %>
-      <p><%= link_to happening.name, group_gathering_path(happening.group_id, happening) %></p>
-    <% end %>
+    <p><%= link_to happening.name, happening %></p>
   <% end %>
 <% end %>

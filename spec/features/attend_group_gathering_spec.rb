@@ -10,7 +10,7 @@ feature 'attending a group gathering' do
 
   context 'guest' do
     it 'should not show attend button' do
-      visit group_gathering_path(@group, @gathering)
+      visit gathering_path(@gathering)
       expect(page).not_to have_button 'Attend'
     end
   end
@@ -22,15 +22,15 @@ feature 'attending a group gathering' do
         user = create(:other_user)
         sign_in user
 
-        visit group_gathering_path(@group, @gathering)
+        visit gathering_path(@gathering)
         expect(page).to have_content 'Want to go?'
         expect(page).to have_button 'Join us!'
         click_button 'Join us!'
-        expect(current_path).to eq group_gathering_path(@group, @gathering)
+        expect(current_path).to eq gathering_path(@gathering)
 
         # member attend
         click_button 'Attend'
-        expect(current_path).to eq group_gathering_path(@group, @gathering)
+        expect(current_path).to eq gathering_path(@gathering)
         expect(page).to have_content user.username
         expect(page).to_not have_button 'Attend'
         expect(page).to have_button 'Un-attend'

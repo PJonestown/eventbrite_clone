@@ -4,7 +4,7 @@
   <%= 'No unnapproved gatherings' unless group.gatherings.unapproved.any? %>
   <% group.gatherings.unapproved.each do |gathering| %>  
     <p> Unapproved Gatherings</p>
-    <%= link_to gathering.name, group_gathering_path(group, gathering) %>
+    <%= link_to gathering.name, gathering_path(gathering) %>
     <%= gathering.description %>
     <%= User.find(gathering.creator_id).username %>
   <% end %>

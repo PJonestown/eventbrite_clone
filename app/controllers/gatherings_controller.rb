@@ -1,7 +1,7 @@
 class GatheringsController < ApplicationController
   include GatheringsHelper
 
-  before_action :set_group
+  before_action :set_group, :only => [:index, :create, :new]
   before_action :set_gathering, :except => [:new, :create]
   before_action :members_only, :only => [:new, :create]
   before_action :correct_users_only, :only => [:update]
@@ -17,7 +17,7 @@ class GatheringsController < ApplicationController
     @gathering.creator_id = current_user.id
     @gathering.approved = false if @group.restricted && !privileged_member?
     if @gathering.save
-      redirect_to group_gathering_path(@group, @gathering)
+      redirect_to @gathering
       flash[:success] = "#{@gathering.name} created for #{@group.name}"
     else
       render :new
@@ -25,6 +25,7 @@ class GatheringsController < ApplicationController
   end
 
   def show
+    @group = @gathering.group
   end
 
   def edit
@@ -34,14 +35,14 @@ class GatheringsController < ApplicationController
   def update
     if @gathering.creator_id == current_user.id
       if @gathering.update(gathering_params)
-        redirect_to group_gathering_path(@group, @gathering)
+        redirect_to @gathering
         flash[:success] = "Updated #{@gathering.name}"
       else
-        redirect_to edit_group_gathering_path(@group, @gathering)
+        redirect_to edit_gathering_path(@gathering)
       end
     elsif privileged_member?
       if @gathering.update(mod_restricted_gathering_params)
-        redirect_to group_gathering_path(@group, @gathering)
+        redirect_to @gathering
         flash[:success] = "Approved #{@gathering.name} for #{@group.name}"
       else
         redirect_to root_path
@@ -50,6 +51,7 @@ class GatheringsController < ApplicationController
   end
 
   def destroy
+    @group = @gathering.group
     @gathering.destroy
     flash[:success] = "Gathering deleted"
     redirect_to @group

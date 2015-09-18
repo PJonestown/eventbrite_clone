@@ -13,8 +13,8 @@
           <small><%= link_to @gathering.creator.username, @gathering.creator %></small>
           <% if gathering_creator? %>
 
-            <small><%= link_to 'Edit', edit_group_gathering_path(@group, @gathering) %></small>
-            <small><%= link_to 'Delete Gathering', group_gathering_path(@group, @gathering),
+            <small><%= link_to 'Edit', edit_gathering_path(@gathering) %></small>
+            <small><%= link_to 'Delete Gathering', gathering_path(@gathering),
               :method => :delete, :confirm => 'Are you sure?'%>
           <% end %>
 
@@ -26,7 +26,7 @@
           </ul>
         <% end %>
         <% if privileged_member? && !@gathering.approved %>
-          <%= simple_form_for [@group, @gathering] do |f| %>
+          <%= simple_form_for @gathering do |f| %>
             <%= f.hidden_field :approved, :value => true %>
             <%= f.submit "Approve Gathering", class: "btn btn-large btn-primary" %>
           <% end %>

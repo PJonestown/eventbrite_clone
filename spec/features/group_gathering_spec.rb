@@ -25,15 +25,15 @@ feature 'gathering creation' do
       fill_in 'Name', with: 'New title'
       fill_in 'Description', with: 'Desc'
       click_button 'Create Gathering'
-      expect(current_path).to eq group_gathering_path(@group, Gathering.last)
+      expect(current_path).to eq gathering_path(Gathering.last)
       expect(page).to have_content 'New title'
 
       # Editing and Updating
       click_link 'Edit'
-      expect(current_path).to eq edit_group_gathering_path(@group, Gathering.last)
+      expect(current_path).to eq edit_gathering_path(Gathering.last)
       fill_in 'Name', with: 'Edited name'
       click_button 'Update Gathering'
-      expect(current_path).to eq group_gathering_path(@group, Gathering.last)
+      expect(current_path).to eq gathering_path(Gathering.last)
       expect(page).to have_content 'Edited name'
 
       # Deleting and Destroying

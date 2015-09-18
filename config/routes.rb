@@ -9,17 +9,24 @@ Rails.application.routes.draw do
     resources :profiles
     resources :moderations
     resources :mod_resources, only: [:index]
+    resources :addresses
   end
 
-  resources :events
+  resources :events do
+    resources :addresses
+  end
+
   resources :gatherings, only: [:index]
   resources :attendances
   resources :gathering_attendances
 
   resources :groups do
-    resources :gatherings
+    resources :gatherings, shallow: true do
+      resources :addresses
+    end
     resources :join_requests
     resources :memberships
+    resources :addresses
   end
 
   resources :categories, only: [:show, :index] do

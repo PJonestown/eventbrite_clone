@@ -13,6 +13,7 @@ module GroupsHelper
   end
 
   def privileged_member?
+    @group ||= @gathering.group
     return false unless signed_in?
     return true if @group.owner_id == current_user.id ||
                    @group.moderators.include?(current_user)
