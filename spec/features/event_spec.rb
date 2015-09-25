@@ -15,8 +15,15 @@ feature 'event' do
     fill_in 'Description', with: event.description
     click_button 'Create Event'
     event = Event.last
-    expect(current_path).to eq event_path(event)
+    #expect(current_path).to eq event_path(event)
     expect(event.attendees.include?(user)).to eq true
+
+    # Address
+    expect(current_path).to eq new_event_address_path(event)
+    fill_in 'Location', with: 'Seattle'
+    click_button 'Create Address'
+    expect(event.address.latitude).not_to eq nil
+    expect(current_path).to eq event_path(event)
 
     # Edit and Update
     click_link 'Edit Event'

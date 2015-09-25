@@ -12,7 +12,7 @@ class EventsController < ApplicationController
     if @event.save
       Attendance.create(attendee_id: current_user.id,
                         attended_event_id: @event.id)
-      redirect_to @event
+      redirect_to new_event_address_path(@event)
       flash[:success] = "Successfully created #{@event.name}"
     else
       render :new
