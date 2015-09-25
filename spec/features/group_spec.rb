@@ -23,9 +23,16 @@ feature 'group creation' do
       fill_in 'Description', with: 'Now even newer!'
       select(category.name)
       click_button 'Create Group'
-      expect(current_path).to eq group_path(user.owned_groups.last)
-      group = Group.last
-      expect(group.members.include?(user)).to eq true
+      expect(Group.last.members.include?(user)).to eq true
+
+      # Address
+      expect(current_path).to eq new_group_address_path(Group.last)
+      fill_in 'Location', with: 'Seattle'
+      click_button 'Create Address'
+      expect(Group.last.address.latitude).not_to eq nil
+      expect(current_path).to eq group_path(Group.last)
+
+
 
       # Edit and Update
       click_link 'Edit Group'
