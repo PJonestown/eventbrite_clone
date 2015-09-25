@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   has_one :profile
 
   has_one :address, as: :addressable
-  accepts_nested_attributes_for :address
+  # accepts_nested_attributes_for :address
 
   validates :username, uniqueness: true, presence: true
 end

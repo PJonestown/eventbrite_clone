@@ -33,6 +33,7 @@ class AddressesController < ApplicationController
   end
 
   def update
+    @addressable = find_addressable
     respond_to do |format|
       if @address.update(address_params)
         format.html { redirect_to @address, notice: 'Address was successfully updated.' }
@@ -67,8 +68,5 @@ class AddressesController < ApplicationController
           return $1.classify.constantize.find(value)
         end
       end
-      #if params[:gathering_id]
-       # Gathering.find(params[:gathering_id])
-      #end
     end
 end
