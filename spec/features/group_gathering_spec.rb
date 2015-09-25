@@ -25,8 +25,13 @@ feature 'gathering creation' do
       fill_in 'Name', with: 'New title'
       fill_in 'Description', with: 'Desc'
       click_button 'Create Gathering'
+
+      # Address
+      expect(current_path).to eq new_gathering_address_path(Gathering.last)
+      fill_in 'Location', with: 'Seattle'
+      click_button 'Create Address'
+      expect(Gathering.last.address.latitude).not_to eq nil
       expect(current_path).to eq gathering_path(Gathering.last)
-      expect(page).to have_content 'New title'
 
       # Editing and Updating
       click_link 'Edit'

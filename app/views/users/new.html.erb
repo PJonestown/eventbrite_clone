@@ -3,6 +3,9 @@
     <div class = 'col-sm-offset-4 col-sm-4'>
       <%= simple_form_for @user do |f| %>
         <%= f.input :username, required: false, autofocus: true %>
+        <%= f.simple_fields_for :addresses do |a| %>
+          <%= a.input :location %> 
+        <% end %>
         <%= f.submit 'Create User', class: 'btn btn-primary'%>
       <% end %>
     </div>

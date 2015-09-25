@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :addresses
+  # resources :addresses
   get 'happenings/index'
 
   root to: 'happenings#index'

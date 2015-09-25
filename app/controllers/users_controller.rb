@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   def new
     @user = User.new
+    #@user.address = Address.new
+    @user.build_address
   end
 
   def show
@@ -25,6 +27,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username)
+    params.require(:user).permit(:username, :address_attributes => [:id, 
+                                                                   :location, 
+                                                                   :latitude, 
+                                                                   :longitude, 
+                                                                   :addressable_id, 
+                                                                   :addressable_type])
   end
 end

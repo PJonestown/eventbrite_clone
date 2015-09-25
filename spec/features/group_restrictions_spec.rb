@@ -26,7 +26,8 @@ feature 'group restrictions' do
     fill_in 'Name', with: 'Anything'
     fill_in 'Description', with: 'A new description'
     click_button 'Create Gathering'
-    expect(current_path).to eq gathering_path(Gathering.last)
+    expect(current_path).to eq new_gathering_address_path(Gathering.last)
+    visit gathering_path(Gathering.last)
     expect(page).to have_content 'Anything'
 
     # Change restricted to true
@@ -45,7 +46,8 @@ feature 'group restrictions' do
     fill_in 'Name', with: 'Mod gathering'
     fill_in 'Description', with: 'A new description'
     click_button 'Create Gathering'
-    expect(current_path).to eq gathering_path(Gathering.last)
+    expect(current_path).to eq new_gathering_address_path(Gathering.last)
+    visit gathering_path(Gathering.last)
     expect(page).to have_content 'Mod gathering'
   end
 end

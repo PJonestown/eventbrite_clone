@@ -2,13 +2,15 @@ class AddressesController < ApplicationController
   before_action :set_address, only: [:show, :edit, :update, :destroy]
 
   def index
-    @addresses = Address.all
+    @addressable = find_addressable
+    @addresses = @addressable.address
   end
 
   def show
   end
 
   def new
+    @addressable = find_addressable
     @address = Address.new
   end
 
@@ -16,11 +18,12 @@ class AddressesController < ApplicationController
   end
 
   def create
-    @address = Address.new(address_params)
+    @addressable = find_addressable
+    @address = @addressable.build_address(address_params)
 
     respond_to do |format|
       if @address.save
-        format.html { redirect_to @address, notice: 'Address was successfully created.' }
+        format.html { redirect_to @addressable, notice: 'Address was successfully created.' }
         format.json { render :show, status: :created, location: @address }
       else
         format.html { render :new }
@@ -64,5 +67,8 @@ class AddressesController < ApplicationController
           return $1.classify.constantize.find(value)
         end
       end
+      #if params[:gathering_id]
+       # Gathering.find(params[:gathering_id])
+      #end
     end
 end

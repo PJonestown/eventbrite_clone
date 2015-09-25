@@ -17,7 +17,7 @@ class GatheringsController < ApplicationController
     @gathering.creator_id = current_user.id
     @gathering.approved = false if @group.restricted && !privileged_member?
     if @gathering.save
-      redirect_to @gathering
+      redirect_to new_gathering_address_path(@gathering)
       flash[:success] = "#{@gathering.name} created for #{@group.name}"
     else
       render :new

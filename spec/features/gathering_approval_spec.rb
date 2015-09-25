@@ -24,7 +24,7 @@ feature 'private group' do
     fill_in 'Name', with: 'a name'
     fill_in 'Description', with: 'a description'
     click_button 'Create Gathering'
-    expect(current_path).to eq gathering_path(Gathering.last)
+    expect(current_path).to eq new_gathering_address_path(Gathering.last)
     visit group_path(@group)
     expect(page).not_to have_content 'a name'
 
