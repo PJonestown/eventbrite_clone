@@ -1,5 +1,6 @@
 class AddressesController < ApplicationController
   before_action :set_address, only: [:show, :edit, :update, :destroy]
+  before_action :users_only, except: [:index, :show]
 
   def index
     @addressable = find_addressable
@@ -68,5 +69,9 @@ class AddressesController < ApplicationController
           return $1.classify.constantize.find(value)
         end
       end
+    end
+
+    def users_only
+      redirect_to sign_in_path unless signed_in?
     end
 end

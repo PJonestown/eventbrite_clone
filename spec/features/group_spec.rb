@@ -32,8 +32,6 @@ feature 'group creation' do
       expect(Group.last.address.latitude).not_to eq nil
       expect(current_path).to eq group_path(Group.last)
 
-
-
       # Edit and Update
       click_link 'Edit Group'
       fill_in 'Name', with: 'Edited Name'

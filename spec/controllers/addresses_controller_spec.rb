@@ -2,138 +2,115 @@ require 'rails_helper'
 
 RSpec.describe AddressesController, type: :controller do
 
+  let(:address) {
+    create(:address)
+  }
+
+  let(:user) {
+    create(:user)
+  }
+
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    attributes_for(:other_address)
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    attributes_for(:invalid_address)
   }
-
-  let(:valid_session) { {} }
 
   let(:group) {
     create(:group)
   }
 
-  describe "GET #index" do
-    it "assigns all addresses as @addresses" do
-      address = Address.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:addresses)).to eq([address])
+
+  before do
+    Geocoder.configure(:lookup => :test)
+
+    Geocoder::Lookup::Test.add_stub(
+      'New York', [
+        {
+          'location'     => 'New York',
+          'latitude'     => 40.7143528,
+          'longitude'    => -74.0059731
+        }
+      ]
+    )
+
+    Geocoder::Lookup::Test.add_stub(
+
+      'Chicago', [
+        {
+          'location'    => 'Chicago',
+          'latitude'    => 41.8781136,
+          'longitude'   => -87.6297982
+        }
+      ]
+    )
+  end
+
+
+  describe 'GET #show' do
+    it 'should render the show template' do
+      get :show, :group_id => group, id: address
+      expect(response).to render_template :show
+    end
+
+    it 'should assign @address to the correct address' do
+      get :show, group_id: group, id: address
+      expect(assigns(:address)).to eq address
     end
   end
 
-  describe "GET #show" do
-    it "assigns the requested address as @address" do
-      address = Address.create! valid_attributes
-      get :show, {:id => address.to_param}, valid_session
-      expect(assigns(:address)).to eq(address)
-    end
-  end
+  describe 'GET #new' do
+    context 'user' do
 
-  describe "GET #new" do
-    it "assigns a new address as @address" do
-      get :new, {:group_id => group}, valid_session
-      expect(assigns(:address)).to be_a_new(Address)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested address as @address" do
-      address = Address.create! valid_attributes
-      get :edit, {:id => address.to_param}, valid_session
-      expect(assigns(:address)).to eq(address)
-    end
-  end
-
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Address" do
-        expect {
-          post :create, {:address => valid_attributes}, valid_session
-        }.to change(Address, :count).by(1)
+      before do
+        request.session[:user_id] = user.id
       end
 
-      it "assigns a newly created address as @address" do
-        post :create, {:address => valid_attributes}, valid_session
-        expect(assigns(:address)).to be_a(Address)
-        expect(assigns(:address)).to be_persisted
+      it 'should render the new template' do
+        get :new, :group_id => group
+        expect(response).to render_template :new
       end
 
-      it "redirects to the created address" do
-        post :create, {:address => valid_attributes}, valid_session
-        expect(response).to redirect_to(Address.last)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns a newly created but unsaved address as @address" do
-        post :create, {:address => invalid_attributes}, valid_session
+      it 'should assign @address to a new address' do
+        get :new, group_id: group
         expect(assigns(:address)).to be_a_new(Address)
       end
+    end
 
-      it "re-renders the 'new' template" do
-        post :create, {:address => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
+    context 'guest' do
+      it 'should redirect' do
+        get :new, group_id: group
+        expect(response).to have_http_status :redirect
       end
     end
   end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+  describe 'GET #edit' do
+    context 'user' do
 
-      it "updates the requested address" do
-        address = Address.create! valid_attributes
-        put :update, {:id => address.to_param, :address => new_attributes}, valid_session
-        address.reload
-        skip("Add assertions for updated state")
+      before do
+        request.session[:user_id] = user.id
       end
 
-      it "assigns the requested address as @address" do
-        address = Address.create! valid_attributes
-        put :update, {:id => address.to_param, :address => valid_attributes}, valid_session
-        expect(assigns(:address)).to eq(address)
+      it 'should render the edit template' do
+        get :edit, group_id: group, id: address
+        expect(response).to render_template :edit
       end
 
-      it "redirects to the address" do
-        address = Address.create! valid_attributes
-        put :update, {:id => address.to_param, :address => valid_attributes}, valid_session
-        expect(response).to redirect_to(address)
+      it 'should assign @address to the correct address' do
+        get :edit, group_id: group, id: address
+        expect(assigns(:address)).to eq address
       end
     end
 
-    context "with invalid params" do
-      it "assigns the address as @address" do
-        address = Address.create! valid_attributes
-        put :update, {:id => address.to_param, :address => invalid_attributes}, valid_session
-        expect(assigns(:address)).to eq(address)
-      end
-
-      it "re-renders the 'edit' template" do
-        address = Address.create! valid_attributes
-        put :update, {:id => address.to_param, :address => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
+    context 'guest' do
+      it 'should redirect' do
+        get :edit, group_id: group, id: address
+        expect(response).to have_http_status :redirect
       end
     end
   end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested address" do
-      address = Address.create! valid_attributes
-      expect {
-        delete :destroy, {:id => address.to_param}, valid_session
-      }.to change(Address, :count).by(-1)
-    end
-
-    it "redirects to the addresses list" do
-      address = Address.create! valid_attributes
-      delete :destroy, {:id => address.to_param}, valid_session
-      expect(response).to redirect_to(addresses_url)
-    end
-  end
-
 end
+
