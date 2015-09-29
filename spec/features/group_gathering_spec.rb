@@ -1,5 +1,6 @@
 require 'rails_helper'
 include IntegrationHelper
+include GeocoderStubs
 
 feature 'gathering creation' do
   before :each do
@@ -28,7 +29,7 @@ feature 'gathering creation' do
 
       # Address
       expect(current_path).to eq new_gathering_address_path(Gathering.last)
-      fill_in 'Location', with: 'Seattle'
+      fill_in 'Location', with: 'New York'
       click_button 'Create Address'
       expect(Gathering.last.address.latitude).not_to eq nil
       expect(current_path).to eq gathering_path(Gathering.last)

@@ -1,4 +1,5 @@
 require 'rails_helper'
+include GeocoderStubs
 
 feature 'user sign up proccess' do
   it 'should create new user and profile' do
@@ -10,7 +11,7 @@ feature 'user sign up proccess' do
 
     # Address
     expect(current_path).to eq new_user_address_path(User.last)
-    fill_in 'Location', with: 'New York, NY, United States'
+    fill_in 'Location', with: 'New York'
     click_button 'Create Address'
     expect(User.last.address.latitude).not_to eq nil
     expect(current_path).to eq user_path(User.last)

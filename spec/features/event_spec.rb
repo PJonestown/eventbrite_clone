@@ -1,5 +1,6 @@
 require 'rails_helper'
 include IntegrationHelper
+include GeocoderStubs
 
 feature 'event' do
   it 'should create, edit, and destroy an event' do
@@ -20,7 +21,7 @@ feature 'event' do
 
     # Address
     expect(current_path).to eq new_event_address_path(event)
-    fill_in 'Location', with: 'Seattle'
+    fill_in 'Location', with: 'New York'
     click_button 'Create Address'
     expect(event.address.latitude).not_to eq nil
     expect(current_path).to eq event_path(event)

@@ -1,5 +1,6 @@
 require 'rails_helper'
 include IntegrationHelper
+include GeocoderStubs
 
 feature 'group creation' do
   context 'signed out guest' do
@@ -27,7 +28,7 @@ feature 'group creation' do
 
       # Address
       expect(current_path).to eq new_group_address_path(Group.last)
-      fill_in 'Location', with: 'Seattle'
+      fill_in 'Location', with: 'New York'
       click_button 'Create Address'
       expect(Group.last.address.latitude).not_to eq nil
       expect(current_path).to eq group_path(Group.last)
