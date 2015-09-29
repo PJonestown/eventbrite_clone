@@ -6,6 +6,7 @@ require 'capybara/rails'
 require 'database_cleaner'
 require 'shoulda/matchers'
 require 'support/integration_helper'
+require 'support/geocoder_stubs'
 
 ActiveRecord::Migration.maintain_test_schema!
 
