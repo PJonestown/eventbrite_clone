@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :event do
     name "Ruby meetup"
     description "Free pizza and beer!"
-    date "2015-07-09"
+    date Date.today + 3.days
 
     factory :another_event do
       name "Backroom 100nl poker meetup"

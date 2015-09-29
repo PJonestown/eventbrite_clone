@@ -2,10 +2,14 @@ FactoryGirl.define do
   factory :gathering do
     name "MyString"
     description "MyString"
-    date "2015-07-23"
+    date Date.today + 4.days
     approved true
     creator_id 1
     group_id 1
+
+    factory :other_gathering do
+      name 'another'
+    end
 
     factory :invalid_gathering do
       name ''
