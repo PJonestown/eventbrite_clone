@@ -7,3 +7,9 @@
     <p><%= link_to happening.name, happening %></p>
   <% end %>
 <% end %>
+
+<% if signed_in? && current_user.address%>
+  <% @addresses.each do |a| %>
+    <p><%=a%></p>
+  <% end %>
+<% end %>

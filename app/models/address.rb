@@ -6,4 +6,6 @@ class Address < ActiveRecord::Base
   geocoded_by :location
   before_validation :geocode,
     :if => ->(obj) { obj.location_changed? }
+
+  acts_as_geolocated
 end

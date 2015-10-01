@@ -13,6 +13,7 @@ gem 'bootstrap-sass'
 gem 'simple_form'
 gem 'geocoder'
 gem 'typeahead-addresspicker-rails'
+gem 'activerecord-postgres-earthdistance'
 
 gem "bullet", :group => "development"
 
