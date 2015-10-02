@@ -11,6 +11,13 @@ class HappeningsController < ApplicationController
       @addresses = Address.within_radius(50, current_user.address.latitude,
                                             current_user.address.longitude)
       @addresses = @addresses.where(:addressable_type => ['Event', 'Gathering'])
+
+    else
+      @location = request.location
+      @addresses = Address.within_radius(5000, @location.latitude.to_f,
+                                         @location.longitude.to_f)
+      @addresses = @addresses.where(:addressable_type => ['Event', 'Gathering'])
+
     end
 
 

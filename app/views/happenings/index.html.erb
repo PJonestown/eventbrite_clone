@@ -1,5 +1,17 @@
 <h1>Happenings#index</h1>
 
+<% if !signed_in? %>
+  <ul>
+    <li><%= @location.ip %></li>
+    <li><%= @location.latitude %></li>
+    <li><%= @location.longitude %></li>
+    <li><%= @location.city %></li>
+    <li><%= @location.metrocode %></li>
+    <li><%= @location.country_code %></li>
+  </ul>
+<% end %>
+  
+
 <% @happenings.map(&:date).uniq.each do |date| %>
   <h3><%= date.to_formatted_s(:short) %></h3>
   <% happenings = @happenings.select { |happening| happening.date == date } %>
