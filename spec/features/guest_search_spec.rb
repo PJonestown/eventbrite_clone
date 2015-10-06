@@ -13,6 +13,15 @@ feature 'user search' do
     #                                             :city => 'New York',
      #                                            :country_code => 'US')
     #end
+allow_any_instance_of(ActionDispatch::Request).to receive(:location) do 
+   instance_double("Geocoder::Result::Freegeoip", :latitude => 40.7320,
+                                                  :longitude => -73.989,
+                                                  :ip => '72.229.28.185',
+                                                  :city => 'New York',
+                                                  :metrocode => 10003,
+                                                  :country_code => 'US')
+
+end
 
     page.driver.options[:headers] = { 'REMOTE_ADDR' => '72.229.28.185' }
     user = create(:user)
@@ -35,7 +44,6 @@ feature 'user search' do
 
   it 'should only show New York happenings' do
     visit root_path
-    save_and_open_page
     expect(page).to have_content @event.name
     expect(page).to have_content @other_event.name
     expect(page).to have_content @gathering.name
