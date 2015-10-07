@@ -2,10 +2,11 @@ require 'rails_helper'
 include IntegrationHelper
 
 feature 'attending an event' do
-  before :each do
+  before do
     first_user = create(:user)
     @event = create(:event, creator_id: first_user.id)
     @user = create(:other_user)
+    create(:address, addressable_type: 'User', addressable_id: @user.id)
   end
 
   context 'signed in user' do

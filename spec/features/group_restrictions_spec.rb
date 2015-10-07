@@ -2,11 +2,14 @@ require 'rails_helper'
 include IntegrationHelper
 
 feature 'group restrictions' do
-  before :each do
+  before do
+
     @owner = create(:user)
     @group = create(:group, owner_id: @owner.id)
     @user = create(:other_user)
+    create(:address, addressable_type: 'User', addressable_id: @user.id)
     @mod = create(:user, username: 'the_mod')
+    create(:address, addressable_type: 'User', addressable_id: @mod.id)
     Membership.create(member_id: @owner.id,
                       group_membership_id: @group.id)
     Membership.create(member_id: @user.id,

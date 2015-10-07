@@ -2,7 +2,7 @@ require 'rails_helper'
 include IntegrationHelper
 
 feature 'attending an event' do
-  before :each do
+  before do
     first_user = create(:user)
     @group = create(:group, owner_id: first_user.id)
     @user = create(:other_user)

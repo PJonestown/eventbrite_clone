@@ -7,23 +7,11 @@ feature 'user search' do
 
   before do
 
-    #allow_any_instance_of(ActionDispatch::Request).to receive(:location) do 
-  #instance_double("Geocoder::Result::Freegeoip", :latitude => 40.732,
-   #                                              :longitude => -73.989,
-    #                                             :city => 'New York',
-     #                                            :country_code => 'US')
-    #end
-allow_any_instance_of(ActionDispatch::Request).to receive(:location) do 
-   instance_double("Geocoder::Result::Freegeoip", :latitude => 40.7320,
-                                                  :longitude => -73.989,
-                                                  :ip => '72.229.28.185',
-                                                  :city => 'New York',
-                                                  :metrocode => 10003,
-                                                  :country_code => 'US')
-
-end
+    #ip_response_file = File.new("spec/support/ip_response_file.txt")
+    #stub_request(:get, "http://freegeoip.net/json/72.229.28.185").to_return(ip_response_file)
 
     page.driver.options[:headers] = { 'REMOTE_ADDR' => '72.229.28.185' }
+
     user = create(:user)
     @group = create(:group, owner_id: user.id)
     @event = create(:event, creator_id: user.id)

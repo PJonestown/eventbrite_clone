@@ -23,18 +23,4 @@ module GeocoderStubs
     ]
   )
 
-
-  Geocoder::Lookup::Test.add_stub(
-
-    '72.229.28.185', [
-      {
-        'latitude'      => 40.732,
-        'longitude'     => -73.989,
-        'city'          => 'New York',
-        'country_code'  => 'US'
-      }
-    ]
-  )
-
-
 end

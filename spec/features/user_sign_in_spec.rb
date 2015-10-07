@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 feature 'user sign in/out proccess' do
+
   context 'registered user' do
     it 'should sign in/out the user' do
       # Sign in

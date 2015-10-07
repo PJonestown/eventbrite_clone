@@ -20,6 +20,7 @@ feature 'attending a group gathering' do
       it 'should attend/un-attend gathering' do
         # non-member
         user = create(:other_user)
+        create(:address, addressable_type: 'User', addressable_id: user.id)
         sign_in user
 
         visit gathering_path(@gathering)

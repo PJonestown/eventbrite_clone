@@ -5,6 +5,7 @@ include GeocoderStubs
 feature 'gathering creation' do
   before :each do
     @user = create(:user)
+    create(:address, addressable_type: 'User', addressable_id: @user.id)
     @group = create(:group, owner_id: @user.id)
     Membership.create(member_id: @user.id, group_membership_id: @group.id)
   end

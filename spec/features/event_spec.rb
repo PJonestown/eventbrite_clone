@@ -3,8 +3,10 @@ include IntegrationHelper
 include GeocoderStubs
 
 feature 'event' do
+
   it 'should create, edit, and destroy an event' do
     user = create(:user)
+    create(:address, addressable_type: 'User', addressable_id: user.id)
     sign_in(user)
 
     # New and Create

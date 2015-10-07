@@ -2,10 +2,12 @@ require 'rails_helper'
 include IntegrationHelper
 
 feature 'private group' do
-  before :each do
+  before do
+
     owner = create(:user)
     @group = create(:private_group, owner_id: owner.id, restricted: true)
     @user = create(:other_user)
+    create(:address, addressable_type: 'User', addressable_id: @user.id)
     @mod = create(:user, username: 'the_mod')
     Membership.create(member_id: @mod.id, group_membership_id: @group.id)
     Moderation.create(moderator_id: @mod.id, moderated_group_id: @group.id)

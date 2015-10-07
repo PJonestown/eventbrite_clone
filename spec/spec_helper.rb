@@ -1,4 +1,9 @@
 RSpec.configure do |config|
+  config.before(:each) do
+    ip_response_file = File.new("spec/support/ip_response_file.txt")
+    stub_request(:get, "http://freegeoip.net/json/72.229.28.185").to_return(ip_response_file)
+  end
+
   config.expect_with :rspec do |expectations|
 
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

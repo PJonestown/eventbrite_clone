@@ -4,6 +4,7 @@ include GeocoderStubs
 
 feature 'group creation' do
   context 'signed out guest' do
+
     it 'should redirect to sign up' do
       visit root_path
       click_link 'Start Group'
@@ -14,6 +15,7 @@ feature 'group creation' do
   context 'signed in user' do
     it 'should create, edit, and destroy group' do
       user = create(:user)
+      create(:address, addressable_type: 'User', addressable_id: user.id)
       category = create(:category)
       sign_in user
 
