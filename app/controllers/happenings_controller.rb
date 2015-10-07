@@ -1,33 +1,57 @@
 class HappeningsController < ApplicationController
   def index
     if signed_in? && current_user.address
-      #@addresses = Address.where(:addressable_type => ["Gathering", "Event"])
-     # @addresses = @addresses.witihin_radius(50, current_user.address.latitude,
-      #                     current_user.address.longitude)
-    #end
+      case params[:radius]
 
-    #gatherings = @addresses.where(addressable_type: 'Gathering')
-    #events = @addresses.where(addressable_type: 'Event'
-      @addresses = Address.within_radius(50, current_user.address.latitude,
-                                            current_user.address.longitude)
-      @addresses = @addresses.where(:addressable_type => ['Event', 'Gathering'])
-
+        when 50
+           @addresses = Address.within_radius(80467, current_user.address.latitude,
+                                         current_user.address.longitude).where(
+                                           :addressable_type => ['Event', 'Gathering'])
+        when 100
+           @addresses = Address.within_radius(160934, current_user.address.latitude,
+                                         current_user.address.longitude).where(
+                                           :addressable_type => ['Event', 'Gathering'])
+        else
+          @addresses = Address.within_radius(40234, current_user.address.latitude,
+                                         current_user.address.longitude).where(
+                                           :addressable_type => ['Event', 'Gathering'])
+      end
     else
-      @location = request.location
-      @addresses = Address.within_radius(5000, @location.latitude.to_f,
-                                         @location.longitude.to_f)
-      @addresses = @addresses.where(:addressable_type => ['Event', 'Gathering'])
 
+      @location = request.location
+
+      case params[:radius]
+        when 50
+          @addresses = Address.within_radius(80467, @location.latitude.to_f,
+                                         @location.longitude.to_f).where(
+                                           :addressable_type => ['Event', 'Gathering'])
+
+        when 100
+           @addresses = Address.within_radius(40234, @location.latitude.to_f,
+                                         @location.longitude.to_f).where(
+                                           :addressable_type => ['Event', 'Gathering'])
+        else
+           @addresses = Address.within_radius(40234, @location.latitude.to_f,
+                                         @location.longitude.to_f).where(
+                                           :addressable_type => ['Event', 'Gathering'])
+
+      end
     end
 
 
-    #@happenings = (gather + events).sort do |a, b|
-     # a.date <=> b.date
-    #end
+    #@addresses.joins
+
+    # Return corresponding Gathering and Event instances
     @happenings = @addresses.includes(:addressable).map(&:addressable)
-    #@happenings = @happenings.where("date >= ?", Time.zone.today)
+
     @happenings = @happenings.sort do |a, b|
       a.date <=> b.date
     end
   end
+
+
+
+ # http://stackoverflow.com/questions/16042044/rails-3-2-undefined-method-where-for-array-query-of-model-where
+  # SELECT addresses.* FROM addresses
+  # https://www.ruby-forum.com/topic/188459
 end
