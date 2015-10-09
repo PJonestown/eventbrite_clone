@@ -6,7 +6,10 @@
     <div>
       <%= text_field_tag :search, params[:search],
       placeholder: 'All groups', type: :search, style: 'width: 150px' %>
-      <label> within
+      <label> from
+        <% categories_array = Category.all.map { |c| [c.name, c.id] } %>
+        <%= select_tag :category, options_for_select(categories_array), :include_blank => 'All categories' %>
+      within
         <%= select_tag :radius, options_for_select([25, 50, 100]) %>
         miles of <%=@location ? @location.city : current_user.address.location%>
       </label>

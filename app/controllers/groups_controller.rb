@@ -65,10 +65,18 @@ class GroupsController < ApplicationController
       end
     end
 
-    @groups = @addresses.map(&:addressable)
+    if params[:category]
 
+      @groups = @addresses.map(&:addressable)
+      categorized_groups = []
+      @groups.each do |group|
+        categorized_groups << group if group.category_id ==params[:category].to_i
+      end
+      @groups = categorized_groups
 
-    #@groups = Group.all.includes(:owner)
+    else
+      @groups = @addresses.map(&:addressable)
+    end
   end
 
   def edit
