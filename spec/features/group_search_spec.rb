@@ -1,0 +1,47 @@
+require 'rails_helper'
+include GeocoderStubs
+include IntegrationHelper
+
+feature 'group search' do
+
+  before do
+
+    page.driver.options[:headers] = { 'REMOTE_ADDR' => '72.229.28.185' }
+
+    @user = create(:user)
+    @group = create(:group, owner_id: @user.id)
+    @other_group = create(:group, owner_id: @user.id, name: 'another')
+    @far_group = create(:group, owner_id: @user.id, name: 'someother')
+
+    [@group, @other_group, @user].each do |h|
+      Address.create(location: 'New York',
+                     addressable_type: h.class.name,
+                     addressable_id: h.id)
+    end
+
+    Address.create(location: 'Chicago',
+                   addressable_type: 'Group',
+                   addressable_id: @far_group.id)
+  end
+
+  context 'guest' do
+
+    it 'should only show nearby groups' do
+      visit groups_path
+      expect(page).to have_content @group.name
+      expect(page).to have_content @other_group.name
+      expect(page).not_to have_content @far_group.name
+    end
+  end
+
+  context 'user' do
+    it 'should only show nearby groups' do
+      sign_in @user
+      visit groups_path
+      expect(page).to have_content @group.name
+      expect(page).to have_content @other_group.name
+      expect(page).not_to have_content @far_group.name
+
+    end
+  end
+end

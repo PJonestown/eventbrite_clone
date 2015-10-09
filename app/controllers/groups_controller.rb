@@ -27,7 +27,48 @@ class GroupsController < ApplicationController
   end
 
   def index
-    @groups = Group.all.includes(:owner)
+    if signed_in? && current_user.address
+      case params[:radius]
+
+        when 50
+           @addresses = Address.within_radius(80467, current_user.address.latitude,
+                                         current_user.address.longitude).where(
+                                           :addressable_type => ['Group'])
+        when 100
+           @addresses = Address.within_radius(160934, current_user.address.latitude,
+                                         current_user.address.longitude).where(
+                                           :addressable_type => ['Group'])
+        else
+          @addresses = Address.within_radius(40234, current_user.address.latitude,
+                                         current_user.address.longitude).where(
+                                           :addressable_type => ['Group'])
+      end
+    else
+
+      @location = request.location
+
+      case params[:radius]
+        when 50
+          @addresses = Address.within_radius(80467, @location.latitude.to_f,
+                                         @location.longitude.to_f).where(
+                                           :addressable_type => ['Group'])
+
+        when 100
+           @addresses = Address.within_radius(40234, @location.latitude.to_f,
+                                         @location.longitude.to_f).where(
+                                           :addressable_type => ['Group'])
+        else
+           @addresses = Address.within_radius(40234, @location.latitude.to_f,
+                                         @location.longitude.to_f).where(
+                                           :addressable_type => ['Group'])
+
+      end
+    end
+
+    @groups = @addresses.map(&:addressable)
+
+
+    #@groups = Group.all.includes(:owner)
   end
 
   def edit
