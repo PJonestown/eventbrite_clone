@@ -1,40 +1,60 @@
 class HappeningsController < ApplicationController
   def index
-    if signed_in? && current_user.address
+    if params[:city]
       case params[:radius]
 
-        when 50
-           @addresses = Address.within_radius(80467, current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Event', 'Gathering'])
-        when 100
-           @addresses = Address.within_radius(160934, current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Event', 'Gathering'])
-        else
-          @addresses = Address.within_radius(40234, current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Event', 'Gathering'])
+      when 50
+        @addresses = Address.near(params[:city], 50)
+
+      when 100
+        @addresses = Address.near(params[:city], 100)
+
+      else
+        @addresses = Address.near(params[:city], 25)
       end
     else
 
-      @location = request.location
 
-      case params[:radius]
-        when 50
-          @addresses = Address.within_radius(80467, @location.latitude.to_f,
-                                         @location.longitude.to_f).where(
-                                           :addressable_type => ['Event', 'Gathering'])
+      if signed_in? && current_user.address
+        case params[:radius]
 
-        when 100
-           @addresses = Address.within_radius(40234, @location.latitude.to_f,
-                                         @location.longitude.to_f).where(
+          when 50
+             @addresses = Address.within_radius(80467, current_user.address.latitude,
+                                         current_user.address.longitude).where(
                                            :addressable_type => ['Event', 'Gathering'])
+          when 100
+             @addresses = Address.within_radius(160934, current_user.address.latitude,
+                                           current_user.address.longitude).where(
+                                             :addressable_type => ['Event', 'Gathering'])
+          else
+            @addresses = Address.within_radius(40234, current_user.address.latitude,
+                                           current_user.address.longitude).where(
+                                             :addressable_type => ['Event', 'Gathering'])
+        end
+      else
+
+        @location = request.location
+        if @location
+
+          case params[:radius]
+            when 50
+              @addresses = Address.within_radius(80467, @location.latitude.to_f,
+                                             @location.longitude.to_f).where(
+                                               :addressable_type => ['Event', 'Gathering'])
+
+            when 100
+              @addresses = Address.within_radius(40234, @location.latitude.to_f,
+                                             @location.longitude.to_f).where(
+                                               :addressable_type => ['Event', 'Gathering'])
+            else
+               @addresses = Address.within_radius(40234, @location.latitude.to_f,
+                                             @location.longitude.to_f).where(
+                                               :addressable_type => ['Event', 'Gathering'])
+
+          end
         else
-           @addresses = Address.within_radius(40234, @location.latitude.to_f,
-                                         @location.longitude.to_f).where(
-                                           :addressable_type => ['Event', 'Gathering'])
-
+          @addresses = Address.all
+        end
       end
     end
 

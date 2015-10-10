@@ -8,13 +8,21 @@
       placeholder: 'All happenings', type: :search, style: 'width: 150px' %>
       <label> within
         <%= select_tag :radius, options_for_select([25, 50, 100]) %>
-        miles of <%=@location ? @location.city : current_user.address.location%>
+        miles of 
+        <%= text_field_tag :city, params[:city], 
+          placeholder:  if @location
+                          @location.city
+                        elsif signed_in? && current_user.address
+                          current_user.address.location
+                        elsif params[:city]
+                          params[:city]
+                     end%>
       </label>
     </div>
     <div><%= submit_tag 'Search' %></div>
   <% end %>
 
-<% if !signed_in? %>
+<% if !signed_in? && @location%>
   <ul>
     <li><%= @location.ip %></li>
     <li><%= @location.latitude %></li>
@@ -26,12 +34,16 @@
 <% end %>
   
 
-<% @happenings.map(&:date).uniq.each do |date| %>
-  <h3><%= date.to_formatted_s(:short) %></h3>
-  <% happenings = @happenings.select { |happening| happening.date == date } %>
-  <% happenings.each do |happening| %>
-    <p><%= link_to happening.name, happening %></p>
+<% if @happenings.any? %>
+  <% @happenings.map(&:date).uniq.each do |date| %>
+    <h3><%= date.to_formatted_s(:short) %></h3>
+    <% happenings = @happenings.select { |happening| happening.date == date } %>
+    <% happenings.each do |happening| %>
+      <p><%= link_to happening.name, happening %></p>
+    <% end %>
   <% end %>
+<% else %>
+  <p> No nearby happenings </p>
 <% end %>
 
 <% if signed_in? && current_user.address%>

@@ -23,4 +23,17 @@ module GeocoderStubs
     ]
   )
 
+ Geocoder::Lookup::Test.add_stub(
+
+    'hssghdsfjghafh', [
+      {
+        'location'    => nil,
+        'latitude'    => nil,
+        'longitude'   => nil
+      }
+    ]
+  )
+
+
+
 end

@@ -2,6 +2,7 @@ RSpec.configure do |config|
   config.before(:each) do
     ip_response_file = File.new("spec/support/ip_response_file.txt")
     stub_request(:get, "http://freegeoip.net/json/72.229.28.185").to_return(ip_response_file)
+    stub_request(:get, "http://freegeoip.net/json/104.15.101.238").to_timeout
   end
 
   config.expect_with :rspec do |expectations|
