@@ -16,7 +16,6 @@ gem 'geocoder'
 gem 'typeahead-addresspicker-rails'
 gem 'activerecord-postgres-earthdistance'
 gem 'rails_12factor', group: :production
-gem 'webmock'
 
 gem "bullet", :group => "development"
 
@@ -27,6 +26,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem "better_errors"
+  gem 'webmock'
 end
 
 group :test do
