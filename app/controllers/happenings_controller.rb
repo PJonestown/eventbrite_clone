@@ -4,13 +4,16 @@ class HappeningsController < ApplicationController
       case params[:radius]
 
       when 50
-        @addresses = Address.near(params[:city], 50)
+        @addresses = Address.near(params[:city], 50).where(
+                                               :addressable_type => ['Event', 'Gathering'])
 
       when 100
-        @addresses = Address.near(params[:city], 100)
+        @addresses = Address.near(params[:city], 100).where(
+                                               :addressable_type => ['Event', 'Gathering'])
 
       else
-        @addresses = Address.near(params[:city], 25)
+        @addresses = Address.near(params[:city], 25).where(
+                                               :addressable_type => ['Event', 'Gathering'])
       end
     else
 
