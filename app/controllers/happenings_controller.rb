@@ -56,7 +56,7 @@ class HappeningsController < ApplicationController
 
           end
         else
-          @addresses = Address.all
+          @addresses = Address.all.where(:addressable_type => ['Event', 'Gathering'])
         end
       end
     end
