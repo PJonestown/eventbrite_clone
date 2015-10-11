@@ -19,7 +19,6 @@
 
 
 <% @groups.each do |g| %>
-  <%= g.name %>
-  <%= g.owner %>
+  <%= link_to g.name, group_path(g) %>
 <% end %>
 
