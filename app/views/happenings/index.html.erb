@@ -10,13 +10,13 @@
         <%= select_tag :radius, options_for_select([25, 50, 100]) %>
         miles of 
         <%= text_field_tag :city, params[:city], 
-          value:  if @location
-                          @location.city
-                        elsif signed_in? && current_user.address
-                          current_user.address.location
-                        elsif params[:city]
-                          params[:city]
-                     end%>
+          value:  if params[:city]
+                    params[:city]
+                  elsif @location
+                    @location.city
+                  elsif signed_in? && current_user.address
+                    current_user.address.location
+                   end%>
       </label>
     </div>
     <div><%= submit_tag 'Search' %></div>
