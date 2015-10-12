@@ -1,40 +1,7 @@
 <h1>Happenings#index</h1>
 
 
-  <h3>Search happeinings near you: </h3>
-  <%= form_tag happenings_index_path, method: :get do %>
-    <div>
-      <%= text_field_tag :search, params[:search],
-      placeholder: 'All happenings', type: :search, style: 'width: 150px' %>
-      <label> within
-        <%= select_tag :radius, options_for_select({25 => 40234,
-                                                    50 => 80467,
-                                                    100 => 160934}) %>
-        miles of 
-        <%= text_field_tag :city, params[:city], 
-          value:  if params[:city]
-                    params[:city]
-                  elsif @location
-                    @location.city
-                  elsif signed_in? && current_user.address
-                    current_user.address.location
-                   end%>
-      </label>
-    </div>
-    <div><%= submit_tag 'Search', :name => nil %></div>
-  <% end %>
-
-<% if !signed_in? && @location%>
-  <ul>
-    <li><%= @location.ip %></li>
-    <li><%= @location.latitude %></li>
-    <li><%= @location.longitude %></li>
-    <li><%= @location.city %></li>
-    <li><%= @location.metrocode %></li>
-    <li><%= @location.country_code %></li>
-  </ul>
-<% end %>
-  
+<%= render 'search' %>
 
 <% if @happenings.any? %>
   <% @happenings.map(&:date).uniq.each do |date| %>
@@ -48,11 +15,6 @@
   <p> No nearby happenings </p>
 <% end %>
 
-<% if signed_in? && current_user.address%>
-  <% @addresses.each do |a| %>
-    <p><%=a%></p>
-  <% end %>
-<% end %>
 
 <%= link_to 'Find Events', events_path %>
 <%= link_to 'Find Groups', groups_path%>
