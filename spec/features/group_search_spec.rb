@@ -55,5 +55,14 @@ feature 'group search' do
       expect(page).not_to have_content @other_group.name
       expect(page).not_to have_content @far_group.name
     end
+
+    it 'should not fail on timeout' do
+      page.driver.options[:headers] = { 'REMOTE_ADDR' => '104.15.101.238' }
+
+      visit groups_path
+      expect(page).to have_content @group.name
+      expect(page).to have_content @other_group.name
+      expect(page).to have_content @far_group.name
+    end
   end
 end
