@@ -27,51 +27,56 @@ class GroupsController < ApplicationController
   end
 
   def index
-    if signed_in? && current_user.address
-      case params[:radius]
 
-        when 50
-           @addresses = Address.within_radius(80467, current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Group'])
-        when 100
-           @addresses = Address.within_radius(160934, current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Group'])
-        else
-          @addresses = Address.within_radius(40234, current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Group'])
+    # TODO: This breaks a test in groups_search... why?
+    #
+  #  if params[:city] && params[:city] != 
+   #   if params[:radius]
+#
+ #       @addresses = Address.near(params[:city], params[:radius]).where(
+  #                                             :addressable_type => ['Event', 'Gathering'])
+   #   else
+#
+ #       @addresses = Address.near(params[:city], 25).where(
+  #                                             :addressable_type => ['Event', 'Gathering'])
+   #   end
+   # else
+
+      if signed_in? && current_user.address
+        if params[:radius]
+
+          @addresses = Address.within_radius(params[:radius], current_user.address.latitude,
+                                          current_user.address.longitude).where(
+                                            :addressable_type => ['Group'])
+          else
+            @addresses = Address.within_radius(40234, current_user.address.latitude,
+                                          current_user.address.longitude).where(
+                                            :addressable_type => ['Group'])
+        end
+      else
+
+        @location = request.location
+
+        if params[:radius]
+          @addresses = Address.within_radius(params[:radius], @location.latitude,
+                                          @location.longitude).where(
+                                            :addressable_type => ['Group'])
+
+          else
+            @addresses = Address.within_radius(40234, @location.latitude,
+                                          @location.longitude).where(
+                                            :addressable_type => ['Group'])
+        end
       end
-    else
-
-      @location = request.location
-
-      case params[:radius]
-        when 50
-          @addresses = Address.within_radius(80467, @location.latitude.to_f,
-                                         @location.longitude.to_f).where(
-                                           :addressable_type => ['Group'])
-
-        when 100
-           @addresses = Address.within_radius(40234, @location.latitude.to_f,
-                                         @location.longitude.to_f).where(
-                                           :addressable_type => ['Group'])
-        else
-           @addresses = Address.within_radius(40234, @location.latitude.to_f,
-                                         @location.longitude.to_f).where(
-                                           :addressable_type => ['Group'])
-
-      end
-    end
+    #end
 
     if params[:category]
 
-      @groups = @addresses.map(&:addressable)
       categorized_groups = []
-      @groups.each do |group|
-        categorized_groups << group if group.category_id ==params[:category].to_i
+      @addresses.map(&:addressable).each do |group|
+        categorized_groups << group if group.category_id == params[:category].to_i
       end
+
       @groups = categorized_groups
 
     else
