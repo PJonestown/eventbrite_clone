@@ -51,7 +51,6 @@ feature 'freegeoip timeout' do
     # Manually type invalid location
     fill_in 'city', with: 'hssghdsfjghafh'
     click_button 'Search'
-    save_and_open_page
     expect(page).to have_content 'No nearby happenings'
 
     # Manually type valid location

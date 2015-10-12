@@ -7,7 +7,9 @@
       <%= text_field_tag :search, params[:search],
       placeholder: 'All happenings', type: :search, style: 'width: 150px' %>
       <label> within
-        <%= select_tag :radius, options_for_select([25, 50, 100]) %>
+        <%= select_tag :radius, options_for_select({25 => 40234,
+                                                    50 => 80467,
+                                                    100 => 160934}) %>
         miles of 
         <%= text_field_tag :city, params[:city], 
           value:  if params[:city]
@@ -19,7 +21,7 @@
                    end%>
       </label>
     </div>
-    <div><%= submit_tag 'Search' %></div>
+    <div><%= submit_tag 'Search', :name => nil %></div>
   <% end %>
 
 <% if !signed_in? && @location%>
