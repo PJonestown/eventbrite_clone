@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   def new
     @user = User.new
-    #@user.address = Address.new
     @user.build_address
   end
 
@@ -9,8 +8,18 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     # TODO: better way?
-    @upcoming_events = @user.attended_events.where("date >= ?", Time.zone.today)
-    @past_events = @user.attended_events.where("date < ?", Time.zone.today)
+    upcoming_events = @user.attended_events.where("date >= ?", Time.zone.today)
+    upcoming_gatherings = @user.attended_gatherings.where("date >= ?", Time.zone.today)
+    @upcoming_happenings = (upcoming_events + upcoming_gatherings).sort do |a, b|
+       a.date <=> b.date
+    end
+
+    past_events = @user.attended_events.where("date < ?", Time.zone.today)
+    past_gatherings = @user.attended_gatherings.where("date < ?", Time.zone.today)
+    @past_happenings = (past_events + past_gatherings).sort do |a, b|
+       a.date <=> b.date
+    end
+
   end
 
   def create
