@@ -1,36 +1,27 @@
 class HappeningsController < ApplicationController
   def index
-    if params[:city] &&  false
-      if params[:radius]
+    # If signed in user searches for a city other than the one provided in
+    # address OR if a guest searches for a city which isn't saved as a cookie
+    if signed_in? && current_user.address.location != params[:city] && params[:city] ||
+        !signed_in? && params[:city]
+      params[:radius] ||= 25
 
         @addresses = Address.near(params[:city], params[:radius]).where(
                                                :addressable_type => ['Event', 'Gathering'])
-      else
-
-        @addresses = Address.near(params[:city], 25).where(
-                                               :addressable_type => ['Event', 'Gathering'])
-      end
     else
+
       params[:radius] ||= 40234
+      set_coordinates
+      if @latitude
 
-      if signed_in? && current_user.address
-          @addresses = Address.within_radius(params[:radius], current_user.address.latitude,
-                                         current_user.address.longitude).where(
-                                           :addressable_type => ['Event', 'Gathering'])
-      else
-        @location = request.location
-        if @location
-
-
-          @addresses = Address.within_radius(params[:radius], @location.latitude.to_f,
-                                              @location.longitude.to_f).where(
+        @addresses = Address.within_radius(params[:radius], @latitude, @longitude).where(
                                                :addressable_type => ['Event', 'Gathering'])
+      else
+        @addresses = Address.all.where(:addressable_type => ['Event', 'Gathering'])
 
-        else
-          @addresses = Address.all.where(:addressable_type => ['Event', 'Gathering'])
-        end
       end
     end
+
 
     # Return corresponding Gathering and Event instances
     happenings = @addresses.includes(:addressable).map(&:addressable)
