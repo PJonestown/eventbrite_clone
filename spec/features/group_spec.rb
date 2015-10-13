@@ -27,6 +27,7 @@ feature 'group creation' do
       select(category.name)
       click_button 'Create Group'
       expect(Group.last.members.include?(user)).to eq true
+      expect(Group.last.moderators.include?(user)).to eq true
 
       # Address
       expect(current_path).to eq new_group_address_path(Group.last)

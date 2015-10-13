@@ -1,6 +1,6 @@
 class HappeningsController < ApplicationController
   def index
-    if params[:city]
+    if params[:city] &&  false
       if params[:radius]
 
         @addresses = Address.near(params[:city], params[:radius]).where(
@@ -11,36 +11,20 @@ class HappeningsController < ApplicationController
                                                :addressable_type => ['Event', 'Gathering'])
       end
     else
+      params[:radius] ||= 40234
 
       if signed_in? && current_user.address
-        if params[:radius]
           @addresses = Address.within_radius(params[:radius], current_user.address.latitude,
                                          current_user.address.longitude).where(
                                            :addressable_type => ['Event', 'Gathering'])
-  
-
-          else
-
-            @addresses = Address.within_radius(40234, current_user.address.latitude,
-                                           current_user.address.longitude).where(
-                                             :addressable_type => ['Event', 'Gathering'])
-        end
       else
-
         @location = request.location
         if @location
 
-          if params[:radius]
 
-              @addresses = Address.within_radius(params[:radius], @location.latitude.to_f,
-                                             @location.longitude.to_f).where(
+          @addresses = Address.within_radius(params[:radius], @location.latitude.to_f,
+                                              @location.longitude.to_f).where(
                                                :addressable_type => ['Event', 'Gathering'])
-
-            else
-               @addresses = Address.within_radius(40234, @location.latitude.to_f,
-                                             @location.longitude.to_f).where(
-                                               :addressable_type => ['Event', 'Gathering'])
-          end
 
         else
           @addresses = Address.all.where(:addressable_type => ['Event', 'Gathering'])

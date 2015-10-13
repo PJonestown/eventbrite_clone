@@ -34,6 +34,18 @@ module GeocoderStubs
     ]
   )
 
+ Geocoder::Lookup::Test.add_stub(
+
+    '06804', [
+      {
+        'location'    => '06804',
+        'city'        => 'Brookfield',
+        'latitude'    => 41.466090,
+        'longitude'   => -73.4062342
+      }
+    ]
+  )
+
 
 
 end
