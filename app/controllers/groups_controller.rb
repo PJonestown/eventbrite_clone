@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
     @group = current_user.owned_groups.build(group_params)
     if @group.save
       Membership.create(member_id: current_user.id, group_membership_id: @group.id)
-      Moderation.create(moderator_id: current_user.id, moderated_group_id_id: @group.id)
+      Moderation.create(moderator_id: current_user.id, moderated_group_id: @group.id)
       redirect_to new_group_address_path(@group)
       flash[:success] = "Successfully created #{@group.name}"
     else
