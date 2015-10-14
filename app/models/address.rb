@@ -21,4 +21,8 @@ class Address < ActiveRecord::Base
   def self.only_events_and_gatherings
     where(:addressable_type => ['Event', 'Gathering'])
   end
+
+  def self.groups
+    where(:addressable_type => ['Group'])
+  end
 end

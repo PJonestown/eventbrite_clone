@@ -29,63 +29,41 @@ class GroupsController < ApplicationController
 
   def index
 
-    if params[:city]
-      if params[:radius]
+    params[:radius] ||= 40234
 
-        @addresses = Address.near(params[:city], params[:radius]).where(
-                                               addressable_type: 'Group')
-      else
+    # If signed in user searches for a city other than the one provided in
+    # address OR if a guest searches for a city which isn't saved as a cookie
+    if signed_in? && current_user.address && current_user.address.location != params[:city] && params[:city] ||
+        !signed_in? && params[:city]
 
-        @addresses = Address.near(params[:city], 25).where(
-                                               addressable_type: 'Group')
-      end
+      radius_in_miles = (params[:radius].to_i / 1609)
+
+      addresses = Address.geocode_radius_search(params[:city], radius_in_miles).groups
+
     else
 
-      if signed_in? && current_user.address
-        if params[:radius]
+      set_coordinates
 
-          @addresses = Address.within_radius(params[:radius], current_user.address.latitude,
-                                          current_user.address.longitude).where(
-                                            addressable_type: 'Group')
-          else
-            @addresses = Address.within_radius(40234, current_user.address.latitude,
-                                          current_user.address.longitude).where(
-                                            addressable_type: 'Group')
-        end
+      if @lat
+        addresses = Address.psql_radius_search(params[:radius], @lat, @long).groups
       else
-
-        @location = request.location
-        if @location
-
-          if params[:radius]
-            @addresses = Address.within_radius(params[:radius], @location.latitude,
-                                            @location.longitude).where(
-                                              addressable_type:'Group')
-
-            else
-              @addresses = Address.within_radius(40234, @location.latitude,
-                                            @location.longitude).where(
-                                              addressable_type: 'Group')
-          end
-
-        else
-          @addresses = Address.all.where(addressable_type: 'Group')
-        end
+        addresses = Address.groups
       end
     end
 
     if params[:category]
 
       categorized_groups = []
-      @addresses.map(&:addressable).each do |group|
+      addresses.map(&:addressable).each do |group|
         categorized_groups << group if group.category_id == params[:category].to_i
       end
 
       @groups = categorized_groups
 
     else
-      @groups = @addresses.map(&:addressable)
+      @groups = addresses.map(&:addressable)
     end
+
   end
 
   def edit
