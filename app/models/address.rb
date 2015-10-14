@@ -14,6 +14,10 @@ class Address < ActiveRecord::Base
     within_radius(radius, lat, long)
   end
 
+  def self.geocode_radius_search(city, radius)
+    near(city, radius)
+  end
+
   def self.only_events_and_gatherings
     where(:addressable_type => ['Event', 'Gathering'])
   end

@@ -51,10 +51,10 @@ feature 'freegeoip timeout' do
     # Manually type invalid location
     fill_in 'city', with: 'hssghdsfjghafh'
     click_button 'Search'
-    expect(page).to have_content @event.name
-    expect(page).to have_content @other_event.name
-    expect(page).to have_content @gathering.name
-    expect(page).to have_content @far_gathering.name
+    expect(page).not_to have_content @event.name
+    expect(page).not_to have_content @other_event.name
+    expect(page).not_to have_content @gathering.name
+    expect(page).not_to have_content @far_gathering.name
 
 
     # Manually type valid location
