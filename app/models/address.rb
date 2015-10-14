@@ -8,4 +8,13 @@ class Address < ActiveRecord::Base
     :if => ->(obj) { obj.location_changed? }
 
   acts_as_geolocated
+
+
+  def self.psql_radius_search(radius, lat, long)
+    within_radius(radius, lat, long)
+  end
+
+  def self.only_events_and_gatherings
+    where(:addressable_type => ['Event', 'Gathering'])
+  end
 end

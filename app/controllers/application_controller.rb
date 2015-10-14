@@ -5,13 +5,13 @@ class ApplicationController < ActionController::Base
 
   def set_coordinates
       if signed_in? && current_user.address
-        @latitude = current_user.address.latitude
-        @longitude = current_user.address.longitude
+        @lat = current_user.address.latitude
+        @long = current_user.address.longitude
       else
         location = request.location
         if location
-          @latitude = location.latitude
-          @longitude = location.longitude
+          @lat = location.latitude
+          @long = location.longitude
         end
       end
   end

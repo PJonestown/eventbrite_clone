@@ -37,7 +37,6 @@ feature 'user search' do
     expect(page).not_to have_content @eighty_mile_event.name
 
     # Change radius params
-    # save_and_open_page
     select(100)
     click_button 'Search'
 
