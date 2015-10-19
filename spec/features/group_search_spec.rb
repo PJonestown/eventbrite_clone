@@ -36,26 +36,6 @@ feature 'group search' do
       expect(page).to have_content @other_group.name
       expect(page).not_to have_content @far_group.name
     end
-  end
-
-  context 'user' do
-    it 'should only show nearby groups' do
-      sign_in @user
-      visit groups_path
-      expect(page).to have_content @group.name
-      expect(page).to have_content @other_group.name
-      expect(page).not_to have_content @far_group.name
-    end
-
-    xit 'should only show groups from selected category' do
-      visit groups_path
-      select 'Tech'
-      click_button 'Search'
-      save_and_open_page
-      expect(page).to have_content @group.name
-      expect(page).not_to have_content @other_group.name
-      expect(page).not_to have_content @far_group.name
-    end
 
     it 'should not fail on timeout' do
       page.driver.options[:headers] = { 'REMOTE_ADDR' => '104.15.101.238' }
@@ -64,6 +44,28 @@ feature 'group search' do
       expect(page).to have_content @group.name
       expect(page).to have_content @other_group.name
       expect(page).to have_content @far_group.name
+    end
+  end
+
+  context 'user' do
+    before do
+      sign_in @user
+    end
+
+    it 'should only show nearby groups' do
+      visit groups_path
+      expect(page).to have_content @group.name
+      expect(page).to have_content @other_group.name
+      expect(page).not_to have_content @far_group.name
+    end
+
+    it 'should only show groups from selected category' do
+      visit groups_path
+      select 'Tech'
+      click_button 'Search'
+      expect(page).to have_content @group.name
+      expect(page).not_to have_content @other_group.name
+      expect(page).not_to have_content @far_group.name
     end
   end
 end

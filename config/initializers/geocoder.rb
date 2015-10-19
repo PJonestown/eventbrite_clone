@@ -1,6 +1,6 @@
 Geocoder.configure(
   # geocoding options
-   :timeout      => 10        # geocoding service timeout (secs)
+    :timeout      => 10        # geocoding service timeout (secs)
   # :lookup       => :opencagedata,     # name of geocoding service (symbol)
   # :language     => :en,         # ISO-639 language code
   # :use_https    => false,       # use HTTPS for lookup requests? (if supported)

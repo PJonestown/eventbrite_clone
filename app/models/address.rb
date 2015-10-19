@@ -9,7 +9,6 @@ class Address < ActiveRecord::Base
 
   acts_as_geolocated
 
-
   def self.psql_radius_search(radius, lat, long)
     within_radius(radius, lat, long)
   end
