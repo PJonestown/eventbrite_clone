@@ -31,6 +31,7 @@ feature 'private group' do
     expect(page).to have_link @user.username
     click_button "Make #{@user.username} a Member"
     expect(current_path).to eq group_memberships_path(@group)
+    expect(JoinRequest.any?).to be false
 
     # User has access to group and leaves
     sign_out

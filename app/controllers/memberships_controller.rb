@@ -9,6 +9,9 @@ class MembershipsController < ApplicationController
       @membership = Membership.new(membership_params)
       if @membership.save
         redirect_to group_memberships_path(@group)
+        old_join_request = JoinRequest.where(user_id: @membership.member_id,
+                                             group_id: @group.id).first
+        old_join_request.destroy if old_join_request
         new_member = User.find(@membership.member_id).username
         flash[:success] = "Added #{new_member} to #{@group.name}"
       else
