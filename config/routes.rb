@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
 
-  # resources :addresses
   get 'happenings/index'
 
   root to: 'happenings#index'
 
   resources :users do
-    resources :profiles
     resources :moderations
     resources :mod_resources, only: [:index]
     resources :addresses

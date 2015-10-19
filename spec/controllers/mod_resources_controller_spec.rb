@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe ModResourcesController, type: :controller do
 
-  before :each do
+  before do
     @mod = create(:user)
     request.env['HTTP_REFERER'] = 'root'
   end
 
   describe 'GET #index' do
     context 'correct user' do
-      before :each do
+      before do
         request.session[:user_id] = @mod.id
       end
 
@@ -39,7 +39,7 @@ RSpec.describe ModResourcesController, type: :controller do
     end
 
     context 'wrong user' do
-      before :each do
+      before do
         @wrong_user = create(:other_user)
         request.session[:user_id] = @wrong_user.id
       end
