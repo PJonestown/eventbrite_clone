@@ -44,4 +44,3 @@ feature 'user search' do
     expect(page).to have_content @eighty_mile_event.name
   end
 end
-

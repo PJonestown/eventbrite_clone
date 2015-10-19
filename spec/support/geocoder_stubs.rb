@@ -1,5 +1,4 @@
 module GeocoderStubs
-
   Geocoder.configure(:lookup => :test)
 
   Geocoder::Lookup::Test.add_stub(
@@ -23,7 +22,7 @@ module GeocoderStubs
     ]
   )
 
- Geocoder::Lookup::Test.add_stub(
+  Geocoder::Lookup::Test.add_stub(
 
     'hssghdsfjghafh', [
       {
@@ -34,7 +33,7 @@ module GeocoderStubs
     ]
   )
 
- Geocoder::Lookup::Test.add_stub(
+  Geocoder::Lookup::Test.add_stub(
 
     '06804', [
       {
@@ -45,7 +44,4 @@ module GeocoderStubs
       }
     ]
   )
-
-
-
 end

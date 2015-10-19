@@ -16,7 +16,6 @@ feature 'user sign up proccess' do
     expect(User.last.address.latitude).not_to eq nil
     expect(current_path).to eq user_path(User.last)
 
-
     # Edit and Update
     click_link 'Profile'
     expect(current_path).to eq user_path(User.last)

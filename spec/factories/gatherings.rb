@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :gathering do
     name "MyString"
     description "MyString"
-    date Date.today + 4.days
+    date Time.zone.today + 4.months
     approved true
     creator_id 1
     group_id 1

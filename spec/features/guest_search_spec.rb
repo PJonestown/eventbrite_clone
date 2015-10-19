@@ -1,8 +1,6 @@
 require 'rails_helper'
 include GeocoderStubs
 
-
-
 feature 'user search' do
 
   before do
@@ -19,10 +17,10 @@ feature 'user search' do
                              name: 'past_gathering',
                              creator_id: user.id,
                              group_id: @group,
-                             date: Date.today - 4.days)
+                             date: Time.zone.today - 4.days)
     @past_event = create(:event, name: 'past_event',
                          creator_id: user.id,
-                         date: Date.today - 4.days)
+                         date: Time.zone.today - 4.days)
     @unapproved_gathering = create(:unapproved_gathering, creator_id: user.id)
 
     new_york_happenings = [@event,

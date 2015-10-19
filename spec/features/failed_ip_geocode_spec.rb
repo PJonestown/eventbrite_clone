@@ -17,10 +17,10 @@ feature 'freegeoip timeout' do
                              name: 'past_gathering',
                              creator_id: user.id,
                              group_id: @group,
-                             date: Date.today - 4.days)
+                             date: Time.zone.today - 4.days)
     @past_event = create(:event, name: 'past_event',
                          creator_id: user.id,
-                         date: Date.today - 4.days)
+                         date: Time.zone.today - 4.days)
     @unapproved_gathering = create(:unapproved_gathering, creator_id: user.id)
 
     new_york_happenings = [@event,
@@ -56,7 +56,6 @@ feature 'freegeoip timeout' do
     expect(page).not_to have_content @gathering.name
     expect(page).not_to have_content @far_gathering.name
 
-
     # Manually type valid location
     fill_in 'city', with: 'New York'
     click_button 'Search'
@@ -66,5 +65,3 @@ feature 'freegeoip timeout' do
     expect(page).not_to have_content @far_gathering.name
   end
 end
-
-

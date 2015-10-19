@@ -18,7 +18,6 @@ feature 'event' do
     fill_in 'Description', with: event.description
     click_button 'Create Event'
     event = Event.last
-    #expect(current_path).to eq event_path(event)
     expect(event.attendees.include?(user)).to eq true
 
     # Address

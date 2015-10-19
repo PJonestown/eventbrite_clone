@@ -55,23 +55,24 @@ class AddressesController < ApplicationController
   end
 
   private
-    def set_address
-      @address = Address.find(params[:id])
-    end
 
-    def address_params
-      params.require(:address).permit(:location, :latitude, :longitude, :addressable_id, :addressable_type)
-    end
+  def set_address
+    @address = Address.find(params[:id])
+  end
 
-    def find_addressable
-      params.each do |name, value|
-        if name =~ /(.+).id$/
-          return $1.classify.constantize.find(value)
-        end
+  def address_params
+    params.require(:address).permit(:location, :latitude, :longitude, :addressable_id, :addressable_type)
+  end
+
+  def find_addressable
+    params.each do |name, value|
+      if name =~ /(.+).id$/
+        return $1.classify.constantize.find(value)
       end
     end
+  end
 
-    def users_only
-      redirect_to sign_in_path unless signed_in?
-    end
+  def users_only
+    redirect_to sign_in_path unless signed_in?
+  end
 end

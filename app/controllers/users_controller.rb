@@ -11,15 +11,14 @@ class UsersController < ApplicationController
     upcoming_events = @user.attended_events.where("date >= ?", Time.zone.today)
     upcoming_gatherings = @user.attended_gatherings.where("date >= ?", Time.zone.today)
     @upcoming_happenings = (upcoming_events + upcoming_gatherings).sort do |a, b|
-       a.date <=> b.date
+      a.date <=> b.date
     end
 
     past_events = @user.attended_events.where("date < ?", Time.zone.today)
     past_gatherings = @user.attended_gatherings.where("date < ?", Time.zone.today)
     @past_happenings = (past_events + past_gatherings).sort do |a, b|
-       a.date <=> b.date
+      a.date <=> b.date
     end
-
   end
 
   def create
@@ -36,11 +35,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :address_attributes => [:id, 
-                                                                   :location, 
-                                                                   :latitude, 
-                                                                   :longitude, 
-                                                                   :addressable_id, 
-                                                                   :addressable_type])
+    params.require(:user).permit(:username, :address_attributes => [:id,
+                                                                    :location,
+                                                                    :latitude,
+                                                                    :longitude,
+                                                                    :addressable_id,
+                                                                    :addressable_type])
   end
 end

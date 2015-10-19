@@ -16,7 +16,6 @@ feature 'group search' do
     @other_group = create(:group, owner_id: @user.id, name: 'another', category_id: 2)
     @far_group = create(:group, owner_id: @user.id, name: 'someother')
 
-
     [@group, @other_group, @user].each do |h|
       Address.create(location: 'New York',
                      addressable_type: h.class.name,

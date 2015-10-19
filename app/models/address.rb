@@ -17,8 +17,8 @@ class Address < ActiveRecord::Base
     near(city, radius)
   end
 
-  def self.only_events_and_gatherings
-    where(:addressable_type => ['Event', 'Gathering'])
+  def self.happenings
+    where(:addressable_type => %w(Event Gathering))
   end
 
   def self.groups
