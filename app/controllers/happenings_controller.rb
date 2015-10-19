@@ -12,7 +12,7 @@ class HappeningsController < ApplicationController
       addresses = Address.geocode_radius_search(params[:city], radius_in_miles).happenings
     else
 
-      set_coordinates if !@lat
+      set_coordinates unless @lat
       if @lat
         addresses = Address.psql_radius_search(params[:radius], @lat, @long).happenings
       else

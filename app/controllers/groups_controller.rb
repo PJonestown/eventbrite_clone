@@ -41,7 +41,7 @@ class GroupsController < ApplicationController
 
     else
 
-      set_coordinates
+      set_coordinates unless @lat
 
       if @lat
         addresses = Address.psql_radius_search(params[:radius], @lat, @long).groups
