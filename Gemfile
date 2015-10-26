@@ -15,6 +15,8 @@ gem 'simple_form'
 gem 'geocoder'
 gem 'typeahead-addresspicker-rails'
 gem 'activerecord-postgres-earthdistance'
+gem 'momentjs-rails', '~> 2.9',  :github => 'derekprior/momentjs-rails'
+gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'rails_12factor', group: :production
 
 gem "bullet", :group => "development"

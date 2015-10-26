@@ -72,7 +72,7 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
-    context 'with invalid attrivutes' do
+    context 'with invalid attributes' do
 
       it 'should not save the event' do
         expect {

@@ -1,7 +1,13 @@
+<input class="datetimepicker" type="text" >
+
+<script type="text/javascript">
+    $('.datetimepicker').datetimepicker();
+</script>
+
 <%= simple_form_for @event do |e| %>
   <%= e.input :name, required: false, autofocus: true  %>
   <%= e.input :description, required: false %>
-  <%= e.input :date, as: :date, required: false, start_year: Date.today.year %>
+  <%= e.input :date, as: :datetime_picker, required: false %>
   <%= e.submit class: 'btn btn-primary' %>
 <% end %>
 
