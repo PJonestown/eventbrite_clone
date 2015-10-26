@@ -26,6 +26,7 @@ feature 'gathering creation' do
       expect(current_path).to eq new_group_gathering_path(@group)
       fill_in 'Name', with: 'New title'
       fill_in 'Description', with: 'Desc'
+      fill_in 'Date', with: Time.zone.now
       click_button 'Create Gathering'
 
       # Address

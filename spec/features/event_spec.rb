@@ -16,6 +16,7 @@ feature 'event' do
     event = build(:event)
     fill_in 'Name', with: event.name
     fill_in 'Description', with: event.description
+    fill_in 'Date', with: Time.zone.now
     click_button 'Create Event'
     event = Event.last
     expect(event.attendees.include?(user)).to eq true

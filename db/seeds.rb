@@ -1,77 +1,143 @@
-User.create(username: 'virginia_woolf')
-User.create(username: 'DFW')
-User.create(username: 'thomas_pynchon')
-User.create(username: 'vladimir_nabokov')
-User.create(username: 'james_joyce')
-User.create(username: 'earnest_hemingway')
+def random_date
+  rand(-3.months..8.months).ago
+end
 
-Profile.create(user_id: 1, location: 'New York')
-Profile.create(user_id: 2, location: 'New York')
-Profile.create(user_id: 3, location: 'New York')
-Profile.create(user_id: 4, location: 'Seattle')
-Profile.create(user_id: 5, location: 'Austin, TX')
-Profile.create(user_id: 6, location: 'New York')
+def random_user
+  rand(1..20)
+end
 
-Category.create(name: 'Technology')
-Category.create(name: 'Politics/activism')
-Category.create(name: 'Games')
-Category.create(name: 'Sports')
-Category.create(name: 'Hobbies')
-Category.create(name: 'Other')
+def random_category
+  rand(1..6)
+end
 
-Group.create(name: 'Walks on the beach',
-             description: 'We meet regularly every evening as if drawn by some need.',
-             owner_id: 1, category_id: 6, is_private: false)
-Group.create(name: 'Conspiracy club',
-             description: 'Anything from bombs to underground post offices. You hide they seek.',
-             owner_id: 3, category_id: 6, is_private: true)
-Group.create(name: 'Mountain climbing meetup',
-             description: 'The only real sport (except for racing and buullfighting of course)',
-             owner_id: 6, category_id: 4, is_private: false)
-Group.create(name: 'Tennis club',
-             description: "Mandatory lemon pledge sunscreen. It’s Marlon Brando’s fault, Jim",
-             owner_id: 2, category_id: 4, is_private: false)
+def random_group 
+  rand(1..60)
+end
 
-Membership.create(member_id: 6, group_membership_id: 1)
-Membership.create(member_id: 1, group_membership_id: 1)
-Membership.create(member_id: 4, group_membership_id: 1)
-Membership.create(member_id: 4, group_membership_id: 2)
-Membership.create(member_id: 5, group_membership_id: 2)
-Membership.create(member_id: 3, group_membership_id: 2)
-Membership.create(member_id: 3, group_membership_id: 3)
-Membership.create(member_id: 6, group_membership_id: 3)
-Membership.create(member_id: 1, group_membership_id: 3)
-Membership.create(member_id: 3, group_membership_id: 4)
-Membership.create(member_id: 6, group_membership_id: 4)
-Membership.create(member_id: 2, group_membership_id: 4)
+20.times do
+  User.create(username: Faker::Internet.user_name)
+end
 
-Gathering.create(creator_id: 1, group_id: 1,
-                 name: 'Waves appreciation', date: Time.zone.today + 1.year,
-                 description: 'words')
-Gathering.create(creator_id: 1, group_id: 1,
-                 name: 'Sail to the lighthouse', date: Time.zone.today - 1.year,
-                 description: 'more words')
-Gathering.create(creator_id: 1, group_id: 1,
-                 name: 'Painting lessons', date: Time.zone.today + 1.month,
-                 description: 'He shivered; he quivered. All his vanity, all
-                               his satisfaction in his own splendour, riding
-                               fell as a thunderbolt.')
+100.times do
+  Event.create(name: Faker::Company.catch_phrase,
+               description: Faker::Lorem.sentences(3),
+               date: random_date,
+               creator_id: random_user)
+end
 
-GatheringAttendance.create(attendee_id: 2, attended_gathering_id: 2)
-GatheringAttendance.create(attendee_id: 3, attended_gathering_id: 2)
-GatheringAttendance.create(attendee_id: 4, attended_gathering_id: 2)
-GatheringAttendance.create(attendee_id: 6, attended_gathering_id: 3)
-GatheringAttendance.create(attendee_id: 1, attended_gathering_id: 3)
-GatheringAttendance.create(attendee_id: 4, attended_gathering_id: 3)
+categories = ['Technology',
+              'Politics/activism',
+              'Games',
+              'Sports',
+              'Hobbies',
+              'Other']
 
-Moderation.create(moderator_id: 2, moderated_group_id: 1)
-Moderation.create(moderator_id: 6, moderated_group_id: 1)
+categories.each do |c|
+  Category.create(name: c)
+end
 
-Event.new(name: 'One time only event',
-          description: "Did I mention it's only one time and doesn't need a group?",
-          date: Time.zone.today + 1.month,
-          creator_id: 6)
+50.times do
+  Group.create(name: Faker::Company.catch_phrase,
+               description: Faker::Lorem.sentences(3),
+               owner_id: random_user,
+               category_id: random_category)
+end
 
-Attendance.create(attendee_id: 6, attended_event_id: 1)
-Attendance.create(attendee_id: 2, attended_event_id: 1)
-Attendance.create(attendee_id: 4, attended_event_id: 1)
+10.times do
+  Group.create(name: Faker::Company.catch_phrase,
+               description: Faker::Lorem.sentences(3),
+               owner_id: random_user,
+               category_id: random_category,
+               is_private: true,
+               restricted: true)
+end
+
+300.times do
+  Membership.create(member_id: random_user,
+                    group_membership_id: random_group)
+end
+
+Group.all.each do |g|
+  15.times do
+    Gathering.create(name: Faker::Company.catch_phrase,
+                     description: Faker::Lorem.sentences(3),
+                     creator_id: random_user,
+                     group_id: g.id,
+                     date: random_date)
+  end
+end
+
+Gathering.all.each do |g|
+  3.times do
+    GatheringAttendance.create(attendee_id: random_user,
+                               attended_gathering_id: g.id)
+  end
+end
+
+Event.all.each do |e|
+  10.times do
+    Attendance.create(attendee_id: random_user,
+                      attended_event_id: e.id)
+  end
+end
+
+Group.all.each do |g|
+  2.times do
+    Moderation.create(moderator_id: random_user,
+                      moderated_group_id: g.id)
+  end
+end
+
+addressable = []
+
+User.all.each do |n|
+  addressable << n
+end
+
+Event.all.each do |n|
+  addressable << n
+end
+
+Group.all.each do |n|
+  addressable << n
+end
+
+Gathering.all.each do |n|
+  addressable << n
+end
+
+addressable.each do |a|
+
+  case rand(1..5)
+    when 1
+      loc = 'New York'
+      lat =  40.7127837
+      long = -74.0059413
+
+    when 2
+      loc = 'Chicago'
+      lat = 41.8781136
+      long = -87.6297982
+
+    when 3 
+      loc = 'Austin'
+      lat =  30.267153
+      long = -97.7430608
+
+    when 4
+      loc = 'Houston'
+      lat = 29.7604267
+      long = -95.3698028
+
+    when 5
+      loc = 'San Francisco'
+      lat = 37.7749295
+      long = -122.4194155
+  end
+
+  Address.create(addressable_id: a.id,
+                 addressable_type: a.class,
+                 location: loc,
+                 latitude: lat,
+                 longitude: long)
+end

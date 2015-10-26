@@ -28,6 +28,7 @@ feature 'group restrictions' do
     expect(current_path).to eq new_group_gathering_path(@group)
     fill_in 'Name', with: 'Anything'
     fill_in 'Description', with: 'A new description'
+    fill_in 'Date', with: Time.zone.now
     click_button 'Create Gathering'
     expect(current_path).to eq new_gathering_address_path(Gathering.last)
     visit gathering_path(Gathering.last)
@@ -48,6 +49,7 @@ feature 'group restrictions' do
     expect(current_path).to eq new_group_gathering_path(@group)
     fill_in 'Name', with: 'Mod gathering'
     fill_in 'Description', with: 'A new description'
+    fill_in 'Date', with: Time.zone.now
     click_button 'Create Gathering'
     expect(current_path).to eq new_gathering_address_path(Gathering.last)
     visit gathering_path(Gathering.last)

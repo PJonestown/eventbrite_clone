@@ -26,6 +26,7 @@ feature 'private group' do
     expect(page).to have_content "This gathering won't be public until a moderator approves it."
     fill_in 'Name', with: 'a name'
     fill_in 'Description', with: 'a description'
+    fill_in 'Date', with: Time.zone.now
     click_button 'Create Gathering'
     expect(current_path).to eq new_gathering_address_path(Gathering.last)
     visit group_path(@group)
