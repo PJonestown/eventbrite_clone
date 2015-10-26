@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022173425) do
+ActiveRecord::Schema.define(version: 20151026190726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,12 +64,12 @@ ActiveRecord::Schema.define(version: 20151022173425) do
   create_table "gatherings", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.date     "date"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.integer  "creator_id"
     t.integer  "group_id"
     t.boolean  "approved",    default: true
+    t.datetime "date"
   end
 
   add_index "gatherings", ["creator_id"], name: "index_gatherings_on_creator_id", using: :btree
