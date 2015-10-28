@@ -21,6 +21,8 @@ gem 'rails_12factor', group: :production
 
 gem "bullet", :group => "development"
 
+gem 'faker'
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
@@ -29,7 +31,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem "better_errors"
   gem 'webmock'
-  gem 'faker'
 end
 
 group :test do
