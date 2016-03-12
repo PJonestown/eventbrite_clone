@@ -7,6 +7,6 @@
 <% else %>
   <%= simple_form_for [@group, @membership] do |f| %>
     <%= f.hidden_field :group_membership_id, :value => @group.id %>
-    <%= f.submit "Join Group", class: "btn btn-large btn-primary" %>
+    <%= f.submit "Join Group", class: "btn btn-large btn-primary join-btn" %>
   <% end %>
 <% end %>

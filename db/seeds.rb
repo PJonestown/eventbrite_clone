@@ -67,19 +67,19 @@ Group.all.each do |g|
   end
 end
 
-Gathering.all.each do |g|
-  3.times do
-    GatheringAttendance.create(attendee_id: random_user,
-                               attended_gathering_id: g.id)
-  end
-end
+#Gathering.all.each do |g|
+#  3.times do
+#    GatheringAttendance.create(attendee_id: random_user,
+                               #attended_gathering_id: g.id)
+#  end
+#end
 
-Event.all.each do |e|
-  10.times do
-    Attendance.create(attendee_id: random_user,
-                      attended_event_id: e.id)
-  end
-end
+#Event.all.each do |e|
+#  10.times do
+#    Attendance.create(attendee_id: random_user,
+#                      attended_event_id: e.id)
+#  end
+#end
 
 Group.all.each do |g|
   2.times do

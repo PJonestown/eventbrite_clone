@@ -1,2 +1,45 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.group-banner {
+  margin-bottom: 85px;
+}
+
+.group-name {
+  background: #ffb648;
+  height: 70px;
+  line-height: 79px;
+  display: inline-block;
+  text-align: center;
+  font-size: 40px;
+}
+
+.join-btn {
+  float: right;
+  margin-right: 60px;
+}
+
+.gathering {
+  margin-top: 15px;
+  margin-right: 60px;
+  margin-left: 60px;
+  background-color: #DDDDCC;
+}
+
+.gathering:link{
+  font-size: 30;
+}
+
+.group-info {
+  margin-top: 15px;
+  background-color: grey;
+  height: 100%;
+  margin-left: 40px;
+}
+
+.line-seperator {
+  height: 2px;
+  background-color: red;
+}
+
+  

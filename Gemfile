@@ -30,7 +30,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem "better_errors"
-  gem 'webmock'
+  #gem 'webmock'
 end
 
 group :test do

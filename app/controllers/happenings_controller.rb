@@ -20,7 +20,6 @@ class HappeningsController < ApplicationController
       end
     end
 
-    # Return corresponding Gathering and Event instances
     happenings = addresses.includes(:addressable).map(&:addressable)
 
     upcoming_happenings = []

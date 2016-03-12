@@ -12,5 +12,6 @@ class Gathering < ActiveRecord::Base
 
   scope :approved, -> { where(approved: true) }
   scope :unapproved, -> { where(approved: false) }
-  scope :upcoming, -> { where("date >= ?", Time.zone.today) }
+  scope :upcoming, -> { where("date >= ?", Time.zone.now) }
+  scope :past, -> { where("date <= ?", Time.zone.now) }
 end

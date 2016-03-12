@@ -1,10 +1,4 @@
-<%= render 'join' %>
-
-<% if new_gathering_permission? %>
-  <p><%= link_to 'New Gathering', new_group_gathering_path(@group) %></p>
-<% elsif signed_in? && @group.members.include?(current_user) %>
-  <p><%= link_to 'Gathering Request', new_group_gathering_path(@group) %></p>
-<% end %>
+<%= render 'new_gathering' %>
 
 <%= link_to 'Edit Group', edit_group_path(@group) if privileged_member? %>
 
@@ -13,23 +7,60 @@
                                                   :confirm => 'Are you sure?'%>
 <% end %>
 
+<div class="group-banner">
+  <div class="group-name">
+    <%= @group.name %>
+  </div>
+  <div class="group-links">
+    <%= render 'join' %>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col-md-3 hidden-xs hidden-sm">
+    <div class="group-info">
+      <h3><%= @group.address.location %></h3>
+      <p><%= @group.created_at.strftime("Started on %b %d, %Y") %></p>
+      <div class="line-seperator"></div>
+      <p>Members: <%= @group.members.count %></p>
+      <div class="line-seperator"></div>
+      <p>Upcoming gatherings: <%= @group.gatherings.upcoming.count %></p>
+      <div class="line-seperator"></div>
+      <p>Past gatherings: <%= @group.gatherings.past.count %></p>
+      <div class="line-seperator"></div>
+      <h4>Group Mods</h4>
+      <% @group.moderators.uniq.each do |m| %>
+        <p><%= m.username %></p>
+        <div class="line-seperator"></div>
+      <% end %>
+    </div>
+  </div>
 
-<%= @group.name %>
-<% @gatherings.each do |g| %>
-  <ul>
-    <li><%= g.name %></li>
-    <li><%= g.date %></li>
-  </ul>
-<% end %>
-
+  <div class="col-md-9">
+    <div class="gathering-list">
+      <% @gatherings.each do |g| %>
+        <div class="gathering">
+          <div class="gathering-name">
+            <%= link_to g.name, g %>
+          </div>
+          <div class="gathering-description">
+            <%= g.description %>
+          </div>
+          <div class="gathering-date">
+            <%= g.date %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <!-- TODO: Save this as a partial. 
           Have this as a link only mod can see. 
           Mod clicks link and ajax renders partial -->
 
 <h2>Mods</h2>
-<% @group.moderators.each do |g| %>
+<% @group.moderators.uniq.each do |g| %>
   <% user_moderation = g.moderations.where(moderated_group_id: @group.id).first %>
   <ul>
     <li><%= g.username%></li>
