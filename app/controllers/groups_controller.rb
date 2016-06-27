@@ -55,10 +55,25 @@ class GroupsController < ApplicationController
         categorized_groups << group if group.category_id == params[:category].to_i
       end
 
-      @groups = categorized_groups
+
+    search = params[:search]
+    if search
+      searched_groups = categorized_groups.select{ |g| g.name.downcase.include? search.downcase}
+    else
+      searched_groups = categorized_groups
+    end
+
+      @groups = searched_groups
 
     else
-      @groups = addresses.map(&:addressable)
+
+    search = params[:search]
+    if search
+      searched_groups = addresses.map(&:addressable).select{ |g| g.name.downcase.include? search.downcase}
+    else
+      searched_groups = addresses.map(&:addressable)
+    end
+      @groups = searched_groups
     end
 
   end

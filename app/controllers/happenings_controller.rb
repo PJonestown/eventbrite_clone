@@ -27,6 +27,13 @@ class HappeningsController < ApplicationController
       end
     end
 
-    @happenings = upcoming_happenings.sort_by &:date
+    search = params[:search]
+    if search
+      searched_happenings = upcoming_happenings.select{ |h| h.name.downcase.include? search.downcase}
+    else
+      searched_happenings = upcoming_happenings
+    end
+
+    @happenings = searched_happenings.sort_by &:date
   end
 end
