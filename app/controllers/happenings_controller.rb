@@ -2,8 +2,6 @@ class HappeningsController < ApplicationController
   def index
     params[:radius] ||= 40234
 
-    # If signed in user searches for a city other than the one provided in
-    # address OR if a guest searches for a city which isn't saved as a cookie
     if signed_in? && current_user.address && current_user.address.location != params[:city] && params[:city] ||
        !signed_in? && params[:city]
 

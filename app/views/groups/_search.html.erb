@@ -6,14 +6,14 @@
     <label> from
       <% categories_array = Category.all.map { |c| [c.name, c.id] } %>
       <%= select_tag :category, options_for_select(categories_array), :include_blank => 'All categories' %>
- 
+
     within
       <%= select_tag :radius, options_for_select({25 => 40234,
                                                   50 => 80467,
                                                   100 => 160934}) %>
- 
+
       miles of
-      <%= text_field_tag :city, params[:city], 
+      <%= text_field_tag :city, params[:city],
         value:  if params[:city]
                   params[:city]
                 elsif @location
@@ -21,7 +21,7 @@
                 elsif signed_in? && current_user.address
                   current_user.address.location
                   end%>
- 
+
     </label>
   </div>
   <div><%= submit_tag 'Search', :name => nil %></div>
