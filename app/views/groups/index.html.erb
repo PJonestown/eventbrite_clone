@@ -2,7 +2,12 @@
 
 <%= render 'search' %>
 
-<% @groups.each do |g| %>
-  <%= link_to g.name, group_path(g) %>
+<% if @groups.any? %>
+  <% @groups.each do |g| %>
+    <h3><%= link_to g.name, group_path(g) %></h3>
+    <p><%= g.description %></p>
+    <hr>
+  <% end %>
+<% else %>
+  <p> No nearby groups</p>
 <% end %>
-
