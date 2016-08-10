@@ -2,6 +2,10 @@
 
 This app is a hybrid of [meetup.com](meetup.com) and [Eventbrite](eventbrite.com)
 
+## Explore the app
+
+https://evening-badlands-3166.herokuapp.com/
+
 ## Configuration
 
 * Download or clone the repo
@@ -72,7 +76,7 @@ I actually thought, and still somewhat feel that this was a clever solution. But
 
 In my defense, meetup.com never asks for permission to get coordinates, which leads me to believe that they used a solution similar to mine. But that doesn't change the fact that I would have used javascript to complete this task had I known about that feature.
 
- ## License
+## License
 
 The MIT License (MIT)
 Copyright (c) 2016 Paul Johnston
